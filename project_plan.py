@@ -1,10 +1,9 @@
-# trafiłem na logowanie, dlatego zaczynam projekt od ćwiczenia prostej funkcji do logowania:S
-# Walidacja danych: Ważne jest, aby sprawdzać poprawność adresu e-mail i inne warunki (np. minimalna długość hasła) przed rejestracją użytkownika.
+
 # Interakcja z bazą danych: Po poprawnym hashowaniu hasła, dane użytkownika powinny zostać zapisane w bazie danych.
 
 #rejestracja.
 import bcrypt
-
+# to będzie klasa Sign_up ! , będzie zawierała validacje i 2 funckje : (sprawdzającą e maia i hasło)
 def sign_up():
     email = input("Enter the e-mail: ")
     pwd = input("""Set a password
@@ -36,6 +35,4 @@ def sign_up():
         print("Password is not same as above! \n")
 
 sign_up_user = sign_up()
-
-
 

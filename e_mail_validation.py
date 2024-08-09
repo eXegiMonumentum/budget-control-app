@@ -9,14 +9,4 @@ def is_email_correct(e_mail):
     e_mail_regex = r'^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$'
     return bool(re.match(e_mail_regex, e_mail))
 
- # kończę pisać funkcję sprawdzającą poprawność adresu e mail.
- # dopisuję funkcję aby sprawdzała hasła - w innym pliku,
-
-
-# Przykład użycia
-email = "example@example.com"
-if is_email_correct(email):
-    print(f"{email} is a corret e-mail.")
-else:
-    print(f"{email} is not correct e-mail !")
 

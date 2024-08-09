@@ -83,3 +83,37 @@
 # Wersja mobilna aplikacji (np. z wykorzystaniem frameworka Kivy).
 # Taki projekt pokaże Twoje umiejętności w zakresie programowania w Pythonie, zarządzania bazami danych, a także tworzenia aplikacji, które rozwiązują rzeczywiste problemy.
 
+from e_mail_validation import is_email_correct
+from password_validation import *
+print("sign up simulation")
+while True:
+    email = input("Please enter your e-mail: ")
+    if is_email_correct(email):
+        print("e-mail is correct!")
+        # add to DB?
+        break
+    else:
+        print("incorrect e-mail, please enter e-mail again")
+
+while True:
+    print_password_requirements()
+    password = input("Type password: ")
+    if is_password_correct(password):
+        conf_passw = input("Please confirm your password: ")
+        if is_password_correct(conf_passw):
+
+            print("correct password !")
+            # add to DB
+            break
+        else:
+            print("failure confirmed !, Enter password again.")
+    else:
+        print("wrong password, Enter password again")
+
+
+
+
+
+
+
+
