@@ -3,6 +3,12 @@
 
 
 import bcrypt
+
+# class Credentials():
+#     def __init__(self):
+#         pass
+#
+
 def hashing_password(password: str) -> str:
     """hashing password during user sign_up"""
     bytes_password = password.encode('utf-8')
