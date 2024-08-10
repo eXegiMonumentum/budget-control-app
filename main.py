@@ -83,35 +83,23 @@
 # Wersja mobilna aplikacji (np. z wykorzystaniem frameworka Kivy).
 # Taki projekt pokaże Twoje umiejętności w zakresie programowania w Pythonie, zarządzania bazami danych, a także tworzenia aplikacji, które rozwiązują rzeczywiste problemy.
 
-from e_mail_validation import is_email_correct
-from password_validation import *
+from credentials import SignUp
 print("sign up simulation")
+
 while True:
     email = input("Please enter your e-mail: ")
-    if is_email_correct(email):
-        print("e-mail is correct!")
-        # add to DB?
+    SignUp.print_password_requirements()
+    password = input("Please enter your password: ")
+    repeated_password = input("Please repeat password: ")
+
+    try:
+        user = SignUp(email, password, repeated_password)
+        hashed_password_str = SignUp.hashing_password(password)
+        SignUp.save_credentials_to_file(email, hashed_password_str)
+        print("Sign up successful.")
         break
-    else:
-        print("incorrect e-mail, please enter e-mail again")
-
-while True:
-    print_password_requirements()
-    password = input("Type password: ")
-    if is_password_correct(password):
-        conf_passw = input("Please confirm your password: ")
-        if is_password_correct(conf_passw):
-
-            print("correct password !")
-            # add to DB
-            break
-        else:
-            print("failure confirmed !, Enter password again.")
-    else:
-        print("wrong password, Enter password again")
-
-
-
+    except ValueError as e:
+        print(f"Sign up failed: {e}")
 
 
 

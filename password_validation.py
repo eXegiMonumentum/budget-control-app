@@ -1,6 +1,6 @@
 import re
 
-# tutaj wypada utworzyć klasę sign_up, aby nie mylić rejestracji z późniejszym logowaniem.
+
 def is_password_correct(password):
     """ for sign up
     Check if the password meets the specified requirements."""
