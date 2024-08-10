@@ -1,5 +1,3 @@
-# Interakcja z bazą danych: Po poprawnym hashowaniu hasła, dane użytkownika powinny zostać zapisane w bazie danych.
-
 
 import bcrypt
 import re
@@ -29,6 +27,7 @@ class SignUp:
     def __is_password_confirmed(password, repeated_password):
         return password == repeated_password
 
+# probably I should use DNS Lookup to verify domains, but here I decided to use regex pattern.
     @staticmethod
     def __is_email_correct(email):
         """ Allows you to verify if the user typed the correct email.
