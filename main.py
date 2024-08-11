@@ -101,7 +101,7 @@ while True:
     except ValueError as e:
         print(f"Sign up failed: {e}")
 
-
+# username, ill add it tomorrow.
 
 
 
