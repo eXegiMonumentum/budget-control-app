@@ -88,20 +88,21 @@ print("sign up simulation")
 
 while True:
     email = input("Please enter your e-mail: ")
+    username = input("Please enter yor username: ")
     SignUp.print_password_requirements()
     password = input("Please enter your password: ")
     repeated_password = input("Please repeat password: ")
 
     try:
-        user = SignUp(email, password, repeated_password)
+        user = SignUp(email, username, password, repeated_password)
         hashed_password_str = SignUp.hashing_password(password)
-        SignUp.save_credentials_to_file(email, hashed_password_str)
+        SignUp.save_credentials_to_file(email,username, hashed_password_str)
         print("Sign up successful.")
         break
     except ValueError as e:
         print(f"Sign up failed: {e}")
 
-# username, ill add it tomorrow.
-
+# Implementuję funkcjonalność, która na etapie podawania username i e-maila sprawdzi
+# , czy dane wartości są unikalne w bazie danych. Jeśli takie dane już istnieją, użytkownik otrzyma odpowiedni komunikat.
 
 

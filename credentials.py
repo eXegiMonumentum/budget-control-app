@@ -1,12 +1,18 @@
 
 import bcrypt
 import re
-
+import psycopg2
+from psycopg2 import OperationalError
 
 # I will implement error handling using logging.
 class SignUp:
-    def __init__(self, email, password, repeated_password):
+    def __init__(self, email, username, password, repeated_password):
         try:
+
+            if not (SignUp.is_credentials_unique(username, email)):
+                raise ValueError("the username or e-mail address is already used by someone")
+            self.username = username
+
             if not (SignUp.__is_email_correct(email)):
                 raise ValueError("Incorrect email address.")
             self.__email = email
@@ -22,6 +28,48 @@ class SignUp:
 
         except ValueError as e:
             raise ValueError("Sign up failed. " + str(e))
+    @staticmethod
+    def is_credentials_unique(username, email):
+        """
+        Check if the given username and email are unique in the database.
+
+        :param username: The username to check.
+        :param email: The email address to check.
+        :return: True if both are unique, False otherwise.
+        :rtype: bool
+
+        Prints a message if the username or email already exists.
+        """
+        try:
+            conn = psycopg2.connect(
+                host="localhost",
+                database="budget_db_test",
+                user="postgres",
+                password="password"
+            )
+            cur = conn.cursor()
+            cur.execute("SELECT username, email FROM users")
+            results = cur.fetchall()
+            conn.close()
+        except OperationalError as e:
+            print(f"Error connecting to database: {e}")
+            return None
+
+        username_exists = False
+        email_exists = False
+
+        for record in results:
+            if record[0] == username:
+                print(f"Username '{username}' already exists!")
+                username_exists = True
+            if record[1] == email:
+                print(f"Email '{email}' already exists!")
+                email_exists = True
+
+        if username_exists or email_exists:
+            return False
+
+        return True
 
     @staticmethod
     def __is_password_confirmed(password, repeated_password):
@@ -68,11 +116,12 @@ class SignUp:
 
     # I will implement error handling using logging.
     @staticmethod
-    def save_credentials_to_file(email, hashed_password_str):
+    def save_credentials_to_file(email,username, hashed_password_str):
         """Save user's credentials during sign-up."""
         try:
             with open("credentials.txt", "a") as f:
                 f.write(email + "\n")
+                f.write(username + "\n")
                 f.write(hashed_password_str + "\n")
         except PermissionError as e:
             print(f"You do not have permission to access the file: {e}")
@@ -80,3 +129,4 @@ class SignUp:
             print(f"An I/O error occurred: {e}")
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
+
