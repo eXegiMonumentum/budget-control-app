@@ -9,8 +9,11 @@ class SignUp:
     def __init__(self, email, username, password, repeated_password):
         try:
 
-            if not (SignUp.is_credentials_unique(username, email)):
-                raise ValueError("the username or e-mail address is already used by someone")
+            if not (SignUp.__is_username_correct(username)):
+                raise ValueError("The username does not meet the requirements.")
+
+            if not (SignUp.__is_credentials_unique(username, email)):
+                raise ValueError("The username or e-mail address is already used by someone")
             self.username = username
 
             if not (SignUp.__is_email_correct(email)):
@@ -19,7 +22,7 @@ class SignUp:
 
             if not (SignUp.__is_password_correct(password)):
                 SignUp.print_password_requirements()
-                raise ValueError("password does not meet the requirements.")
+                raise ValueError("The password does not meet the requirements.")
 
             if not (SignUp.__is_password_confirmed(password, repeated_password)):
                 raise ValueError("Passwords do not match.")
@@ -29,7 +32,7 @@ class SignUp:
         except ValueError as e:
             raise ValueError("Sign up failed. " + str(e))
     @staticmethod
-    def is_credentials_unique(username, email):
+    def __is_credentials_unique(username, email):
         """
         Check if the given username and email are unique in the database.
 
@@ -87,19 +90,14 @@ class SignUp:
     @staticmethod
     def __is_password_correct(password):
         """Check if the password meets the specified requirements."""
-        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$"
+        pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,64}$"
         return bool(re.fullmatch(pattern, password))
-
     @staticmethod
-    def print_password_requirements():
-        print("""
-               The password must contain:
-               - at least one lowercase letter.
-               - at least one uppercase letter.
-               - at least one digit.
-               - at least one special character from the set @$!%*#?&.
-               Password length must be between 8 and 20 characters.
-               """)
+    def __is_username_correct(username):
+        """Check if the username typed correct username"""
+        pattern = r"^[a-zA-Z0-9\_\.\-\+\#\$\!\%\&]{5,20}$"
+        return bool(re.fullmatch(pattern, username))
+
 
     @staticmethod
     def hashing_password(password: str) -> str:
@@ -116,7 +114,7 @@ class SignUp:
 
     # I will implement error handling using logging.
     @staticmethod
-    def save_credentials_to_file(email,username, hashed_password_str):
+    def save_credentials_to_file(email, username, hashed_password_str):
         """Save user's credentials during sign-up."""
         try:
             with open("credentials.txt", "a") as f:
@@ -130,3 +128,20 @@ class SignUp:
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
 
+    @staticmethod
+    def print_password_requirements():
+        print("""
+               The password must contain:
+               - at least one lowercase letter.
+               - at least one uppercase letter.
+               - at least one digit.
+               - at least one special character from the set @$!%*#?&.
+               Password length must be between 8 and 64 characters.
+               """)
+    @staticmethod
+    def print_username_requirements():
+        print("""
+            The username must be between 5 and 20 characters long.
+            You can use the following special characters: - . + # % ! &.
+            You can also use numbers (0-9) and letters (a-z, A-Z).
+        """)

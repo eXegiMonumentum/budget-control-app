@@ -88,6 +88,7 @@ print("sign up simulation")
 
 while True:
     email = input("Please enter your e-mail: ")
+    SignUp.print_username_requirements()
     username = input("Please enter yor username: ")
     SignUp.print_password_requirements()
     password = input("Please enter your password: ")
@@ -96,7 +97,7 @@ while True:
     try:
         user = SignUp(email, username, password, repeated_password)
         hashed_password_str = SignUp.hashing_password(password)
-        SignUp.save_credentials_to_file(email,username, hashed_password_str)
+        SignUp.save_credentials_to_file(email, username, hashed_password_str)
         print("Sign up successful.")
         break
     except ValueError as e:
