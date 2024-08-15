@@ -103,7 +103,5 @@ while True:
     except ValueError as e:
         print(f"Sign up failed: {e}")
 
-# Implementuję funkcjonalność, która na etapie podawania username i e-maila sprawdzi
-# , czy dane wartości są unikalne w bazie danych. Jeśli takie dane już istnieją, użytkownik otrzyma odpowiedni komunikat.
 
 
