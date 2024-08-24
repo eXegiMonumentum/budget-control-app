@@ -64,8 +64,7 @@
 # Zadbaj o relacje między tabelami, np. każda transakcja powinna być powiązana z użytkownikiem i kategorią.
 # Backend w Pythonie:
 #
-# Zaimplementuj podstawowe funkcje do interakcji z bazą danych (dodawanie transakcji, zarządzanie kategoriami).
-# Utwórz funkcje do generowania raportów.
+
 # Interfejs użytkownika:
 #
 # Zbuduj interaktywny interfejs w konsoli, umożliwiający łatwą nawigację po funkcjach aplikacji.
@@ -97,7 +96,7 @@ while True:
     try:
         user = SignUp(email, username, password, repeated_password)
         hashed_password_str = SignUp.hashing_password(password)
-        SignUp.save_credentials_to_file(email, username, hashed_password_str)
+        SignUp.send_credentials_to_database(email, username, hashed_password_str)
         print("Sign up successful.")
         break
     except ValueError as e:

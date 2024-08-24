@@ -3,7 +3,10 @@ import bcrypt
 import re
 import psycopg2
 from psycopg2 import OperationalError
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from tabels import Users
+from sqlalchemy.exc import IntegrityError
 # I will implement error handling using logging.
 class SignUp:
     def __init__(self, email, username, password, repeated_password):
@@ -114,19 +117,35 @@ class SignUp:
 
     # I will implement error handling using logging.
     @staticmethod
-    def save_credentials_to_file(email, username, hashed_password_str):
+    def send_credentials_to_database(email, username, hashed_password_str):
         """Save user's credentials during sign-up."""
+        engine = create_engine('postgresql+psycopg2://postgres:password@localhost/budget')
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        new_user = Users(
+            username=username,
+            email=email,
+            hashed_password=hashed_password_str
+        )
+
         try:
-            with open("credentials.txt", "a") as f:
-                f.write(email + "\n")
-                f.write(username + "\n")
-                f.write(hashed_password_str + "\n")
-        except PermissionError as e:
-            print(f"You do not have permission to access the file: {e}")
-        except OSError as e:
-            print(f"An I/O error occurred: {e}")
+            session.add(new_user)
+            session.commit()
+            print("user saved successfully")
+
+        except IntegrityError as e:
+            session.rollback()
+            print("Error: User with this email or username already exists.")
+            print(f"Details: {e}")
+
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            session.rollback()
+            print("Other error was occurred.")
+            print(f"Details: {e}")
+
+        finally:
+            session.close()
 
     @staticmethod
     def print_password_requirements():
@@ -145,3 +164,7 @@ class SignUp:
             You can use the following special characters: - . + # % ! &.
             You can also use numbers (0-9) and letters (a-z, A-Z).
         """)
+
+
+# stworzenie silnika i sesji w sposób globalny,
+# a nie w każdej metodzie. To pomoże zminimalizować koszty tworzenia nowych połączeń do bazy danych.
