@@ -82,25 +82,42 @@
 # Wersja mobilna aplikacji (np. z wykorzystaniem frameworka Kivy).
 # Taki projekt pokaże Twoje umiejętności w zakresie programowania w Pythonie, zarządzania bazami danych, a także tworzenia aplikacji, które rozwiązują rzeczywiste problemy.
 
-from credentials import SignUp
-print("sign up simulation")
+from credentials import SignUp, LogIn
+# print("sign up simulation")
+#
+# while True:
+#     email = input("Please enter your e-mail: ")
+#     SignUp.print_username_requirements()
+#     username = input("Please enter yor username: ")
+#     SignUp.print_password_requirements()
+#     password = input("Please enter your password: ")
+#     repeated_password = input("Please repeat password: ")
+#
+#     try:
+#         user = SignUp(email, username, password, repeated_password)
+#         hashed_password = SignUp.hashing_password(password)
+#         SignUp.send_credentials_to_database(email, username, hashed_password)
+#         print("Sign up successful.")
+#         break
+#     except ValueError as e:
+#         print(f"Sign up failed: {e}")
+#
 
+print("log in simulation")
 while True:
-    email = input("Please enter your e-mail: ")
-    SignUp.print_username_requirements()
-    username = input("Please enter yor username: ")
-    SignUp.print_password_requirements()
-    password = input("Please enter your password: ")
-    repeated_password = input("Please repeat password: ")
 
     try:
-        user = SignUp(email, username, password, repeated_password)
-        hashed_password_str = SignUp.hashing_password(password)
-        SignUp.send_credentials_to_database(email, username, hashed_password_str)
-        print("Sign up successful.")
+        typed_email = input("please enter your email or username ")
+        typed_password = input("please enter your password: ")
+        logging = LogIn(typed_email, typed_password)
+        logging.log_in()
         break
     except ValueError as e:
-        print(f"Sign up failed: {e}")
+        print(f"Log in failed: {e}")
 
+
+
+# dodam możliwośc usuwania konta z bazy danych.
+#
 
 

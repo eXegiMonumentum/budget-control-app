@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, DateTime, Numeric, Text, ForeignKey, create_engine
+from sqlalchemy import Column, String, Integer, DateTime, Numeric, Text, ForeignKey, create_engine, LargeBinary
 from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 from sqlalchemy_utils import database_exists, create_database
 from datetime import datetime
@@ -12,7 +12,7 @@ class Users(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(50), nullable=False, unique=True)
     email = Column(String(100), nullable=False, unique=True)
-    hashed_password = Column(String(255), nullable=False)
+    hashed_password = Column(LargeBinary, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 

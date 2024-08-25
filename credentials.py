@@ -1,14 +1,16 @@
-
 import bcrypt
 import re
 import psycopg2
 from psycopg2 import OperationalError
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from tabels import Users
+
 from sqlalchemy.exc import IntegrityError
+from tabels import engine, session, Users
+
+
 # I will implement error handling using logging.
+
 class SignUp:
+
     def __init__(self, email, username, password, repeated_password):
         try:
 
@@ -17,9 +19,9 @@ class SignUp:
 
             if not (SignUp.__is_credentials_unique(username, email)):
                 raise ValueError("The username or e-mail address is already used by someone")
-            self.username = username
+            self.__username = username
 
-            if not (SignUp.__is_email_correct(email)):
+            if not (SignUp.is_email_correct(email)):
                 raise ValueError("Incorrect email address.")
             self.__email = email
 
@@ -34,6 +36,7 @@ class SignUp:
 
         except ValueError as e:
             raise ValueError("Sign up failed. " + str(e))
+
     @staticmethod
     def __is_credentials_unique(username, email):
         """
@@ -49,7 +52,7 @@ class SignUp:
         try:
             conn = psycopg2.connect(
                 host="localhost",
-                database="budget_db_test",
+                database="budget",
                 user="postgres",
                 password="password"
             )
@@ -81,10 +84,10 @@ class SignUp:
     def __is_password_confirmed(password, repeated_password):
         return password == repeated_password
 
-# probably I should use DNS Lookup to verify domains, but here I decided to use regex pattern.
+    # probably I should use DNS Lookup to verify domains, but here I decided to use regex pattern.
     @staticmethod
-    def __is_email_correct(email):
-        """ Allows you to verify if the user typed the correct email.
+    def is_email_correct(email):
+        """ Allows you to verify if the user typed the correct email during sign-up.
             This function use regex"""
 
         e_mail_regex = r'^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$'
@@ -95,12 +98,12 @@ class SignUp:
         """Check if the password meets the specified requirements."""
         pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,64}$"
         return bool(re.fullmatch(pattern, password))
+
     @staticmethod
     def __is_username_correct(username):
         """Check if the username typed correct username"""
         pattern = r"^[a-zA-Z0-9\_\.\-\+\#\$\!\%\&]{5,20}$"
         return bool(re.fullmatch(pattern, username))
-
 
     @staticmethod
     def hashing_password(password: str) -> str:
@@ -112,21 +115,17 @@ class SignUp:
         """
         bytes_password = password.encode('utf-8')
         hashed_password = bcrypt.hashpw(bytes_password, bcrypt.gensalt())
-        hashed_password_str = hashed_password.decode('utf-8')
-        return hashed_password_str
+        return hashed_password
 
     # I will implement error handling using logging.
     @staticmethod
-    def send_credentials_to_database(email, username, hashed_password_str):
-        """Save user's credentials during sign-up."""
-        engine = create_engine('postgresql+psycopg2://postgres:password@localhost/budget')
-        Session = sessionmaker(bind=engine)
-        session = Session()
+    def send_credentials_to_database(email, username, hashed_password):
+        """Save user's credentials into database during sign-up."""
 
         new_user = Users(
             username=username,
             email=email,
-            hashed_password=hashed_password_str
+            hashed_password=hashed_password
         )
 
         try:
@@ -154,9 +153,11 @@ class SignUp:
                - at least one lowercase letter.
                - at least one uppercase letter.
                - at least one digit.
-               - at least one special character from the set @$!%*#?&.
-               Password length must be between 8 and 64 characters.
+               - at least one special character from the set @$!%*#?&
+               - password length must be between 8 and 64 characters
+               - not contain Polish special characters like óęŚŻŹ
                """)
+
     @staticmethod
     def print_username_requirements():
         print("""
@@ -166,5 +167,34 @@ class SignUp:
         """)
 
 
-# stworzenie silnika i sesji w sposób globalny,
-# a nie w każdej metodzie. To pomoże zminimalizować koszty tworzenia nowych połączeń do bazy danych.
+class LogIn:
+    def __init__(self, username_or_email, typed_password):
+        self.__username_or_email = username_or_email
+        self.__typed_password = typed_password
+
+    def log_in(self):
+        """Verifies user credentials against the database.
+
+        This method checks if the provided username or email exists in the database,
+        and if so, verifies the provided password against the stored hashed password.
+
+        Raises:
+            ValueError: If the username/email is not found or the password is incorrect.
+        """
+
+        user = session.query(Users).filter((Users.email == self.__username_or_email) | (Users.username == self.__username_or_email)).first()
+
+        if not user:
+            raise ValueError("Incorrect email or username")
+
+        if not bcrypt.checkpw(self.__typed_password.encode('utf-8'), user.hashed_password):
+            raise ValueError("Incorrect password")
+
+        print("login successful.")
+
+
+# z rejestracji - użyj w funckji __is_Credentials_unique SQLAlchemy
+# usuwanie konta
+# dodawania transakcji
+# generowania raportów - wrapper ? .
+
