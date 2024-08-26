@@ -100,5 +100,10 @@ if category_objects:
     session.commit()
 
 
+print("Code for check tabels:")
+users = session.query(Users).all()
+for user in users:
+    print(f"\n email = {user.email} \n username = {user.username}")
+
 
 

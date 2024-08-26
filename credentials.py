@@ -1,10 +1,7 @@
 import bcrypt
 import re
-import psycopg2
-from psycopg2 import OperationalError
-
-from sqlalchemy.exc import IntegrityError
-from tabels import engine, session, Users
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
+from tabels import session, Users
 
 
 # I will implement error handling using logging.
@@ -17,11 +14,7 @@ class SignUp:
             if not (SignUp.__is_username_correct(username)):
                 raise ValueError("The username does not meet the requirements.")
 
-            if not (SignUp.__is_credentials_unique(username, email)):
-                raise ValueError("The username or e-mail address is already used by someone")
-            self.__username = username
-
-            if not (SignUp.is_email_correct(email)):
+            if not (SignUp.__is_email_correct(email)):
                 raise ValueError("Incorrect email address.")
             self.__email = email
 
@@ -31,11 +24,14 @@ class SignUp:
 
             if not (SignUp.__is_password_confirmed(password, repeated_password)):
                 raise ValueError("Passwords do not match.")
-
             self.__password = password
 
-        except ValueError as e:
-            raise ValueError("Sign up failed. " + str(e))
+            if not (SignUp.__is_credentials_unique(username, email)):
+                raise ValueError("The username or email address is already used by someone")
+            self.__username = username
+
+        except ValueError:
+            raise
 
     @staticmethod
     def __is_credentials_unique(username, email):
@@ -50,35 +46,26 @@ class SignUp:
         Prints a message if the username or email already exists.
         """
         try:
-            conn = psycopg2.connect(
-                host="localhost",
-                database="budget",
-                user="postgres",
-                password="password"
-            )
-            cur = conn.cursor()
-            cur.execute("SELECT username, email FROM users")
-            results = cur.fetchall()
-            conn.close()
-        except OperationalError as e:
-            print(f"Error connecting to database: {e}")
-            return None
+            user_credentials_exist = session.query(Users).filter(
+                (Users.username == username) | (Users.email == email)).first()
+            if not user_credentials_exist:
+                print("Credentials are confirmed. They are unique.")
+                return True
 
-        username_exists = False
-        email_exists = False
+            if user_credentials_exist.email == email:
+                print(f"Email: {email} is already used.")
+            if user_credentials_exist.username == username:
+                print(f"Username: {username} is already used.")
 
-        for record in results:
-            if record[0] == username:
-                print(f"Username '{username}' already exists!")
-                username_exists = True
-            if record[1] == email:
-                print(f"Email '{email}' already exists!")
-                email_exists = True
-
-        if username_exists or email_exists:
             return False
 
-        return True
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            raise
+
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            raise
 
     @staticmethod
     def __is_password_confirmed(password, repeated_password):
@@ -86,7 +73,7 @@ class SignUp:
 
     # probably I should use DNS Lookup to verify domains, but here I decided to use regex pattern.
     @staticmethod
-    def is_email_correct(email):
+    def __is_email_correct(email):
         """ Allows you to verify if the user typed the correct email during sign-up.
             This function use regex"""
 
@@ -182,7 +169,8 @@ class LogIn:
             ValueError: If the username/email is not found or the password is incorrect.
         """
 
-        user = session.query(Users).filter((Users.email == self.__username_or_email) | (Users.username == self.__username_or_email)).first()
+        user = session.query(Users).filter(
+            (Users.email == self.__username_or_email) | (Users.username == self.__username_or_email)).first()
 
         if not user:
             raise ValueError("Incorrect email or username")
@@ -192,9 +180,6 @@ class LogIn:
 
         print("login successful.")
 
-
-# z rejestracji - użyj w funckji __is_Credentials_unique SQLAlchemy
-# usuwanie konta
+#  zaimplementuję usuwanie konta
 # dodawania transakcji
 # generowania raportów - wrapper ? .
-
