@@ -1,10 +1,10 @@
 import bcrypt
 import re
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from tabels import session, Users
+from tables import session, Users
+from logger import logger
+import sys
 
-
-# I will implement error handling using logging.
 
 class SignUp:
 
@@ -19,7 +19,7 @@ class SignUp:
             self.__email = email
 
             if not (SignUp.__is_password_correct(password)):
-                SignUp.print_password_requirements()
+                SignUp.__print_password_requirements()
                 raise ValueError("The password does not meet the requirements.")
 
             if not (SignUp.__is_password_confirmed(password, repeated_password)):
@@ -31,40 +31,36 @@ class SignUp:
             self.__username = username
 
         except ValueError:
+            logger.error("Sign up failed: {e}")
             raise
 
     @staticmethod
     def __is_credentials_unique(username, email):
         """
-        Check if the given username and email are unique in the database.
-
-        :param username: The username to check.
-        :param email: The email address to check.
-        :return: True if both are unique, False otherwise.
-        :rtype: bool
-
-        Prints a message if the username or email already exists.
+         Check if the given username and email are unique in the database.
         """
         try:
             user_credentials_exist = session.query(Users).filter(
                 (Users.username == username) | (Users.email == email)).first()
+
             if not user_credentials_exist:
-                print("Credentials are confirmed. They are unique.")
+                logger.info("Credentials are confirmed. They are unique.")
                 return True
 
             if user_credentials_exist.email == email:
-                print(f"Email: {email} is already used.")
+                logger.warning(f"Email: {email} is already used.")
+
             if user_credentials_exist.username == username:
-                print(f"Username: {username} is already used.")
+                logger.warning(f"Username: {username} is already used.")
 
             return False
 
         except SQLAlchemyError as e:
-            print(f"Database error: {e}")
+            logger.error(f"Database error: {e}")
             raise
 
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            logger.error(f"An unexpected error occurred \n Details {e}")
             raise
 
     @staticmethod
@@ -93,7 +89,7 @@ class SignUp:
         return bool(re.fullmatch(pattern, username))
 
     @staticmethod
-    def hashing_password(password: str) -> str:
+    def __hashing_password(password: str) -> str:
         """
         Hashes the password during user sign-up.
 
@@ -104,9 +100,8 @@ class SignUp:
         hashed_password = bcrypt.hashpw(bytes_password, bcrypt.gensalt())
         return hashed_password
 
-    # I will implement error handling using logging.
     @staticmethod
-    def send_credentials_to_database(email, username, hashed_password):
+    def __send_credentials_to_database(email, username, hashed_password):
         """Save user's credentials into database during sign-up."""
 
         new_user = Users(
@@ -118,23 +113,21 @@ class SignUp:
         try:
             session.add(new_user)
             session.commit()
-            print("user saved successfully")
+            logger.info("user data saved successfully")
 
         except IntegrityError as e:
             session.rollback()
-            print("Error: User with this email or username already exists.")
-            print(f"Details: {e}")
+            logger.error(f"Error: User with this email or username already exists: {e}")
 
         except Exception as e:
             session.rollback()
-            print("Other error was occurred.")
-            print(f"Details: {e}")
+            logger.error(f"Other error was occurred: {e}")
 
         finally:
             session.close()
 
     @staticmethod
-    def print_password_requirements():
+    def __print_password_requirements():
         print("""
                The password must contain:
                - at least one lowercase letter.
@@ -146,12 +139,34 @@ class SignUp:
                """)
 
     @staticmethod
-    def print_username_requirements():
+    def __print_username_requirements():
         print("""
             The username must be between 5 and 20 characters long.
             You can use the following special characters: - . + # % ! &.
             You can also use numbers (0-9) and letters (a-z, A-Z).
         """)
+
+    @staticmethod
+    def handle_sign_up():
+
+        while True:
+            email = input("Please enter your e-mail: ")
+            SignUp.__print_username_requirements()
+            username = input("Please enter yor username: ")
+            SignUp.__print_password_requirements()
+            password = input("Please enter your password: ")
+            repeated_password = input("Please repeat password: ")
+
+            try:
+                SignUp(email, username, password, repeated_password)
+                hashed_password = SignUp.__hashing_password(password)
+                SignUp.__send_credentials_to_database(email, username, hashed_password)
+                print("Sign up successful.")
+                break
+            except ValueError as e:
+                logger.error(f"Sign up failed: {e}")
+                sys.stdout.flush()
+                print(f"Sign up failed: {e}")
 
 
 class LogIn:
@@ -176,10 +191,30 @@ class LogIn:
             raise ValueError("Incorrect email or username")
 
         if not bcrypt.checkpw(self.__typed_password.encode('utf-8'), user.hashed_password):
-            raise ValueError("Incorrect password")
+            raise ValueError("Incorrect password!")
 
-        print("login successful.")
+    @staticmethod
+    def handle_log_in():
 
-#  zaimplementuję usuwanie konta
-# dodawania transakcji
-# generowania raportów - wrapper ? .
+        login_attempts = 5
+        print(f"Login attempts available: {login_attempts}")
+
+        while login_attempts > 0:
+            try:
+                typed_email = input("please enter your email or username: ")
+                typed_password = input("please enter your password: ")
+                log_in = LogIn(typed_email, typed_password)
+                log_in.log_in()
+                print("Login successful")
+                break
+            except ValueError as e:
+                login_attempts -= 1
+                logger.error(f"Log in failed: {e}.")
+
+                if login_attempts == 0:
+                    logger.critical("Login limit exceeded!")
+                    raise ValueError("Login limit exceeded!")
+
+                print(f"Login failed: {e}\nLogin attempts remaining: {login_attempts}")
+                sys.stdout.flush()
+

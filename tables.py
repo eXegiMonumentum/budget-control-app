@@ -35,7 +35,6 @@ class Categories(Base):
     transactions = relationship('Transactions', backref='category')
 
 
-
 class Transactions(Base):
     __tablename__ = 'transactions'
 
@@ -46,7 +45,6 @@ class Transactions(Base):
     transaction_date = Column(DateTime, nullable=False)
     description = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
-
 
 
 engine = create_engine('postgresql+psycopg2://postgres:password@localhost/budget')
@@ -100,10 +98,10 @@ if category_objects:
     session.commit()
 
 
-print("Code for check tabels:")
-users = session.query(Users).all()
-for user in users:
-    print(f"\n email = {user.email} \n username = {user.username}")
+# print("Code for check tables:")
+# users = session.query(Users).all()
+# for user in users:
+#     print(f"\n email = {user.email} \n username = {user.username}")
 
 
 
