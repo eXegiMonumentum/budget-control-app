@@ -1,7 +1,7 @@
 import bcrypt
 import re
-from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from tables import session, Users
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError, OperationalError
+from tables import Session, session, Users
 from logger import logger
 import sys
 
@@ -9,6 +9,7 @@ import sys
 class SignUp:
 
     def __init__(self, email, username, password, repeated_password):
+
         try:
 
             if not (SignUp.__is_username_correct(username)):
@@ -123,8 +124,6 @@ class SignUp:
             session.rollback()
             logger.error(f"Other error was occurred: {e}")
 
-        finally:
-            session.close()
 
     @staticmethod
     def __print_password_requirements():
@@ -167,6 +166,51 @@ class SignUp:
                 logger.error(f"Sign up failed: {e}")
                 sys.stdout.flush()
                 print(f"Sign up failed: {e}")
+            finally:
+                session.close()
+    @staticmethod
+    def delete_account(user_id=None, username=None):
+        """ Allows to delete user from database"""
+
+        session = Session()
+        user = session.query(Users).filter(Users.id == user_id, Users.username == username).first()
+        if user:
+            conf_message = input(f'''You sure that you want delete:
+            ID:{user.id}
+            username:{user.username} account
+            type: "yes" : ''')
+
+            if conf_message.upper() == 'YES':
+                try:
+                    session.delete(user)
+                    logger.info(f"User: ID: {user.id}, username: {user.username} was deleted.")
+                    session.commit()
+
+                except IntegrityError as error:
+                    session.rollback()
+                    logger.error(f"Integrity error while deleting the account: {error}")
+                    print(f"An integrity error occurred: {error}")
+                    raise
+
+                except OperationalError as error:
+                    session.rollback()
+                    logger.error(f"Operational error while deleting the account: {error}")
+                    print(f"An operational error occurred: {error}")
+                    raise
+
+                except SQLAlchemyError as error:
+                    session.rollback()
+                    logger.error(f"An SQLAlchemy error occurred while deleting the account: {error}")
+                    print(f"An error occurred: {error}")
+                    raise
+
+                finally:
+                    session.close()
+            else:
+                logger.info("Wrong confirmation message - account has not been deleted")
+
+        else:
+            logger.info(f"user ID:{user_id}, username: {username} doesn't exist.")
 
 
 class LogIn:
@@ -217,4 +261,5 @@ class LogIn:
 
                 print(f"Login failed: {e}\nLogin attempts remaining: {login_attempts}")
                 sys.stdout.flush()
-
+            finally:
+                session.close()
