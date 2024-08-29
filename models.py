@@ -56,4 +56,3 @@ if not database_exists(engine.url):
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)  # zwraca klasę - tworzącą sesję.
-
