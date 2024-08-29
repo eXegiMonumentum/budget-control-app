@@ -9,6 +9,6 @@ choice = int(input("Enter your choice: "))
 if choice == 1:
     SignUp.handle_sign_up()
 elif choice == 2:
-    LogIn.handle_log_in()
+    user_id = LogIn.handle_log_in()
 
 

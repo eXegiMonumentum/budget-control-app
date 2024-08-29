@@ -1,7 +1,7 @@
 import bcrypt
 import re
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError, OperationalError
-from tables import Session, Users
+from models import Session, Users
 from logger import logger
 import sys
 from session_manager import SessionManager
@@ -231,6 +231,8 @@ class LogIn:
             if not bcrypt.checkpw(self.__typed_password.encode('utf-8'), user.hashed_password):
                 raise ValueError("Incorrect password!")
 
+            return user.id
+
     @staticmethod
     def handle_log_in():
 
@@ -243,10 +245,9 @@ class LogIn:
                 typed_password = input("please enter your password: ")
 
                 log_in = LogIn(typed_email, typed_password)
-                log_in.log_in()
-
+                user_id = log_in.log_in()
                 print("Login successful")
-                break
+                return user_id
             except ValueError as e:
                 login_attempts -= 1
                 logger.error(f"Log in failed: {e}.")
@@ -257,4 +258,7 @@ class LogIn:
 
                 print(f"Login failed: {e}\nLogin attempts remaining: {login_attempts}")
                 sys.stdout.flush()
+
+
+
 
