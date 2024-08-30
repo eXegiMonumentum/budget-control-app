@@ -66,55 +66,54 @@ def category_description_handler(category_description_function, category):
         return None
 
 
-#
 # standard_categories_dict = get_standard_categories_dict()
 # own_categories_dict = get_own_categories_dict(11)
 # user_id = 2
-# print("Add transaction")
-# print("Standard categories:\n\t", standard_categories_dict)
-# print("Own categories:\n\t", own_categories_dict)
-#
-# chosen_category = input("Chose number (for chose standard category) "
-#             "or type your own category name: ")
-#
-#
-# try:
-#     if chosen_category.isdigit():
-#         chosen_category = int(chosen_category)
-#         if chosen_category in standard_categories_dict:
-#             category = get_category_name(standard_categories_dict, chosen_category)
-#             print(f"You chosen category: {category}")
-#             logger.info(f"You chosen {category} as your transaction category.\n")
-#             description = category_description_handler(get_category_description, category)
-#             #add category to Categories.- obsłóżę tutaj też if description == True.
-#             if description:
-#                 print(f"Category description: {description}")
-#
-#             else:
-#                 print("No description was added.")
-#         else:
-#             print("Invalid category number.")
-#             logger.warning("User entered an invalid category number.")  # tutaj logika dodania category i jej opisu.
-#
-#     else:
-#         logger.info(f"Your new category is: {chosen_category}")
-#         description = category_description_handler(get_category_description, chosen_category)
-#         if description:
-#             print(f"Category description: {description}")
-#         else:
-#             print("No description was added.")
-#         # tutaj logika dodania category i jej opisu.
-# except ValueError as e:
-#     print(f"Error: {e}")
-#     logger.error(f"ValueError: {e}")
+
+print("Add transaction")
+print("Standard categories:\n\t", standard_categories_dict)
+print("Own categories:\n\t", own_categories_dict)
 
 
-def add_cash_income():
-    pass
+def category_handler(standard_categories_dict_func, own_categories_dict_func, user_id):
+
+    chosen_category = input("Chose number (for chose standard category) "
+                            "or type your own category name: ")
+    try:
+        if chosen_category.isdigit():
+            chosen_category = int(chosen_category)
+            if chosen_category in standard_categories_dict:
+                category = get_category_name(standard_categories_dict, chosen_category)
+                print(f"You chosen category: {category}")
+                logger.info(f"You chosen {category} as your transaction category.\n")
+                description = category_description_handler(get_category_description, category)
+                # add category to Categories.- obsłóżę tutaj też if description == True.
+                if description:
+                    print(f"Category description: {description}")
+
+                else:
+                    print("No description was added.")
+            else:
+                print("Invalid category number.")
+                logger.warning("User entered an invalid category number.")  # tutaj logika dodania category i jej opisu.
+
+        else:
+            logger.info(f"Your new category is: {chosen_category}")
+            description = category_description_handler(get_category_description, chosen_category)
+            if description:
+                print(f"Category description: {description}")
+            else:
+                print("No description was added.")
+            # tutaj logika dodania category i jej opisu.
+    except ValueError as e:
+        print(f"Error: {e}")
+        logger.error(f"ValueError: {e}")
 
 
-def sett_colour_for_category():
-    """Allows to add colour for user own category"""
+def get_colour_tuples_list():
+    """Allows to add colour for user own category
+    :returns chosen hexadecimal colour code"""
+
     color_dict = {
         "#FF0000": "Red",  # Czerwony
         "#00FF00": "Green",  # Zielony
@@ -138,22 +137,131 @@ def sett_colour_for_category():
         "#D2691E": "Chocolate",  # Czekoladowy
         "#B0C4DE": "Light Steel Blue"  # Jasny stalowy niebieski
     }
+    colour_tuples_list = list(color_dict.items())
+
+    for i, value in enumerate(colour_tuples_list, start=1):
+        print(f"{i:<3}: {value[0]:<5} --> {value[1]:<5}")
+
+    return colour_tuples_list
 
 
-def sett_icon_for_category():
+def get_colour_handler(get_colour_tuples_function, category):
+    decision = input(f"Do you want to add a colour to {category}?\n Press (Y/N): ")
+
+    if decision.upper() == 'Y':
+        colour_tuples_list = get_colour_tuples_function()
+
+        try:
+            colour_index = int(input(f"chose colour index: "))
+
+            print(f"you chosen {colour_index} : {colour_tuples_list[colour_index - 1][0]}:"
+                  f" {colour_tuples_list[colour_index - 1][1]}")
+
+            return colour_tuples_list[colour_index - 1][0]
+
+        except IndexError as e:
+            logger.error(f"Index out of range {e}")
+            print(f"Index out of range {e}")
+            raise
+        except ValueError as e:
+            logger.error(f"Invalid input {e}")
+            print(f"Invalid choice, please enter a int number.")
+            raise
+
+    else:
+        logger.info(f"Category {category} description is set to Null")
+        return None
+
+
+def get_icon_tuples_list():
     """ Allows to add icon for user own category"""
-    pass
+    icons_dictionary = {
+        "food_icon": "Expenses on food",
+        "transport_icon": "Expenses on transport",
+        "housing_icon": "Expenses on housing",
+        "entertainment_icon": "Expenses on entertainment",
+        "clothing_icon": "Expenses on clothing and shoes",
+        "health_icon": "Expenses on health",
+        "bills_icon": "Expenses on bills",
+        "education_icon": "Expenses on education",
+        "travel_icon": "Expenses on travel",
+        "shopping_icon": "Expenses on shopping",
+        "other_icon": "Other expenses",
+        "subscriptions_icon": "Expenses on subscriptions (e.g., Netflix, Spotify)",
+        "gifts_icon": "Expenses on gifts and donations",
+        "pets_icon": "Expenses on pets",
+        "hobbies_icon": "Expenses on hobbies and crafts",
+        "personal_care_icon": "Expenses on personal care (e.g., haircuts, cosmetics)",
+        "furniture_icon": "Expenses on furniture and home decor",
+        "electronics_icon": "Expenses on electronics and gadgets",
+        "savings_icon": "Expenses on savings and investments",
+        "taxes_icon": "Expenses on taxes and fees",
+        "charity_icon": "Expenses on charity and donations",
+        "insurance_icon": "Expenses on insurance payments",
+        "childcare_icon": "Expenses on childcare and babysitting",
+        "sports_icon": "Expenses on sports and fitness",
+        "events_icon": "Expenses on events and tickets",
+        "repair_icon": "Expenses on repair and maintenance (e.g., car, home)",
+        "emergency_icon": "Expenses on emergency fund",
+        "holiday_icon": "Expenses on holidays and seasonal expenses"
+    }
+
+    icon_tuples_list = list(icons_dictionary.items())
+    for i, value in enumerate(icon_tuples_list, start=1):
+        print(f"{i:<3}: {value[0]:<20} - {value[1]}")
+
+    return icon_tuples_list
 
 
-# kategoria i kolor będzie none na początku. (Dodam opcję wyboru koloru spośród podanych w słowniku)
-def add_category_name_to_database(category_name, user_id, description=None, colour=None, icon=None):
+def get_icon_handler(get_icon_tuples_function, category):
+    decision = input(f"Do you want to add a icon to {category}?\n Press (Y/N): ")
+
+    if decision.upper() == 'Y':
+        icon_tuples_list = get_icon_tuples_function()
+
+        try:
+            icon_index = int(input(f"chose colour index: "))
+
+            print(f"you chosen {icon_index} : {icon_tuples_list[icon_index - 1][0]}:"
+                  f" {icon_tuples_list[icon_index - 1][1]}")
+
+            return icon_tuples_list[icon_index - 1][0]
+
+        except IndexError as e:
+            logger.error(f"Index out of range {e}")
+            print(f"Index out of range {e}")
+            raise
+        except ValueError as e:
+            logger.error(f"Invalid input {e}")
+            print(f"Invalid choice, please enter a int number.")
+            raise
+
+    else:
+        logger.info(f"Category {category} description is set to Null")
+        return None
+
+
+def get_category_object(category_str, user_id_int,
+                                  description_handler_func, get_description_function_func,
+                                  colour_handler_func, get_colour_tuples_list_func,
+                                  icon_handler_func, get_icon_list_func):
+
+    text = description_handler_func(get_description_function_func, category_str)
+    colour = colour_handler_func(get_colour_tuples_list_func, category_str)
+    icon = icon_handler_func(get_icon_list_func)
+
     new_category = Categories(
-        category_name=category_name,
-        description=description,
-        user_id=user_id,
-        colour=sett_colour_for_category(), # wybiorę kolor ze słownika
-        icon=icon  # sett icon - obmyślę logikę.
+        category_name=category_str,
+        description=text,
+        user_id=user_id_int,
+        colour=colour,
+        icon=icon
     )
+
+    return new_category
+
+
+
 
 # with SessionManager(Session) as session:
 # #      category_names_record_list = session.query(Categories.category_name).all()
@@ -161,3 +269,4 @@ def add_category_name_to_database(category_name, user_id, description=None, colo
 #     for category in categoriess:
 #         print("Tutaj kategoria")
 #         print(category.category_name)
+
