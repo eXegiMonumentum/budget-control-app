@@ -57,10 +57,6 @@ class NewCategory:
         """
         Handles the logic of deciding whether to add a description for a category.
 
-        Args:
-            category_description_function (function): The function to call for getting the category description.
-            category (str): The name of the transaction category.
-
         Returns:
             str or None: The category description provided by the user, or None if no description is added.
         """
@@ -83,27 +79,27 @@ class NewCategory:
         :returns chosen hexadecimal colour code"""
 
         color_dict = {
-            "#FF0000": "Red",  # Czerwony
-            "#00FF00": "Green",  # Zielony
-            "#0000FF": "Blue",  # Niebieski
-            "#FFFF00": "Yellow",  # Żółty
-            "#FFA500": "Orange",  # Pomarańczowy
-            "#800080": "Purple",  # Fioletowy
-            "#00FFFF": "Cyan",  # Cyjanowy
-            "#FFC0CB": "Pink",  # Różowy
-            "#808080": "Gray",  # Szary
-            "#000000": "Black",  # Czarny
-            "#FFFFFF": "White",  # Biały
-            "#8B4513": "Brown",  # Brązowy
-            "#A52A2A": "Red Brown",  # Czerwono-brązowy
-            "#FFD700": "Gold",  # Złoty
-            "#4B0082": "Indigo",  # Indygo
-            "#F0E68C": "Khaki",  # Khaki
-            "#008080": "Teal",  # Morski
-            "#E6E6FA": "Lavender",  # Lawendowy
-            "#F5F5DC": "Beige",  # Beżowy
-            "#D2691E": "Chocolate",  # Czekoladowy
-            "#B0C4DE": "Light Steel Blue"  # Jasny stalowy niebieski
+            "#FF0000": "Red",
+            "#00FF00": "Green",
+            "#0000FF": "Blue",
+            "#FFFF00": "Yellow",
+            "#FFA500": "Orange",
+            "#800080": "Purple",
+            "#00FFFF": "Cyan",
+            "#FFC0CB": "Pink",
+            "#808080": "Gray",
+            "#000000": "Black",
+            "#FFFFFF": "White",
+            "#8B4513": "Brown",
+            "#A52A2A": "Red Brown",
+            "#FFD700": "Gold",
+            "#4B0082": "Indigo",
+            "#F0E68C": "Khaki",
+            "#008080": "Teal",
+            "#E6E6FA": "Lavender",
+            "#F5F5DC": "Beige",
+            "#D2691E": "Chocolate",
+            "#B0C4DE": "Light Steel Blue"
         }
         colour_tuples_list = list(color_dict.items())
 
@@ -215,7 +211,7 @@ class NewCategory:
         colour = self.colour_handler()
         icon = self.icon_handler()
 
-        new_category = Categories(
+        new_category_obj = Categories(
             category_name=self.new_category,
             description=text,
             user_id=self.__user_id,
@@ -223,51 +219,156 @@ class NewCategory:
             icon=icon
         )
 
-        return new_category
+        return new_category_obj
 
-    def _add_transaction_category_to_database(self):
-        with SessionManager(Session) as session:
-            new_category = self.get_category_object()
-            session.add(new_category)
+    @staticmethod
+    def add_new_category(own_categories_dict):
 
-    def add_transaction_category_handler(self):
+        own_category = input("Type your category: ")
+        decision = input(f"Add {own_category}  to dictionary?  (Y/N)")
+        if decision.upper() == "Y":
+            own_categories_dict[len(own_categories_dict) + 1] = own_category
+            print(f"Category '{own_category}' added successfully.")
+            return own_categories_dict
+
+        else:
+            logger.info(f"new category: {own_category} was not added.")
+            return own_categories_dict
+
+    def choice_category_type_dict(self):
+
         standard_categories_dict = NewCategory.get_standard_categories_dict()
         own_categories_dict = self.get_own_categories_dict()
 
-        print("Standard categories:\n\t", standard_categories_dict)
-        print("Own categories:\n\t", own_categories_dict)
+        print("Standard categories: ", standard_categories_dict)
+        print("Own categories: ", own_categories_dict)
 
-        chosen_category = input("Chose number (for chose standard category) "
-                                "or type your own category name: ")
-        try:
-            if chosen_category.isdigit():
-                chosen_category = int(chosen_category)
-                if chosen_category in standard_categories_dict:
-                    category = NewCategory.get_category_name(standard_categories_dict, chosen_category)
-                    self.new_category = category
-                    print(f"You chosen category: {category}")
-                    logger.info(f"You chosen {category} as your transaction category.\n")
+        while True:
+            try:
+                choice_category_type = int(input("choice: \n1 for standard categories\n2 for own_categories\n: "))
+                if choice_category_type == 1:
+                    return standard_categories_dict, choice_category_type
 
-                    print("")
-                    self._add_transaction_category_to_database()
+                elif choice_category_type == 2:
+                    choice = input("Do you want add new own category? (Y/N) ")
+
+                    if choice == "Y":
+                        own_categories_dict = NewCategory.add_new_category(own_categories_dict)
+                        if own_categories_dict:
+                            return own_categories_dict, choice_category_type
+
+                        else:
+                            print("Categories dictionary is empty")
+                            logger.info("Categories dictionary is empty!")
+
+                    else:
+                        logger.info("No added new own category")
+                        if own_categories_dict:
+                            return own_categories_dict, choice_category_type
+
+                        else:
+                            print("Categories dictionary is empty")
+                            logger.info("Categories dictionary is empty!")
+                            continue
 
                 else:
-                    print("Invalid category number.")
-                    logger.warning(
-                        "User entered an invalid category number.")  # tutaj logika dodania category i jej opisu.
+                    print("Invalid number, please enter choice 1 or 2.")
 
-            else:
-                print(f"Your category is: {chosen_category}")
-                logger.info(f"Your new category is: {chosen_category}")
-                self.new_category = chosen_category
+            except ValueError:
+                print("Please enter 1 or 2 digit.")
+                logger.error(f"Invalid category type number")
 
-                self._add_transaction_category_to_database()
+    def choice_category_index(self):
 
-        except ValueError as e:
-            print(f"Error: {e}")
-            logger.error(f"ValueError: {e}")
+        while True:
+            print("PRZED")
+            categories_dict, choice_category_type = self.choice_category_type_dict()
+            print("PO")
+            try:
+                if choice_category_type == 1 or choice_category_type == 2:
+                    print(categories_dict)
+                    category_index = int(input("Enter category number: "))
+
+                    if 1 <= category_index <= len(categories_dict):
+                        return category_index
+
+                    else:
+                        print(f"Invalid category index. Please enter a number between 1 and {len(categories_dict)}.")
+                else:
+                    # logger.info("Invalid choice category type. valid options are 1 and 2")
+                    # print("Invalid choice category type. Please enter 1 or 2.") ??
 
 
-#ustawićfunckje jako _
-new_category = NewCategory(10)
-new_category.add_transaction_category_handler()
+
+            except ValueError:
+                print("Invalid input. Please enter a valid integer number.")
+
+
+category = NewCategory(10)
+category.choice_category_index()
+
+#     def _add_transaction_category_to_database(self):
+#         with SessionManager(Session) as session:
+#             new_category_obj = self.get_category_object()
+#             session.add(new_category_obj)
+#
+#     def get_category_name(self):
+#         category_type_dict, chosen_category = self.choice_category_type_dict()
+#         if chosen_category == 1:
+#             category_number = int(input("Enter category number"):
+#             category = NewCategory.get_category_name(category_type_dict, chosen_category)
+#             self.new_category = category
+#             print(f"You chosen category: {category}")
+#             logger.info(f"You chosen {category} as your transaction category.\n")
+#         else:
+#             category_number = int(input("Enter category number"):
+#             category = NewCategory.get_category_name(category_type_dict, chosen_category)
+#             self.new_category = category
+#             print(f"You chosen category: {category}")
+#             logger.info(f"You chosen {category} as your transaction category.\n")
+#
+#     def add_transaction_category_handler(self):
+#
+#         category_type_dict, chosen_category = self.choice_category_type_dict()
+#         #jeśli 2, to mogę dodaćswoją kategorię.
+#
+#         try:
+#             if chosen_category == 1:
+#                 get_category
+#                 if chosen_category in category_type_dict:
+#                     category = NewCategory.get_category_name(category_type_dict, chosen_category)
+#                     self.new_category = category
+#                     print(f"You chosen category: {category}")
+#                     logger.info(f"You chosen {category} as your transaction category.\n")
+#
+#                     print("")
+#                     self._add_transaction_category_to_database()
+#
+#                 else:
+#                     print("Invalid category number.")
+#                     logger.warning(
+#                         "User entered an invalid category number.")  # tutaj logika dodania category i jej opisu.
+#
+#             else:
+#                 # if chosen_category.isdigit():
+#                 #     chosen_category = int(chosen_category)
+#                 #     if chosen_category in standard_categories_dict:
+#                 #         category = NewCategory.get_category_name(standard_categories_dict, chosen_category)
+#                 #         self.new_category = category
+#                 #         print(f"You chosen category: {category}")
+#                 #         logger.info(f"You chosen {category} as your transaction category.\n")
+#
+#                 print(f"Your category is: {chosen_category}")
+#                 logger.info(f"Your new category is: {chosen_category}")
+#                 self.new_category = chosen_category
+#
+#                 self._add_transaction_category_to_database()
+#
+#         except ValueError as e:
+#             print(f"Error: {e}")
+#             logger.error(f"ValueError: {e}")
+#
+#
+# #ustawićfunckje jako _
+# new_category = NewCategory(10)
+# new_category.add_transaction_category_handler()

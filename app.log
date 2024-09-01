@@ -1,2 +1,4 @@
 2024-08-28 16:50:01,147 - logger - ERROR - Log in failed: Incorrect email or username.
 2024-08-31 10:52:28,810 - logger - ERROR - Index out of range list index out of range
+2024-09-01 20:21:14,126 - logger - ERROR - Invalid category type number in: __main__
+2024-09-01 20:21:42,017 - logger - ERROR - Invalid category type number
