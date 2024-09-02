@@ -7,13 +7,13 @@ class NewCategory:
 
     def __init__(self, user_id):
         self.__user_id = user_id
-        self.new_category = "New category"
-        self.text = "",
-        self.colour = None,
+        self.new_category = None
+        self.text = None
+        self.colour = None
         self.icon = None
 
     @staticmethod
-    def get_standard_categories_dict():
+    def _get_standard_categories_dict():
         """ It helps user chose category_name from standard categories.
          returns dictionary with standard categories."""
 
@@ -25,7 +25,7 @@ class NewCategory:
 
             return standard_categories_dict
 
-    def get_own_categories_dict(self):
+    def _get_own_categories_dict(self):
         with SessionManager(Session) as session:
 
             own_categories = session.query(Categories).filter(Categories.user_id == self.__user_id).all()
@@ -36,16 +36,9 @@ class NewCategory:
 
             return own_categories_dict
 
-    @staticmethod
-    def get_category_name(categories_dict, category_key):
-        return categories_dict[category_key]
-
-    def get_category_description(self):
+    def _get_category_description(self):
         """
         Prompts the user to enter a description for the given category.
-
-        Args:
-            category (str): The name of the transaction category for which the description is being provided.
 
         Returns:
             str: The description entered by the user.
@@ -53,7 +46,7 @@ class NewCategory:
         text = input(f"Enter description for: {self.new_category} transaction category: ")
         return text
 
-    def description_handler(self):
+    def _description_handler(self):
         """
         Handles the logic of deciding whether to add a description for a category.
 
@@ -64,7 +57,7 @@ class NewCategory:
         decision = input(f"Do you want to add a category description for {self.new_category}?\n Press (Y/N): ")
 
         if decision.upper() == 'Y':
-            text = self.get_category_description()
+            text = self._get_category_description()
             self.text = text
             print(f"Category {self.new_category} description: {self.text}")
             return text
@@ -74,7 +67,7 @@ class NewCategory:
             return None
 
     @staticmethod
-    def get_colour_tuples_list():
+    def _get_colour_tuples_list():
         """Allows to add colour for user own category
         :returns chosen hexadecimal colour code"""
 
@@ -108,17 +101,17 @@ class NewCategory:
 
         return colour_tuples_list
 
-    def colour_handler(self):
+    def _colour_handler(self):
 
         decision = input(f"Do you want to add a colour to {self.new_category}?\n Press (Y/N): ")
 
         if decision.upper() == 'Y':
-            colour_tuples_list = NewCategory.get_colour_tuples_list()
+            colour_tuples_list = NewCategory._get_colour_tuples_list()
 
             try:
-                colour_index = int(input(f"chose colour index: "))
+                colour_index = int(input(f"Chose colour index: "))
 
-                print(f"you chosen {colour_index} : {colour_tuples_list[colour_index - 1][0]}:"
+                print(f"You chosen {colour_index} : {colour_tuples_list[colour_index - 1][0]}:"
                       f" {colour_tuples_list[colour_index - 1][1]}")
 
                 self.colour = colour_tuples_list[colour_index - 1][0]
@@ -139,7 +132,7 @@ class NewCategory:
             return None
 
     @staticmethod
-    def get_icon_tuples_list():
+    def _get_icon_tuples_list():
         """ Allows to add icon for user own category"""
         icons_dictionary = {
             "food_icon": "Expenses on food",
@@ -178,16 +171,16 @@ class NewCategory:
 
         return icon_tuples_list
 
-    def icon_handler(self):
+    def _icon_handler(self):
         decision = input(f"Do you want to add a icon to {self.new_category}?\n Press (Y/N): ")
 
         if decision.upper() == 'Y':
-            icon_tuples_list = NewCategory.get_icon_tuples_list()
+            icon_tuples_list = NewCategory._get_icon_tuples_list()
 
             try:
                 icon_index = int(input(f"chose icon index: "))
 
-                print(f"you chosen {icon_index} : {icon_tuples_list[icon_index - 1][0]}:"
+                print(f"You chosen {icon_index} : {icon_tuples_list[icon_index - 1][0]}:"
                       f" {icon_tuples_list[icon_index - 1][1]}")
 
                 return icon_tuples_list[icon_index - 1][0]
@@ -205,14 +198,15 @@ class NewCategory:
             logger.info(f"Category {self.new_category} icon is set to Null")
             return None
 
-    def get_category_object(self):
+    def _get_category_object(self):
 
-        text = self.description_handler()
-        colour = self.colour_handler()
-        icon = self.icon_handler()
+        category_name = self._choice_category_handler()
+        text = self._description_handler()
+        colour = self._colour_handler()
+        icon = self._icon_handler()
 
         new_category_obj = Categories(
-            category_name=self.new_category,
+            category_name=category_name,
             description=text,
             user_id=self.__user_id,
             colour=colour,
@@ -222,38 +216,41 @@ class NewCategory:
         return new_category_obj
 
     @staticmethod
-    def add_new_category(own_categories_dict):
+    def _add_new_category(own_categories_dict):
+        while True:
+            own_category = input("Type your category: ")
+            decision = input(f"Add {own_category}  to dictionary?  (Y/N): ")
+            if decision.upper() == "Y":
+                own_categories_dict[len(own_categories_dict) + 1] = own_category
+                print(f"Category '{own_category}' added successfully.")
+                return own_categories_dict
 
-        own_category = input("Type your category: ")
-        decision = input(f"Add {own_category}  to dictionary?  (Y/N)")
-        if decision.upper() == "Y":
-            own_categories_dict[len(own_categories_dict) + 1] = own_category
-            print(f"Category '{own_category}' added successfully.")
-            return own_categories_dict
+            else:
+                logger.info(f"New category: {own_category} was not added.")
+                if own_categories_dict:
+                    return own_categories_dict
+                else:
+                    print("Own categories dictionary is empty!")
 
-        else:
-            logger.info(f"new category: {own_category} was not added.")
-            return own_categories_dict
+    def _choice_category_type_dict(self):
 
-    def choice_category_type_dict(self):
-
-        standard_categories_dict = NewCategory.get_standard_categories_dict()
-        own_categories_dict = self.get_own_categories_dict()
+        standard_categories_dict = NewCategory._get_standard_categories_dict()
+        own_categories_dict = self._get_own_categories_dict()
 
         print("Standard categories: ", standard_categories_dict)
         print("Own categories: ", own_categories_dict)
 
         while True:
             try:
-                choice_category_type = int(input("choice: \n1 for standard categories\n2 for own_categories\n: "))
+                choice_category_type = int(input("Choice: \n1 for standard categories\n2 for own_categories\n: "))
                 if choice_category_type == 1:
                     return standard_categories_dict, choice_category_type
 
                 elif choice_category_type == 2:
-                    choice = input("Do you want add new own category? (Y/N) ")
+                    choice = input("Do you want add new own category? (Y/N): ")
 
-                    if choice == "Y":
-                        own_categories_dict = NewCategory.add_new_category(own_categories_dict)
+                    if choice.upper() == "Y":
+                        own_categories_dict = NewCategory._add_new_category(own_categories_dict)
                         if own_categories_dict:
                             return own_categories_dict, choice_category_type
 
@@ -273,102 +270,62 @@ class NewCategory:
 
                 else:
                     print("Invalid number, please enter choice 1 or 2.")
+                    logger.info("Invalid number, please enter choice 1 or 2")
 
             except ValueError:
                 print("Please enter 1 or 2 digit.")
                 logger.error(f"Invalid category type number")
 
-    def choice_category_index(self):
+    def _choice_category_handler(self):
 
         while True:
-            print("PRZED")
-            categories_dict, choice_category_type = self.choice_category_type_dict()
-            print("PO")
+
+            categories_dict, choice_category_type = self._choice_category_type_dict()
             try:
+
                 if choice_category_type == 1 or choice_category_type == 2:
                     print(categories_dict)
-                    category_index = int(input("Enter category number: "))
+                    category_index = int(input("Enter category number or press enter to exit."))
 
                     if 1 <= category_index <= len(categories_dict):
-                        return category_index
+                        logger.info("Correct category index")
+                        category_name = categories_dict.get(category_index)
+                        self.new_category = category_name
+                        return category_name
 
-                    else:
-                        print(f"Invalid category index. Please enter a number between 1 and {len(categories_dict)}.")
+                    elif category_index < 0 or category_index > len(categories_dict):
+                        print("invalid choice.")
+                        logger.info(f"Please index as number between 1 and {len(categories_dict)}. ")
+
+                    elif category_index == 0:
+                        logger.info("Exit to menu")
                 else:
-                    # logger.info("Invalid choice category type. valid options are 1 and 2")
-                    # print("Invalid choice category type. Please enter 1 or 2.") ??
-
-
+                    logger.info("Invalid choice category type. valid options are 1 and 2")
+                    print("Invalid choice category type. Please enter 1 or 2.")
 
             except ValueError:
                 print("Invalid input. Please enter a valid integer number.")
+                logger.info("Invalid input. Please enter a valid integer number.")
+
+    def add_transaction_category_to_database(self):
+        with SessionManager(Session) as session:
+            new_category_obj = self._get_category_object()
+            if new_category_obj is None:
+                logger.error("Failed to create a new category object.")
+
+            session.add(new_category_obj)
+            print("new category added.")
+
+class NewTransaction:
+    def __init__(self, user_id):
+
+        self.user_id = user_id
+        self.category_id = None
+        self.amount = None
+        self.description = None
 
 
-category = NewCategory(10)
-category.choice_category_index()
-
-#     def _add_transaction_category_to_database(self):
-#         with SessionManager(Session) as session:
-#             new_category_obj = self.get_category_object()
-#             session.add(new_category_obj)
-#
-#     def get_category_name(self):
-#         category_type_dict, chosen_category = self.choice_category_type_dict()
-#         if chosen_category == 1:
-#             category_number = int(input("Enter category number"):
-#             category = NewCategory.get_category_name(category_type_dict, chosen_category)
-#             self.new_category = category
-#             print(f"You chosen category: {category}")
-#             logger.info(f"You chosen {category} as your transaction category.\n")
-#         else:
-#             category_number = int(input("Enter category number"):
-#             category = NewCategory.get_category_name(category_type_dict, chosen_category)
-#             self.new_category = category
-#             print(f"You chosen category: {category}")
-#             logger.info(f"You chosen {category} as your transaction category.\n")
-#
-#     def add_transaction_category_handler(self):
-#
-#         category_type_dict, chosen_category = self.choice_category_type_dict()
-#         #jeśli 2, to mogę dodaćswoją kategorię.
-#
-#         try:
-#             if chosen_category == 1:
-#                 get_category
-#                 if chosen_category in category_type_dict:
-#                     category = NewCategory.get_category_name(category_type_dict, chosen_category)
-#                     self.new_category = category
-#                     print(f"You chosen category: {category}")
-#                     logger.info(f"You chosen {category} as your transaction category.\n")
-#
-#                     print("")
-#                     self._add_transaction_category_to_database()
-#
-#                 else:
-#                     print("Invalid category number.")
-#                     logger.warning(
-#                         "User entered an invalid category number.")  # tutaj logika dodania category i jej opisu.
-#
-#             else:
-#                 # if chosen_category.isdigit():
-#                 #     chosen_category = int(chosen_category)
-#                 #     if chosen_category in standard_categories_dict:
-#                 #         category = NewCategory.get_category_name(standard_categories_dict, chosen_category)
-#                 #         self.new_category = category
-#                 #         print(f"You chosen category: {category}")
-#                 #         logger.info(f"You chosen {category} as your transaction category.\n")
-#
-#                 print(f"Your category is: {chosen_category}")
-#                 logger.info(f"Your new category is: {chosen_category}")
-#                 self.new_category = chosen_category
-#
-#                 self._add_transaction_category_to_database()
-#
-#         except ValueError as e:
-#             print(f"Error: {e}")
-#             logger.error(f"ValueError: {e}")
-#
-#
-# #ustawićfunckje jako _
-# new_category = NewCategory(10)
-# new_category.add_transaction_category_handler()
+# def get_category_id(user_id)
+# print("Test: NewCategory in file database_management.")
+# new_Category = NewCategory(10)
+# new_Category.add_transaction_category_to_database()

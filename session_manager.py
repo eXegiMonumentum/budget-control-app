@@ -1,4 +1,5 @@
 
+from logger import logger
 class SessionManager:
     def __init__(self, session_factory):
         self.session_factory = session_factory
@@ -13,6 +14,7 @@ class SessionManager:
 
         try:
             if exc_type is not None:
+                logger.error(f"Exception type: {exc_type}, value: {exc_val}")
                 self.session.rollback()
             else:
                 self.session.commit()

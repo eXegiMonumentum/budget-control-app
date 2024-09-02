@@ -2,3 +2,12 @@
 2024-08-31 10:52:28,810 - logger - ERROR - Index out of range list index out of range
 2024-09-01 20:21:14,126 - logger - ERROR - Invalid category type number in: __main__
 2024-09-01 20:21:42,017 - logger - ERROR - Invalid category type number
+2024-09-02 00:10:53,520 - logger - ERROR - Invalid category type number
+2024-09-02 00:12:55,789 - logger - ERROR - Invalid category type number
+2024-09-02 16:55:43,657 - logger - ERROR - Invalid category type number
+2024-09-02 18:18:57,241 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-02 18:19:10,010 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'choice_category_handler'
+2024-09-02 18:19:32,958 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_icon_handler'
+2024-09-02 18:20:34,177 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'get_category_object'
+2024-09-02 18:20:52,558 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'choice_category_type_dict'
+2024-09-02 21:05:05,784 - logger - ERROR - Exception type: <class 'AttributeError'>, value: type object 'NewCategory' has no attribute 'get_icon_tuples_list'
