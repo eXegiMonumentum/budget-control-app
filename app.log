@@ -11,3 +11,28 @@
 2024-09-02 18:20:34,177 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'get_category_object'
 2024-09-02 18:20:52,558 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'choice_category_type_dict'
 2024-09-02 21:05:05,784 - logger - ERROR - Exception type: <class 'AttributeError'>, value: type object 'NewCategory' has no attribute 'get_icon_tuples_list'
+2024-09-03 11:34:22,828 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_get_own_categories_dict'
+2024-09-03 11:37:00,361 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-03 15:40:07,670 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.DatatypeMismatch) B£¥D:  argument WHERE musi byæ typu boolean, nie typu character varying
+LINE 3: WHERE categories.category_name
+              ^
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.colour AS categories_colour, categories.icon AS categories_icon 
+FROM categories 
+WHERE categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-03 15:40:42,853 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:40:54,506 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:43:03,276 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:43:35,705 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:45:57,984 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:47:49,951 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 16:54:34,474 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewTransaction' object has no attribute '_NewTransaction__user_id'
+2024-09-03 16:57:01,046 - logger - ERROR - Exception type: <class 'ValueError'>, value: too many values to unpack (expected 2)
+2024-09-03 17:11:34,382 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for |: 'int' and 'InstrumentedAttribute'
+2024-09-03 17:11:51,359 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for |: 'int' and 'InstrumentedAttribute'
+2024-09-03 17:12:43,971 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for |: 'int' and 'InstrumentedAttribute'
+2024-09-03 19:06:56,959 - logger - ERROR - Exception type: <class 'ValueError'>, value: not enough values to unpack (expected 6, got 3)
+2024-09-03 19:08:22,189 - logger - ERROR - Exception type: <class 'ValueError'>, value: not enough values to unpack (expected 4, got 3)
+2024-09-03 19:09:13,053 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'description' is not defined
+2024-09-03 19:09:22,536 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'description' is not defined
