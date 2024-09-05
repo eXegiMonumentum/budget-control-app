@@ -377,14 +377,14 @@ class NewTransaction(NewCategory):
                     if amount > 0:
                         amount = -amount
                         self.amount = amount
-                        return amount
+                    return amount
 
                 elif chose_option == 2:
                     amount = int(input("Enter how much money you have earned: "))
-                    if amount:
+                    if amount < 0:
                         amount *= -1
                         self.amount = amount
-                        return amount
+                    return amount
 
                 elif chose_option == 0:
                     print("Exiting the program.")
@@ -392,20 +392,32 @@ class NewTransaction(NewCategory):
                 else:
                     logger.info("Invalid option. please enter choice 1 or 2 or 0 if you want exit.")
                     print("Invalid option. please enter choice 1 or 2.")
+
             except ValueError as e:
                 logger.error(f"Invalid number {e}. Please enter the number.")
                 print(f"Invalid number {e}. Please enter the number")
 
-    def get_category_id_and_name(self):
-        self.
-result = new_transaction.get_columns_tuples_list()
+    @staticmethod
+    def get_category_id_and_name(result):
 
-    list_of_category_tuples = []
-    for category in result:
-        category_tuple = category["category id"], category["category name"]
-        list_of_category_tuples.append(category_tuple)
+        list_of_category_tuples = []
+
+        for category in result:
+            category_tuple = category["category id"], category["category name"]
+            list_of_category_tuples.append(category_tuple)
+
+        for (category_id, category_name) in list_of_category_tuples:
+            print(category_id, category_name)
+
+        category_id = int(input("Chose category by category id: "))
+
+
+
+
+
 
 new_transaction = NewTransaction(10)
+result = new_transaction.get_columns_tuples_list()
+new_transaction.get_category_id_and_name(result)
 
 
-print(list_of_category_tuples)
