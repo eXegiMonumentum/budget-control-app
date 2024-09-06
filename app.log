@@ -36,3 +36,87 @@ WHERE categories.category_name]
 2024-09-03 19:08:22,189 - logger - ERROR - Exception type: <class 'ValueError'>, value: not enough values to unpack (expected 4, got 3)
 2024-09-03 19:09:13,053 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'description' is not defined
 2024-09-03 19:09:22,536 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'description' is not defined
+2024-09-06 13:54:49,114 - logger - ERROR - Category id: 53 does not exist
+2024-09-06 13:56:36,627 - logger - ERROR - Category id: 54 does not exist
+2024-09-06 13:57:07,713 - logger - ERROR - Category id: 0 does not exist. Please enter a valid id number.
+2024-09-06 13:57:12,192 - logger - ERROR - Category id: -2 does not exist. Please enter a valid id number.
+2024-09-06 14:27:25,471 - logger - ERROR - id doesn't exist.
+Details tuple index out of range
+2024-09-06 14:27:50,807 - logger - ERROR - Category id: 0 does not exist. Please enter a valid id number.
+2024-09-06 14:27:55,968 - logger - ERROR - Category id: -12 does not exist. Please enter a valid id number.
+2024-09-06 14:28:00,794 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:28:10,414 - logger - ERROR - Category id: 80 does not exist. Please enter a valid id number.
+2024-09-06 14:28:16,347 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:28:38,494 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:29:19,557 - logger - ERROR - Category id: 99 does not exist. Please enter a valid id number.
+2024-09-06 14:29:23,263 - logger - ERROR - Category id: 60 does not exist. Please enter a valid id number.
+2024-09-06 14:29:28,077 - logger - ERROR - Category id: 55 does not exist. Please enter a valid id number.
+2024-09-06 14:29:34,160 - logger - ERROR - Category id: 53 does not exist. Please enter a valid id number.
+2024-09-06 14:29:38,944 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:30:05,050 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:31:04,747 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:31:27,046 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:31:49,570 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:33:09,465 - logger - ERROR - Category id: 12 does not exist. Please enter a valid id number.
+2024-09-06 14:33:14,090 - logger - ERROR - Category id: 10 does not exist. Please enter a valid id number.
+2024-09-06 14:33:17,310 - logger - ERROR - Category id: 6 does not exist. Please enter a valid id number.
+2024-09-06 14:33:28,025 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:33:35,250 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:36:50,867 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:37:32,285 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:38:11,476 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:40:10,507 - logger - ERROR - Category id: 10 does not exist. Please enter a valid id number.
+2024-09-06 14:40:17,391 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:40:22,193 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:41:09,198 - logger - ERROR - Category id: 53 does not exist. Please enter a valid id number.
+2024-09-06 14:41:25,042 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:41:27,681 - logger - ERROR - Category id: 99 does not exist. Please enter a valid id number.
+2024-09-06 14:41:37,639 - logger - ERROR - Category id: 250 does not exist. Please enter a valid id number.
+2024-09-06 14:41:40,038 - logger - ERROR - Category id: 30 does not exist. Please enter a valid id number.
+2024-09-06 14:41:42,778 - logger - ERROR - Category id: 33 does not exist. Please enter a valid id number.
+2024-09-06 15:06:57,962 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 15:07:06,140 - logger - ERROR - Category id: 53 does not exist. Please enter a valid id number.
+2024-09-06 15:08:38,029 - logger - ERROR - Category id: 33 does not exist. Please enter a valid id number.
+2024-09-06 15:08:45,258 - logger - ERROR - Category id: 1 does not exist. Please enter a valid id number.
+2024-09-06 15:10:30,345 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-06 15:10:52,935 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-06 15:11:13,877 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-06 17:48:54,970 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:49:14,266 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:49:55,115 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:50:20,840 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:50:48,377 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:52:39,496 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:55:20,620 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:55:23,713 - logger - ERROR - Exception type: <class 'SystemExit'>, value: 
+2024-09-06 18:32:03,256 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:32:29,085 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:32:31,000 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:32:54,256 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:33:24,468 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:33:24,496 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:34:11,772 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:34:12,849 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:35:43,503 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:37:02,867 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:37:58,243 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:38:05,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:38:05,465 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:40:24,420 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:40:44,988 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:41:35,418 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:48:19,159 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:48:20,277 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:48:31,228 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 

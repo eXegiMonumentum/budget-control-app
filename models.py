@@ -41,7 +41,7 @@ class Transactions(Base):
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     category_id = Column(Integer, ForeignKey('categories.id', ondelete='SET NULL'))
     amount = Column(Numeric(10, 2), nullable=False)
-    transaction_date = Column(DateTime, nullable=False)
+    transaction_date = Column(DateTime, nullable=False, default=datetime.utcnow())
     description = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
 

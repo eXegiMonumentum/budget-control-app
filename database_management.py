@@ -1,4 +1,6 @@
-from models import Session, Categories
+import sys
+
+from models import Session, Categories, Transactions
 from session_manager import SessionManager
 from logger import logger
 
@@ -8,7 +10,7 @@ class NewCategory:
     def __init__(self, user_id):
         self._user_id = user_id
         self._new_category = None
-        self._text = None
+        self.description = None
         self._colour = None
         self._icon = None
 
@@ -25,7 +27,7 @@ class NewCategory:
 
             return standard_categories_dict
 
-    def get_own_categories_dict(self):
+    def _get_own_categories_dict(self):
         with SessionManager(Session) as session:
 
             own_categories = session.query(Categories).filter(Categories.user_id == self._user_id).all()
@@ -36,35 +38,33 @@ class NewCategory:
 
             return own_categories_dict
 
-    def _get_category_description(self):
+    def _description_handler(self, prompt_message, entity_name=None):
         """
-        Prompts the user to enter a description for the given category.
+        Handles the logic of deciding whether to add a description for an entity (transaction or category).
+
+        Args:
+            prompt_message (str): The message to display when asking the user if they want to add a description.
+            entity_name (str, optional): The name of the entity (transaction or category)
+            to include in the description prompt.
 
         Returns:
-            str: The description entered by the user.
+            str or None: The description provided by the user, or None if no description is added.
         """
-        text = input(f"Enter description for: {self._new_category} transaction category: ")
-        return text
-
-    def _description_handler(self):
-        """
-        Handles the logic of deciding whether to add a description for a category.
-
-        Returns:
-            str or None: The category description provided by the user, or None if no description is added.
-        """
-
-        decision = input(f"Do you want to add a category description for {self._new_category}?\n Press (Y/N): ")
+        decision = input(f"{prompt_message}\nPress (Y/N): ")
 
         if decision.upper() == 'Y':
-            text = self._get_category_description()
-            self._text = text
-            print(f"Category {self._new_category} description: {self._text}")
-            return text
+            description = input(f"Enter description for {entity_name or 'this entity'}: ")
+            print(f"Description for {entity_name or 'entity'}: {description}")
+            self.description = description
+            return description
         else:
             print("No description was added.")
-            logger.info(f"Category {self._new_category} description is set to Null")
+            logger.info(f"{entity_name or 'Entity'} description is set to Null")
             return None
+
+    def _category_description_handler(self):
+        return self._description_handler(f"Do you want to add a category description for {self._new_category}?",
+                                         self._new_category)
 
     @staticmethod
     def _get_colour_tuples_list():
@@ -201,13 +201,13 @@ class NewCategory:
     def _get_category_object(self):
 
         category_name = self._choice_category_handler()
-        text = self._description_handler()
+        description = self._category_description_handler()
         colour = self._colour_handler()
         icon = self._icon_handler()
 
         new_category_obj = Categories(
             category_name=category_name,
-            description=text,
+            description=description,
             user_id=self._user_id,
             colour=colour,
             icon=icon
@@ -235,7 +235,7 @@ class NewCategory:
     def _choice_category_type_dict(self):
 
         standard_categories_dict = NewCategory._get_standard_categories_dict()
-        own_categories_dict = self.get_own_categories_dict()
+        own_categories_dict = self._get_own_categories_dict()
 
         print("Standard categories: ", standard_categories_dict)
         print("Own categories: ", own_categories_dict)
@@ -307,14 +307,27 @@ class NewCategory:
                 print("Invalid input. Please enter a valid integer number.")
                 logger.info("Invalid input. Please enter a valid integer number.")
 
-    def add_transaction_category_to_database(self):
-        with SessionManager(Session) as session:
-            new_category_obj = self._get_category_object()
-            if new_category_obj is None:
-                logger.error("Failed to create a new category object.")
+    def _add_to_database(self, get_object_function, entity_name):
+        """
+           Helper method to add an entity (transaction or category) to the database.
 
-            session.add(new_category_obj)
-            print("new category added.")
+           Args:
+               get_object_func (function): A function that returns the object to be added to the database.
+               entity_name (str): The name of the entity (for logging purposes).
+               :param get_object_function, entity_name:
+           """
+        with SessionManager(Session) as session:
+            new_object = get_object_function()
+            if new_object is None:
+                logger.error(f"Failed to create {entity_name} object.")
+                return
+
+            session.add(new_object)
+            logger.info(f" New {entity_name} added successfully.")
+            print(f"New {entity_name} added successfully.")
+
+    def add_new_category_to_database(self):
+        self._add_to_database(self._get_category_object, "category")
 
 
 class NewTransaction(NewCategory):
@@ -325,52 +338,50 @@ class NewTransaction(NewCategory):
         self.amount = None
         self.description = None
 
-    def get_columns_tuples_list(self):
+    def _get_record_dictionaries_list(self):
         with SessionManager(Session) as session:
             categories_information = session.query(
                 Categories.id,
                 Categories.user_id,
                 Categories.category_name,
-                # Categories.description,
-                # Categories.colour,
-                # Categories.icon
+
             ).filter(
                 (Categories.user_id == self._user_id) | (Categories.user_id.is_(None))
             ).all()
 
-            results = []
-            # description, colour icon optionally
+            dictionaries_record_list = []
+
             for id_primary_key, user_id, category_name in categories_information:
                 category_type = "Standard category" if user_id is None else "Own category"
-                result = {
+
+                query_result = {
                     "category type": category_type,
                     "category id": id_primary_key,
                     "user id": user_id,
                     "category name": category_name,
-                    # "description": description,
-                    # "colour": colour,
-                    # "icon": icon
                 }
-                results.append(result)
+
+                dictionaries_record_list.append(query_result)
 
                 print(
                     f"category_type: {category_type}\n"
                     f"category id: {id_primary_key}\n"
                     f"user_id: {user_id}\n"
                     f"category_name: {category_name}\n"
-                    # f"description: {description}\n"
-                    # f"colour: {colour}\n"
-                    # f"icon: {icon}\n"
+
                 )
 
-            return results
+            return dictionaries_record_list
 
-    def get_amount(self):
-        chose_option = input("Chose option: "
-                             "1: Spent money"
-                             "2: earned money"
-                             "0: Exit")
+    def _get_amount(self):
+
         while True:
+            chose_option = int(input(
+                "Choose an option:\n"
+                "1: Spent money\n"
+                "2: Earned money\n"
+                "0: Exit\n"
+            ))
             try:
                 if chose_option == 1:
                     amount = int(input("Enter how much money you have spent: "))
@@ -387,7 +398,9 @@ class NewTransaction(NewCategory):
                     return amount
 
                 elif chose_option == 0:
+                    logger.info("Exiting the program")
                     print("Exiting the program.")
+                    break
 
                 else:
                     logger.info("Invalid option. please enter choice 1 or 2 or 0 if you want exit.")
@@ -397,27 +410,51 @@ class NewTransaction(NewCategory):
                 logger.error(f"Invalid number {e}. Please enter the number.")
                 print(f"Invalid number {e}. Please enter the number")
 
-    @staticmethod
-    def get_category_id_and_name(result):
+    def _get_category_id(self):
 
-        list_of_category_tuples = []
+        dictionaries_record_list = self._get_record_dictionaries_list()
 
-        for category in result:
-            category_tuple = category["category id"], category["category name"]
-            list_of_category_tuples.append(category_tuple)
+        list_of_category_tuples = [
+            (dictionary["category id"], dictionary["category name"])
+            for dictionary in dictionaries_record_list
+        ]
 
-        for (category_id, category_name) in list_of_category_tuples:
-            print(category_id, category_name)
+        while True:
+            try:
+                category_id = int(input("Chose category by category id: "))
 
-        category_id = int(input("Chose category by category id: "))
+                for value in list_of_category_tuples:
+                    if value[0] == category_id:
+                        self.category_id = category_id
+                        print(f"You chosen: {value[0]}: {value[1]}")
+                        logger.info("Correct category_id")
+                        return category_id
 
+                logger.error(f"Category id: {category_id} does not exist. Please enter a valid id number.")
+                print(f"Category id: {category_id} does not exist. Please enter a valid id number.")
 
+            except ValueError as e:
+                print("Invalid number. Please enter a valid number.")
+                logger.error(f"Invalid number. {e} Please enter a valid number.")
 
+    def _transaction_description_handler(self):
+        return self._description_handler("Do you want to add a transaction description?", "transaction")
 
+    def _get_transaction_object(self):
 
+        amount = self._get_amount()
+        category_id = self._get_category_id()
+        description = self._transaction_description_handler()
 
-new_transaction = NewTransaction(10)
-result = new_transaction.get_columns_tuples_list()
-new_transaction.get_category_id_and_name(result)
+        new_transaction = Transactions(
+            user_id=self._user_id,
+            amount=amount,
+            category_id=category_id,
+            description=description
+        )
 
+        return new_transaction
+
+    def add_transaction_to_database(self):
+        self._add_to_database(self._get_transaction_object, "transaction")
 
