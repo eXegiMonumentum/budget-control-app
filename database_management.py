@@ -458,3 +458,41 @@ class NewTransaction(NewCategory):
     def add_transaction_to_database(self):
         self._add_to_database(self._get_transaction_object, "transaction")
 
+
+
+
+    def _get_transactions_results_list(self):
+        with SessionManager(Session) as session:
+            query_object = session.query(Transactions.id, Transactions.user_id,
+                                         Transactions.category_id, Transactions.amount,
+                                         Transactions.description, Transactions.transaction_date).all()
+
+            transaction_results_list = []
+            for (id_pk, user_id, category_id, amount, description, transaction_date) in query_object:
+
+                query_result = {
+                    "transaction id": id_pk,
+                    "user id": user_id,
+                    "category id": category_id,
+                    "amount": amount,
+                    "description": description,
+                    "transaction date": transaction_date
+                }
+
+                transaction_results_list.append(query_result)
+
+            for transaction in transaction_results_list:
+
+                print(f"transaction id: {transaction['transaction id']}\n"
+                      f"user id: {transaction['user id']}\n"
+                      f"category id: {transaction['category id']}\n"
+                      f"amount: {transaction['amount']}\n"
+                      f"description: {transaction['description']}\n"
+                      f"transaction date: {transaction_date}\n")
+
+            return transaction_results_list
+
+    def _get_transaction_id(self):
+# ta sama logika wyboru co wcześniej.
+        transactions = self._get_transactions_results_list()
+        transaction_id = int(input("Enter id of transaction, that you want to delete: "))
