@@ -338,40 +338,33 @@ class NewTransaction(NewCategory):
         self.amount = None
         self.description = None
 
-    def _get_record_dictionaries_list(self):
+    def _get_categories_tuples_list(self):
         with SessionManager(Session) as session:
             categories_information = session.query(
                 Categories.id,
                 Categories.user_id,
                 Categories.category_name,
+                Categories.description
 
             ).filter(
                 (Categories.user_id == self._user_id) | (Categories.user_id.is_(None))
             ).all()
 
-            dictionaries_record_list = []
+            tuples_records_list = [
+                (id_primary_key, user_id, category_name, description,
+                 "Standard category" if user_id is None else "Own category")
+                for id_primary_key, user_id, category_name, description in categories_information]
 
-            for id_primary_key, user_id, category_name in categories_information:
-                category_type = "Standard category" if user_id is None else "Own category"
-
-                query_result = {
-                    "category type": category_type,
-                    "category id": id_primary_key,
-                    "user id": user_id,
-                    "category name": category_name,
-                }
-
-                dictionaries_record_list.append(query_result)
-
+            for record in tuples_records_list:
                 print(
-                    f"category_type: {category_type}\n"
-                    f"category id: {id_primary_key}\n"
-                    f"user_id: {user_id}\n"
-                    f"category_name: {category_name}\n"
-
+                    f"category id:      {record[0]}\n"
+                    f"user_id:          {record[1]}\n"
+                    f"category_name:    {record[2]}\n"
+                    f"description:      {record[3]}\n"
+                    f"category_type:    {record[4]}\n"
                 )
 
-            return dictionaries_record_list
+            return tuples_records_list
 
     def _get_amount(self):
 
@@ -411,27 +404,67 @@ class NewTransaction(NewCategory):
                 print(f"Invalid number {e}. Please enter the number")
 
     def _get_category_id(self):
+        selected_category_id = self._get_id(self._get_categories_tuples_list, entity_name="category")
+        return selected_category_id
 
-        dictionaries_record_list = self._get_record_dictionaries_list()
+    def _get_id(self, get_records_as_tuples_func,
+                entity_name="category"):
+        """
+        Function allows to get records from database as a tuples.
+        It combines to get categories and transactions from different related tables.
 
-        list_of_category_tuples = [
-            (dictionary["category id"], dictionary["category name"])
-            for dictionary in dictionaries_record_list
-        ]
+        :param get_records_as_tuples_func: To get categories tuples list or transactions tuples list.
+        :param entity_name: it's for configure print statements, e.g. if entity_name = category, this function inform you about categories,
+        elif transaction inform about transactions.
+        return: the category or transaction identifier selected by the user, e.g. to delete a transaction or add a new category by identifier.
+        """
+
+        if not isinstance(entity_name, str):
+            logger.error(f"TypeError: entity_name must be a string, not {type(entity_name)}")
+            raise TypeError(f"entity_name must be a string, not {type(entity_name)}")
+
+        tuples_records_list = get_records_as_tuples_func()
 
         while True:
             try:
-                category_id = int(input("Chose category by category id: "))
+                given_id = int(input(f"Chose {entity_name} by {entity_name} id: "))
 
-                for value in list_of_category_tuples:
-                    if value[0] == category_id:
-                        self.category_id = category_id
-                        print(f"You chosen: {value[0]}: {value[1]}")
-                        logger.info("Correct category_id")
-                        return category_id
+                for value in tuples_records_list:
+                    if value[0] == given_id:
 
-                logger.error(f"Category id: {category_id} does not exist. Please enter a valid id number.")
-                print(f"Category id: {category_id} does not exist. Please enter a valid id number.")
+                        if entity_name == "category":
+
+                            print(
+                                f"{'-' * 20}\n"
+                                f"You chosen:"
+                                f"category id:   {value[0]}\n"
+                                f"user_id:       {value[1]}\n"
+                                f"category_name  {value[2]}\n"
+                                f"description    {value[3]}\n"
+                                f"category_type: {value[4]}\n"
+                            )
+
+                            self.category_id = given_id
+                            logger.info(f"Correct {entity_name}_id {given_id}")
+                            return given_id
+
+                        elif entity_name == "transaction":
+
+                            print(
+                                f"{'-' * 20}\n"
+                                f"You chosen:\n"
+                                f"transaction id:     {value[0]}\n"
+                                f"user id:            {value[1]}\n"
+                                f"category id:        {value[2]}\n"
+                                f"description:        {value[3]}\n"
+                                f"amount:             {value[4]}\n"
+                                f"transaction date:   {value[5]}\n")
+
+                            logger.info(f"Correct {entity_name}_id: {given_id}")
+                            return given_id
+
+                logger.error(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
+                print(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
 
             except ValueError as e:
                 print("Invalid number. Please enter a valid number.")
@@ -458,41 +491,61 @@ class NewTransaction(NewCategory):
     def add_transaction_to_database(self):
         self._add_to_database(self._get_transaction_object, "transaction")
 
-
-
-
-    def _get_transactions_results_list(self):
+    @staticmethod
+    def _get_transactions_tuples_list():
         with SessionManager(Session) as session:
-            query_object = session.query(Transactions.id, Transactions.user_id,
-                                         Transactions.category_id, Transactions.amount,
-                                         Transactions.description, Transactions.transaction_date).all()
+            query_object = session.query(Transactions.id, Transactions.user_id, Transactions.category_id,
+                                         Transactions.description, Transactions.amount,
+                                         Transactions.transaction_date).all()
 
-            transaction_results_list = []
-            for (id_pk, user_id, category_id, amount, description, transaction_date) in query_object:
+            transaction_results_tuples = [
+                (id_pk, user_id, category_id, description, amount, transaction_date)
+                for (id_pk, user_id, category_id, description, amount, transaction_date) in query_object]
 
-                query_result = {
-                    "transaction id": id_pk,
-                    "user id": user_id,
-                    "category id": category_id,
-                    "amount": amount,
-                    "description": description,
-                    "transaction date": transaction_date
-                }
+            for record in transaction_results_tuples:
+                print(
+                    f"transaction id:     {record[0]}\n"
+                    f"user id:            {record[1]}\n"
+                    f"category id:        {record[2]}\n"
+                    f"description:        {record[3]}\n"
+                    f"amount:             {record[4]}\n"
+                    f"transaction date:   {record[5]}\n"
+                )
 
-                transaction_results_list.append(query_result)
-
-            for transaction in transaction_results_list:
-
-                print(f"transaction id: {transaction['transaction id']}\n"
-                      f"user id: {transaction['user id']}\n"
-                      f"category id: {transaction['category id']}\n"
-                      f"amount: {transaction['amount']}\n"
-                      f"description: {transaction['description']}\n"
-                      f"transaction date: {transaction_date}\n")
-
-            return transaction_results_list
+            return transaction_results_tuples
 
     def _get_transaction_id(self):
-# ta sama logika wyboru co wcześniej.
-        transactions = self._get_transactions_results_list()
-        transaction_id = int(input("Enter id of transaction, that you want to delete: "))
+        selected_transaction_id = self._get_id(NewTransaction._get_transactions_tuples_list, entity_name='transaction')
+        return selected_transaction_id
+
+    def delete_transaction(self):
+
+        with SessionManager(Session) as session:
+
+            transaction_id = self._get_transaction_id()
+            transaction_to_delete = session.query(Transactions).filter_by(id=transaction_id).first()
+
+            if not transaction_to_delete:
+                logger.error("Transaction doesnt exist!")
+                print("Transaction doesn't exist!")
+                return
+
+            choice = input("Do you want delete chosen transaction? (Y/N): ")
+
+            if choice.upper() == 'Y':
+
+                try:
+                    session.delete(transaction_to_delete)
+                    print("Transaction was deleted successfully.")
+                    logger.info("Transaction was deleted successfully.")
+
+                except Exception as e:
+                    print(f"An error occurred while deleting the transaction: {e}")
+                    logger.error(f"An error occurred while deleting transaction {transaction_id}: {e}")
+            else:
+                logger.info("Transaction was not deleted.")
+                print("Transaction was not deleted.")
+
+
+nice_try = NewTransaction(10)
+nice_try.delete_transaction()

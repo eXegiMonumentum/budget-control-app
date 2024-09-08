@@ -124,3 +124,48 @@ Details: tuple index out of range
 2024-09-07 08:06:01,425 - logger - ERROR - Exception type: <class 'TypeError'>, value: cannot unpack non-iterable int object
 2024-09-07 08:11:49,013 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'pprint' is not defined
 2024-09-07 08:20:54,422 - logger - ERROR - Exception type: <class 'KeyError'>, value: 0
+2024-09-07 19:13:46,347 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:15:23,944 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:17:02,192 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:17:51,325 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-07 19:17:56,994 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:23:54,139 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-08 09:40:31,219 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-08 09:40:39,301 - logger - ERROR - transaction id: 100 does not exist. Please enter a valid id number.
+2024-09-08 09:40:41,922 - logger - ERROR - transaction id: 1 does not exist. Please enter a valid id number.
+2024-09-08 09:40:48,996 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-08 13:07:45,838 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:45,843 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:45,843 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:45,843 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:52,305 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,909 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,910 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,910 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,910 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:47:33,704 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:47:36,577 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:48:32,977 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:48:53,714 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:52:23,641 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:52:41,442 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'record' is not defined
+2024-09-08 13:52:47,720 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
