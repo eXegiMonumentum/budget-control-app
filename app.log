@@ -169,3 +169,20 @@ Details: tuple index out of range
 2024-09-08 13:52:23,641 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
 2024-09-08 13:52:41,442 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'record' is not defined
 2024-09-08 13:52:47,720 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 20:58:43,919 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-08 21:00:12,933 - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'sum' object nor 'Comparator' object has an attribute 'scalar'
+2024-09-09 05:34:17,294 - logger - ERROR - Exception type: <class 'AttributeError'>, value: strftime
+2024-09-09 05:38:14,105 - logger - ERROR - Exception type: <class 'AttributeError'>, value: strftime
+2024-09-09 05:42:06,244 - logger - ERROR - Exception type: <class 'IndexError'>, value: tuple index out of range
+2024-09-09 20:36:14,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:36:24,223 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:37:57,207 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:42:38,669 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:59:28,679 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:59:37,045 - logger - ERROR - Invalid month number. IndexError
+2024-09-09 20:59:44,787 - logger - ERROR - Invalid month number. IndexError
+2024-09-09 21:00:32,322 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'selected_month_int' where it is not associated with a value
+2024-09-09 21:00:57,623 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'selected_month_int' where it is not associated with a value
+2024-09-09 21:02:15,583 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 21:02:23,536 - logger - ERROR - Invalid month number. IndexError
+2024-09-09 21:02:34,116 - logger - ERROR - Invalid month number. IndexError

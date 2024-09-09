@@ -1,8 +1,10 @@
 import sys
-
+import datetime
 from models import Session, Categories, Transactions
 from session_manager import SessionManager
 from logger import logger
+from sqlalchemy import func
+import calendar
 
 
 class NewCategory:
@@ -491,6 +493,11 @@ class NewTransaction(NewCategory):
     def add_transaction_to_database(self):
         self._add_to_database(self._get_transaction_object, "transaction")
 
+
+class DeleteTransaction(NewTransaction):
+    def __init__(self, user_id):
+        super().__init__(user_id)
+
     @staticmethod
     def _get_transactions_tuples_list():
         with SessionManager(Session) as session:
@@ -515,7 +522,8 @@ class NewTransaction(NewCategory):
             return transaction_results_tuples
 
     def _get_transaction_id(self):
-        selected_transaction_id = self._get_id(NewTransaction._get_transactions_tuples_list, entity_name='transaction')
+        selected_transaction_id = self._get_id(DeleteTransaction._get_transactions_tuples_list,
+                                               entity_name='transaction')
         return selected_transaction_id
 
     def delete_transaction(self):
@@ -547,5 +555,52 @@ class NewTransaction(NewCategory):
                 print("Transaction was not deleted.")
 
 
-nice_try = NewTransaction(10)
-nice_try.delete_transaction()
+class TransactionSummary(NewTransaction):
+    def __init__(self, user_id):
+        super().__init__(user_id)
+
+    @staticmethod
+    def total_transactions_value():
+        with SessionManager(Session) as session:
+            total_amount = session.query(func.sum(Transactions.amount)).scalar()
+            return total_amount
+
+    def get_month_budget_summary(self):
+        # with SessionManager(Session) as session:
+        #
+        #     transactions_query = session.query(Transactions.id, Transactions.description, Transactions.amount,
+        #                                        Transactions.transaction_date).all()
+        #     if not transactions_query:
+        #         logger.error("Transactions do not exist!")
+        #         print("Transactions do not exist!")
+        #         return
+        #
+        #     try:
+        #         months = list(calendar.month_name)[1:]
+        #         for i, month in enumerate(months, start=1):
+        #             print(f"{i}: {month}")
+        #
+        #         current_int_month = int((datetime.datetime.now().strftime("%m")))
+        #
+        #         selected_month_int = int(input("please chose month number: "))
+        #         if selected_month_int not in months:
+        #             print(f"Month with number {selected_month_int} doesnt'exist")
+        #             logger.error("Invalid month number. IndexError")
+        #             return
+        #
+        #         for transaction_record in transactions_query:
+        #             transaction_int_date = int(transaction_record[3].strftime("%m"))
+        #             if transaction_int_date == selected_month_int:
+        #                 print(transaction_record)
+        #             else:
+        #                 print('')
+        #
+        #     except ValueError as e:
+        #         print(f" invalid number: {selected_month_int}: {e}")
+
+
+# tutaj zaimplementuję logikę podziału sumy podżetu z danego miesiąca wg. kategorii. (jutro.)
+
+
+n_t = TransactionSummary(10)
+n_t.get_month_budget_summary()

@@ -1,5 +1,5 @@
 from credentials import SignUp, LogIn
-from database_management import NewCategory, NewTransaction
+from database_management import NewCategory, NewTransaction, DeleteTransaction
 
 
 def main():
@@ -38,9 +38,8 @@ def main():
                                 add_transaction = NewTransaction(user_id)
                                 add_transaction.add_transaction_to_database()
                             elif action == 3:
-                                # Logika usuwania transakcji
-                                # remove_transaction()
-                                pass
+                                delete_transaction = DeleteTransaction(user_id)
+                                delete_transaction.delete_transaction()
                             elif action == 4:
                                 # Logika sumowania transakcji
                                 # sum_transactions()
