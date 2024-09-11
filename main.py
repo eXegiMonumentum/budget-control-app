@@ -1,5 +1,5 @@
 from credentials import SignUp, LogIn
-from database_management import NewCategory, NewTransaction, DeleteTransaction
+from database_management import NewCategory, NewTransaction, DeleteTransaction, TransactionSummary
 
 
 def main():
@@ -41,9 +41,8 @@ def main():
                                 delete_transaction = DeleteTransaction(user_id)
                                 delete_transaction.delete_transaction()
                             elif action == 4:
-                                # Logika sumowania transakcji
-                                # sum_transactions()
-                                pass
+                                transaction_summary = TransactionSummary(user_id)
+                                transaction_summary.get_month_budget_summary()
                             elif action == 5:
                                 print("Logging out...")
                                 break

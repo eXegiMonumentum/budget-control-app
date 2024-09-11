@@ -186,3 +186,21 @@ Details: tuple index out of range
 2024-09-09 21:02:15,583 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-09 21:02:23,536 - logger - ERROR - Invalid month number. IndexError
 2024-09-09 21:02:34,116 - logger - ERROR - Invalid month number. IndexError
+2024-09-10 06:14:25,515 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-10 06:14:47,337 - logger - ERROR - Invalid month number.
+2024-09-10 06:16:09,682 - logger - ERROR - Invalid month number.
+2024-09-10 06:16:46,058 - logger - ERROR - Invalid month number.
+2024-09-10 06:17:54,400 - logger - ERROR - Invalid month number.
+2024-09-10 06:18:10,917 - logger - ERROR - Invalid month number.
+2024-09-10 06:45:16,632 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NoneType' object has no attribute 'strftime'
+2024-09-10 07:25:18,619 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NoneType' object has no attribute 'strftime'
+2024-09-10 12:08:35,096 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-10 12:21:20,748 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-10 18:27:32,025 - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'BinaryExpression' object nor 'Comparator' object has an attribute 'all'
+2024-09-10 18:31:50,811 - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'BinaryExpression' object nor 'Comparator' object has an attribute 'all'
+2024-09-11 05:45:52,509 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-11 05:48:38,943 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-11 05:48:51,046 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-11 05:49:04,161 - logger - ERROR - transaction id: 8 does not exist. Please enter a valid id number.
+2024-09-11 05:49:11,077 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-11 05:50:08,096 - logger - ERROR - transaction id: 5 does not exist. Please enter a valid id number.
