@@ -204,3 +204,48 @@ Details: tuple index out of range
 2024-09-11 05:49:04,161 - logger - ERROR - transaction id: 8 does not exist. Please enter a valid id number.
 2024-09-11 05:49:11,077 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
 2024-09-11 05:50:08,096 - logger - ERROR - transaction id: 5 does not exist. Please enter a valid id number.
+2024-09-12 05:24:34,655 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.DatatypeMismatch) B£¥D:  argument AND musi byæ typu boolean, nie typu integer
+LINE 3: WHERE categories.id AND categories.category_name AND transac...
+              ^
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.colour AS categories_colour, categories.icon AS categories_icon, transactions.id AS transactions_id, transactions.user_id AS transactions_user_id, transactions.category_id AS transactions_category_id, transactions.amount AS transactions_amount, transactions.transaction_date AS transactions_transaction_date, transactions.description AS transactions_description, transactions.created_at AS transactions_created_at 
+FROM categories, transactions 
+WHERE categories.id AND categories.category_name AND transactions.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-12 05:26:15,473 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.UndefinedFunction) B£¥D:  operator nie istnieje: integer = boolean
+LINE 3: WHERE categories.id = true AND categories.category_name = tr...
+                            ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.colour AS categories_colour, categories.icon AS categories_icon, transactions.id AS transactions_id, transactions.user_id AS transactions_user_id, transactions.category_id AS transactions_category_id, transactions.amount AS transactions_amount, transactions.transaction_date AS transactions_transaction_date, transactions.description AS transactions_description, transactions.created_at AS transactions_created_at 
+FROM categories, transactions 
+WHERE categories.id = true AND categories.category_name = true AND transactions.id = true]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-12 05:30:45,357 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: ON clause, typically a SQL expression or ORM relationship attribute expected, got <class 'models.Transactions'>.
+2024-09-12 05:31:55,848 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: ON clause, typically a SQL expression or ORM relationship attribute expected, got <class 'models.Transactions'>.
+2024-09-12 05:32:09,966 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.InvalidRequestError'>, value: No 'on clause' argument may be passed when joining to a relationship path as a target
+2024-09-12 05:32:35,646 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.join() missing 1 required positional argument: 'target'
+2024-09-13 05:42:19,448 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'list' object has no attribute 'category_id'
+2024-09-14 18:45:43,445 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions, categories GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-14 19:00:36,934 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-14 19:00:48,691 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-14 21:55:24,369 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-14 22:10:14,755 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 

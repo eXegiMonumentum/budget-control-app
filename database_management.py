@@ -280,7 +280,7 @@ class NewCategory:
 
                 if choice_category_type == 1 or choice_category_type == 2:
                     print(categories_dict)
-                    category_index = int(input("Enter category number or press enter to exit."))
+                    category_index = int(input("Enter category number or press enter to exit: "))
 
                     if 1 <= category_index <= len(categories_dict):
                         logger.info("Correct category index")
@@ -333,47 +333,45 @@ class NewTransaction(NewCategory):
         self.amount = None
         self.description = None
 
-    def _get_categories_tuples_list(self, get_only_category_id=False):
+    def _get_categories_tuples_list(self):
         with SessionManager(Session) as session:
+            query = session.query(
+                Categories.id,
+                Categories.user_id,
+                Categories.category_name,
+                Categories.description
 
-            if get_only_category_id is False:
-                query = session.query(
-                    Categories.id,
-                    Categories.user_id,
-                    Categories.category_name,
-                    Categories.description
+            ).filter(
+                (Categories.user_id == self._user_id) | (Categories.user_id.is_(None))
+            ).all()
 
-                ).filter(
-                    (Categories.user_id == self._user_id) | (Categories.user_id.is_(None))
-                ).all()
+            tuples_records_list = [
+                (id_primary_key, user_id, category_name, description,
+                 "Standard category" if user_id is None else "custom category")
+                for id_primary_key, user_id, category_name, description in query]
 
-                tuples_records_list = [
-                    (id_primary_key, user_id, category_name, description,
-                     "Standard category" if user_id is None else "custom category")
-                    for id_primary_key, user_id, category_name, description in query]
+            for record in tuples_records_list:
+                print(
+                    f"category id:      {record[0]}\n"
+                    f"user_id:          {record[1]}\n"
+                    f"category_name:    {record[2]}\n"
+                    f"description:      {record[3]}\n"
+                    f"category_type:    {record[4]}\n"
+                )
 
-                for record in tuples_records_list:
-                    print(
-                        f"category id:      {record[0]}\n"
-                        f"user_id:          {record[1]}\n"
-                        f"category_name:    {record[2]}\n"
-                        f"description:      {record[3]}\n"
-                        f"category_type:    {record[4]}\n"
-                    )
+            return tuples_records_list, None
 
-                return tuples_records_list, None
-
-            else:
-                logger.info("Get users categories id only")
-                query = session.query(Categories.id).filter(
-                    (Categories.id == self._user_id) | (Categories.user_id.is_(None))).all()
-
-                category_ids_tuples_list = [category_id for category_id in query]
-
-                for record in category_ids_tuples_list:
-                    print(f"category id: {record[0]}")
-
-                return category_ids_tuples_list, None
+            # else:
+            #     # Get shorter category description                          #jeśli nie zedcyduję się na opis kategorii, to go tutaj usunę.
+            #     query = session.query(Categories.id.Categories.category_name, Categories.description).filter(
+            #         (Categories.id == self._user_id) | (Categories.user_id.is_(None))).all()
+            #
+            #     category_ids_tuples_list = [category_id for category_id in query]
+            #
+            #     for record in category_ids_tuples_list:
+            #         print(f"category id: {record[0]}")
+            #
+            #     return category_ids_tuples_list, None
 
     def _get_amount(self):
 
@@ -513,7 +511,9 @@ class DeleteTransaction(NewTransaction):
 
             query = session.query(Transactions.id, Transactions.user_id, Transactions.category_id,
                                   Transactions.description, Transactions.amount,
-                                  Transactions.transaction_date)
+                                  Transactions.transaction_date,
+                                  Categories.category_name,
+                                  ).join(Categories, Categories.id == Transactions.category_id)
 
             if year is not None:
                 query = query.filter(extract('YEAR', Transactions.transaction_date) == year)
@@ -527,14 +527,15 @@ class DeleteTransaction(NewTransaction):
         query = self._get_transactions_query(year=year,
                                              month=month)
         transaction_results_tuples = [
-            (id_pk, user_id, category_id, description, amount, transaction_date)
-            for (id_pk, user_id, category_id, description, amount, transaction_date) in query]
+            (id_pk, user_id, category_id, description, amount, transaction_date, category_transaction_name)
+            for (id_pk, user_id, category_id, description,
+                 amount, transaction_date, category_transaction_name) in query]
 
         for record in transaction_results_tuples:
             print(
                 f"transaction id:     {record[0]}\n"
                 f"user id:            {record[1]}\n"
-                f"category id:        {record[2]}\n"
+                f"category id:        {record[2]} - '{record[6]}'\n"
                 f"description:        {record[3]}\n"
                 f"amount:             {record[4]}\n"
                 f"transaction date:   {record[5]}\n"
@@ -583,6 +584,9 @@ class TransactionSummary(DeleteTransaction):
     def __init__(self, user_id):
         super().__init__(user_id)
 
+        self.current_month = datetime.datetime.now().month
+        self.current_year = datetime.datetime.now().year
+
     @staticmethod
     def _total_transactions_value():
         with SessionManager(Session) as session:
@@ -597,10 +601,10 @@ class TransactionSummary(DeleteTransaction):
     def _get_month_transactions_value(self, year=None, month=None):
         try:
             transaction_results_tuples, query = self._get_transactions_tuples_list(year=year, month=month)
-            month_budget_summary = query.with_entities(func.sum(Transactions.amount)).scalar()
-            if not month_budget_summary:
+            total_month_budget_summary = query.with_entities(func.sum(Transactions.amount)).scalar()
+            if not total_month_budget_summary:
                 return "No transactions"
-            return month_budget_summary
+            return total_month_budget_summary
         except Exception as e:
             logger.error(f"An error occurred while calculating month transactions value: {e}")
             print(f"An error occurred while calculating month transactions value: {e}")
@@ -611,21 +615,22 @@ class TransactionSummary(DeleteTransaction):
             try:
                 choice = int(input("""
                 Choose an option:
-                1: Current month budget summary
-                2: Other month budget summary
+                1: sum total transactions value for current month)
+                2: sum total transactions value for chosen month)
+                3: sum.. ile wydałem na każdą z kategori w miesiącu i ile ogólnie.
                 0: Exit
 
                 Enter your choice: """))
 
                 if choice == 1:
                     print("You chose: Current month budget summary")
-                    now = datetime.datetime.now()
-                    current_year = now.year
-                    current_month = now.month
-                    month_budget_summary = self._get_month_transactions_value(year=current_year, month=current_month)
-                    print(f"Month {current_month}.{current_year} budget summary:", month_budget_summary)
+
+                    total_month_budget_summary = self._get_month_transactions_value(year=self.current_year,
+                                                                                    month=self.current_month)
+                    print(f"Month {self.current_month}.{self.current_year} budget summary:", total_month_budget_summary)
 
                 elif choice == 2:
+                    # date validator !
                     print("You chose: Other month budget summary")
                     months = list(calendar.month_name)[1:]
                     for i, month in enumerate(months, start=1):
@@ -643,8 +648,9 @@ class TransactionSummary(DeleteTransaction):
                     if not 2024 <= chosen_year <= 2030:
                         raise ValueError("Invalid year. Valid options are between 2024 and 2030.")
 
-                    month_budget_summary = self._get_month_transactions_value(year=chosen_year, month=chosen_month)
-                    print(f"Month {chosen_month}.{chosen_year} budget summary:", month_budget_summary)
+                    total_month_budget_summary = self._get_month_transactions_value(year=chosen_year,
+                                                                                    month=chosen_month)
+                    print(f"Month {chosen_month}.{chosen_year} budget summary:", total_month_budget_summary)
 
                 elif choice == 0:
                     print("Exiting...")
@@ -656,15 +662,31 @@ class TransactionSummary(DeleteTransaction):
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
 
-    # def spent_money_on_each_category(self):
-    #     categories_tuples_id_list = self._get_categories_tuples_list(get_only_category_id=True)
-    #     query = TransactionSummary._get_transactions_query()
-    #     query.with_entities(Transactions.id, Transactions.amount, Transactions.description,
-    #                         Transactions.transaction_date, Transactions.category_id)
-    #
-    #     month_budget_summary = query.with_entities(func.sum(Transactions.amount)).scalar()
+    @staticmethod
+    def count_money_spent_on_each_category(year=None, month=None):
 
-# 1. sprawdzę czy jakaś funckja mi się przyda do pobrania id_kategorii oraz
-# tutaj zaimplementuję logikę podziału sumy podżetu z danego miesiąca wg. kategorii. (jutro.)
-n_t = TransactionSummary(10)
-n_t.spent_money_on_each_category()
+        try:
+            choice = int(input("wybor  1 albo 2"))
+            if choice == 1:  # liczenie ile ogólnie wydałem na daną kategorię w historii aplikacji
+                with SessionManager(Session) as session:
+                    results = session.query(
+                        Transactions.category_id, Categories.category_name, Transactions.transaction_date,
+                        func.sum(Transactions.amount).label('total_category_amount')).join(
+                        Categories, Transactions.category_id == Categories.id).group_by(
+                        Transactions.category_id, Categories.category_name).all()
+
+                    for result in results:
+                        print(
+                            f"ID category: {result.category_id:>5} : {result.category_name:<20} total amount: {result.total_category_amount:,.2f}")
+            elif choice == 2:  # liczenie ile wydałem na daną kategorię w  obecnym miesiącu
+                pass
+            elif choice == 3:  # liczenie ile wydałem na daną kategorię w ciągu wybranego miesiąca/roku
+                pass
+        except Exception as e:
+            logger.error(f"An error was occurred during count money depends on category:\n {e}")
+
+
+# transaction_summary = TransactionSummary(10)
+# transaction_summary.get_month_budget_summary()
+#
+# transaction_categories_summary = transaction_summary.count_money_spent_on_each_category()
