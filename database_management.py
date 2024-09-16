@@ -1,9 +1,10 @@
+import pprint
 import sys
 import datetime
 from models import Session, Categories, Transactions
 from session_manager import SessionManager
 from logger import logger
-from sqlalchemy import func
+from sqlalchemy import func, desc
 import calendar
 from sqlalchemy import extract
 
@@ -13,11 +14,8 @@ class NewCategory:
     def __init__(self, user_id):
         self._user_id = user_id
         self._new_category = None
-        self.description = None
-        self._colour = None
-        self._icon = None
 
-    def categories_dict(self, categories_type='standard'):
+    def _get_categories_dict(self, categories_type='standard'):
         with SessionManager(Session) as session:
 
             if categories_type == "standard":
@@ -28,10 +26,29 @@ class NewCategory:
                 raise ValueError("Invalid categories_type")
 
             categories_dict = {}
-            for i, category_record in enumerate(query_obj, start=1):
-                categories_dict[i] = category_record.category_name
+
+            for category_record in query_obj:
+                categories_dict[category_record.id] = category_record.category_name
 
             return categories_dict
+
+    def _get_standard_categories_dict(self):
+        standard_categories_dict = self._get_categories_dict(categories_type="standard")
+
+        print("Standard categories:")
+        for category_id, category_name in standard_categories_dict.items():
+            print(f"{category_id:>10} - {category_name}")
+        print()
+        return standard_categories_dict
+
+    def _get_custom_categories_dict(self):
+        custom_categories_dict = self._get_categories_dict(categories_type="custom")
+
+        print("Custom categories: ")
+        for category_id, category_name in custom_categories_dict.items():
+            print(f"{category_id:>10} - {category_name}")
+
+        return custom_categories_dict
 
     def _description_handler(self, prompt_message, entity_name=None):
         """
@@ -50,7 +67,6 @@ class NewCategory:
         if decision.upper() == 'Y':
             description = input(f"Enter description for {entity_name or 'this entity'}: ")
             print(f"Description for {entity_name or 'entity'}: {description}")
-            self.description = description
             return description
         else:
             print("No description was added.")
@@ -193,114 +209,58 @@ class NewCategory:
             logger.info(f"Category {self._new_category} icon is set to Null")
             return None
 
-    def _get_category_object(self):
+    def _get_category_name_handler(self):
+        """Allows to update categories_dict to new custom category
+        :return updated custom categories dict
+        :return custom_category as str."""
 
-        category_name = self._choice_category_handler()
-        description = self._category_description_handler()
-        colour = self._colour_handler()
-        icon = self._icon_handler()
+        standard_categories_dict = self._get_standard_categories_dict()
+        custom_categories_dict = self._get_custom_categories_dict()
 
-        new_category_obj = Categories(
-            category_name=category_name,
-            description=description,
-            user_id=self._user_id,
-            colour=colour,
-            icon=icon
-        )
-
-        return new_category_obj
-
-    @staticmethod
-    def _add_new_category(custom_categories_dict):
         while True:
-            custom_category = input("Type your category: ")
-            decision = input(f"Add {custom_category}  to dictionary?  (Y/N): ")
-            if decision.upper() == "Y":
-                custom_categories_dict[len(custom_categories_dict) + 1] = custom_category
-                print(f"Category '{custom_category}' added successfully.")
-                return custom_categories_dict
+            category_name = input("\nEnter the name of the new custom category you would like to add: ")
 
+            if category_name.isdigit():
+                logger.error("Category name can't be a number!")
+                print("Invalid category name. It must be a string, not a number.")
+                continue
+
+            if (category_name.lower() in (name.lower() for name in custom_categories_dict.values()) or
+                    category_name.lower() in (name.lower() for name in standard_categories_dict.values())):
+                logger.info(f"{category_name} is already in your categories!")
+                print(f"{category_name} is already in your categories!")
+                continue
+
+            if category_name:
+                decision = input(f"""
+                   You have entered: '{category_name}'
+                   Are you sure you want to add this category to your custom categories?
+                   (Y) Yes
+                   (N) No, choose a different name
+                   (0) Exit
+                   Your choice: """)
+
+                if decision.upper() == "Y":
+                    custom_categories_dict[len(custom_categories_dict) + 1] = category_name
+                    print(f"Category '{category_name}' added successfully.")
+                    logger.info(f"Category '{category_name}' added successfully.")
+
+                    self._new_category = category_name
+                    return category_name
+
+                elif decision.upper() == "N":
+                    print("Enter your category again or choose 0 for Exit.")
+
+                elif decision == "0":
+                    print("Exit")
+                    break
+
+                else:
+                    print("Invalid choice. Please enter 'Y', 'N', or '0'.")
+                    logger.error("Invalid choice for adding category.")
             else:
-                logger.info(f"New category: {custom_category} was not added.")
-                if custom_categories_dict:
-                    return custom_categories_dict
-                else:
-                    print("Own categories dictionary is empty!")
-
-    def _choice_category_type_dict(self):
-
-        standard_categories_dict = self.categories_dict('standard')
-        custom_categories_dict = self.categories_dict('custom')
-
-        print("Standard categories: ", standard_categories_dict)
-        print("Custom categories: ", custom_categories_dict)
-
-        while True:
-            try:
-                choice_category_type = int(input("Choice: \n1 for standard categories\n2 for custom categories\n: "))
-                if choice_category_type == 1:
-                    return standard_categories_dict, choice_category_type
-
-                elif choice_category_type == 2:
-                    choice = input("Do you want add new custom category? (Y/N): ")
-
-                    if choice.upper() == "Y":
-                        custom_categories_dict = NewCategory._add_new_category(custom_categories_dict)
-                        if custom_categories_dict:
-                            return custom_categories_dict, choice_category_type
-
-                        else:
-                            print("Categories dictionary is empty")
-                            logger.info("Categories dictionary is empty!")
-
-                    else:
-                        logger.info("No added new custom category")
-                        if custom_categories_dict:
-                            return custom_categories_dict, choice_category_type
-
-                        else:
-                            print("Categories dictionary is empty")
-                            logger.info("Categories dictionary is empty!")
-                            continue
-
-                else:
-                    print("Invalid number, please enter choice 1 or 2.")
-                    logger.info("Invalid number, please enter choice 1 or 2")
-
-            except ValueError:
-                print("Please enter 1 or 2 digit.")
-                logger.error(f"Invalid category type number")
-
-    def _choice_category_handler(self):
-
-        while True:
-
-            categories_dict, choice_category_type = self._choice_category_type_dict()
-            try:
-
-                if choice_category_type == 1 or choice_category_type == 2:
-                    print(categories_dict)
-                    category_index = int(input("Enter category number or press enter to exit: "))
-
-                    if 1 <= category_index <= len(categories_dict):
-                        logger.info("Correct category index")
-                        category_name = categories_dict.get(category_index)
-                        self._new_category = category_name
-                        return category_name
-
-                    elif category_index < 0 or category_index > len(categories_dict):
-                        print("invalid choice.")
-                        logger.info(f"Please index as number between 1 and {len(categories_dict)}. ")
-
-                    elif category_index == 0:
-                        logger.info("Exit to menu")
-                else:
-                    logger.info("Invalid choice category type. valid options are 1 and 2")
-                    print("Invalid choice category type. Please enter 1 or 2.")
-
-            except ValueError:
-                print("Invalid input. Please enter a valid integer number.")
-                logger.info("Invalid input. Please enter a valid integer number.")
+                logger.info("category name is None. Please enter valid category name.")
+                print("category name is None. Please enter valid category name.")
 
     def _add_to_database(self, get_object_function, entity_name):
         """
@@ -315,11 +275,44 @@ class NewCategory:
             new_object = get_object_function()
             if new_object is None:
                 logger.error(f"Failed to create {entity_name} object.")
+                print(f"Failed to create {entity_name} object.")
                 return
 
-            session.add(new_object)
-            logger.info(f" New {entity_name} added successfully.")
-            print(f"New {entity_name} added successfully.")
+            try:
+                session.add(new_object)
+                logger.info(f" New {entity_name} added successfully.")
+                print(f"New {entity_name} added successfully.")
+
+            except Exception as e:
+                logger.error(f"Failed to add {entity_name} to the database: {e}")
+                print(f"Failed to add {entity_name} to the database: {e}")
+
+    def _get_category_object(self):
+        while True:
+            try:
+                category_name = self._get_category_name_handler()
+                if category_name:
+                    description = self._category_description_handler()
+                    colour = self._colour_handler()
+                    icon = self._icon_handler()
+
+                    new_category_obj = Categories(
+                        category_name=category_name,
+                        description=description,
+                        user_id=self._user_id,
+                        colour=colour,
+                        icon=icon
+                    )
+
+                    return new_category_obj
+                else:
+                    print("User chose to exit")
+                    return None
+
+            except Exception as e:
+                logger.error(f"An exception occurred during creating new category object: {e}")
+                print(f"An exception occurred: {e}")
+                return None
 
     def add_new_category_to_database(self):
         self._add_to_database(self._get_category_object, "category")
@@ -328,10 +321,6 @@ class NewCategory:
 class NewTransaction(NewCategory):
     def __init__(self, user_id):
         super().__init__(user_id)
-
-        self.category_id = None
-        self.amount = None
-        self.description = None
 
     def _get_categories_tuples_list(self):
         with SessionManager(Session) as session:
@@ -351,27 +340,9 @@ class NewTransaction(NewCategory):
                 for id_primary_key, user_id, category_name, description in query]
 
             for record in tuples_records_list:
-                print(
-                    f"category id:      {record[0]}\n"
-                    f"user_id:          {record[1]}\n"
-                    f"category_name:    {record[2]}\n"
-                    f"description:      {record[3]}\n"
-                    f"category_type:    {record[4]}\n"
-                )
+                print(f"category id: {record[0]} - category_name:  {record[2]}")
 
             return tuples_records_list, None
-
-            # else:
-            #     # Get shorter category description                          #jeśli nie zedcyduję się na opis kategorii, to go tutaj usunę.
-            #     query = session.query(Categories.id.Categories.category_name, Categories.description).filter(
-            #         (Categories.id == self._user_id) | (Categories.user_id.is_(None))).all()
-            #
-            #     category_ids_tuples_list = [category_id for category_id in query]
-            #
-            #     for record in category_ids_tuples_list:
-            #         print(f"category id: {record[0]}")
-            #
-            #     return category_ids_tuples_list, None
 
     def _get_amount(self):
 
@@ -414,16 +385,15 @@ class NewTransaction(NewCategory):
         selected_category_id = self._get_id(self._get_categories_tuples_list, entity_name="category")
         return selected_category_id
 
-    def _get_id(self, get_records_as_tuples_func,
-                entity_name="category", **kwargs):
+    def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """
-        Function allows to get records from database as a tuples.
+        Function allows to get records from the database as tuples.
         It combines to get categories and transactions from different related tables.
 
         :param get_records_as_tuples_func: To get categories tuples list or transactions tuples list.
-        :param entity_name: it's for configure print statements, e.g. if entity_name = category, this function inform you about categories,
-        elif transaction inform about transactions.
-        return: the category or transaction identifier selected by the user, e.g. to delete a transaction or add a new category by identifier.
+        :param entity_name: It's for configuring print statements, e.g. if entity_name = category, this function informs you about categories,
+                             elif transaction informs about transactions.
+        :return: The category or transaction identifier selected by the user, e.g. to delete a transaction or add a new category by identifier.
         """
 
         if not isinstance(entity_name, str):
@@ -434,44 +404,40 @@ class NewTransaction(NewCategory):
 
         while True:
             try:
-                given_id = int(input(f"Chose {entity_name} by {entity_name} id: "))
+                given_id = int(input(f"Choose {entity_name} id: "))
 
+                found = False
                 for value in tuples_records_list:
                     if value[0] == given_id:
-
                         if entity_name == "category":
-
                             print(
                                 f"{'-' * 20}\n"
-                                f"You chosen:"
-                                f"category id:   {value[0]}\n"
-                                f"user_id:       {value[1]}\n"
-                                f"category_name  {value[2]}\n"
-                                f"description    {value[3]}\n"
-                                f"category_type: {value[4]}\n"
+                                f"You chose:\n"
+                                f"category id:     {value[0]}\n"
+                                f"category name:   {value[1]}\n"
                             )
-
-                            self.category_id = given_id
-                            logger.info(f"Correct {entity_name}_id {given_id}")
-                            return given_id
-
                         elif entity_name == "transaction":
-
                             print(
                                 f"{'-' * 20}\n"
-                                f"You chosen:\n"
+                                f"You chose:\n"
                                 f"transaction id:     {value[0]}\n"
                                 f"user id:            {value[1]}\n"
                                 f"category id:        {value[2]}\n"
                                 f"description:        {value[3]}\n"
                                 f"amount:             {value[4]}\n"
-                                f"transaction date:   {value[5]}\n")
+                                f"transaction date:   {value[5]}\n"
+                            )
+                        else:
+                            raise ValueError(f"Unknown entity name: {entity_name}")
 
-                            logger.info(f"Correct {entity_name}_id: {given_id}")
-                            return given_id
+                        logger.info(f"Correct {entity_name}_id: {given_id}")
+                        return given_id
 
-                logger.error(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
-                print(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
+                    found = True
+
+                if not found:
+                    logger.error(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
+                    print(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
 
             except ValueError as e:
                 print("Invalid number. Please enter a valid number.")
@@ -584,9 +550,6 @@ class TransactionSummary(DeleteTransaction):
     def __init__(self, user_id):
         super().__init__(user_id)
 
-        self.current_month = datetime.datetime.now().month
-        self.current_year = datetime.datetime.now().year
-
     @staticmethod
     def _total_transactions_value():
         with SessionManager(Session) as session:
@@ -609,84 +572,129 @@ class TransactionSummary(DeleteTransaction):
             logger.error(f"An error occurred while calculating month transactions value: {e}")
             print(f"An error occurred while calculating month transactions value: {e}")
 
+    @staticmethod
+    def _count_money_spent_on_each_category(month=None, year=None, overall=False):
+        """
+            for internal use.
+            Default: count your total value from transactions in current month.
+            if you want calculating overall budget in app history, then set: overall = True
+            month and year params if you set True it'll add filter to query"""
+
+        try:
+
+            with SessionManager(Session) as session:
+
+                results = session.query(Transactions.category_id, Categories.category_name,
+                                        func.sum(Transactions.amount).label('total_category_amount')).join(
+                    Categories, Transactions.category_id == Categories.id)
+
+                if not overall:
+
+                    if year is not None:
+                        results = results.filter(extract("YEAR", Transactions.transaction_date) == year)
+                    if month is not None:
+                        results = results.filter(extract("MONTH", Transactions.transaction_date) == month)
+
+                    results = results.group_by(Transactions.category_id, Categories.category_name).order_by(
+                        desc(Transactions.category_id)).all()
+
+                    print(f"Total budget for each category in {month}.{year}\n{30 * '_'} ")
+                    for result in results:
+                        print(
+                            f"ID category: {result.category_id:>5} : {result.category_name:<20}"
+                            f" total amount: {result.total_category_amount:,.2f}")
+                else:
+                    results = results.group_by(Transactions.category_id, Categories.category_name).order_by(
+                        desc(Transactions.category_id)).all()
+
+                    print("summary (each category transaction) from the entire transaction history")
+
+                    for result in results:
+                        print(f"ID category: {result.category_id:>5} : {result.category_name:<20}"
+                              f"total amount: {result.total_category_amount:,.2f}")
+
+        except Exception as e:
+            logger.error(f"An error was occurred during count money spent on each category:\n {e}")
+
+    @staticmethod
+    def _get_validate_time_(current_month=False, current_year=False):
+
+        if not current_year and not current_month:
+
+            years = list(range(2024, 2031))
+            formatted_years = ", ".join(str(year) for year in years)
+            print(f"Available years: {formatted_years}")
+
+            chosen_year = int(input("Please enter year (2024 - 2030): "))
+
+            months = list(calendar.month_name)[1:]
+            for i, month in enumerate(months, start=1):
+                print(f"{i}: {month}")
+
+            chosen_month = int(input("Please choose month number (1-12): "))
+
+            if not 1 <= chosen_month <= 12:
+                raise ValueError("Invalid month number. Valid options are between 1 and 12.")
+
+            if not 2024 <= chosen_year <= 2030:
+                raise ValueError("Invalid year. Valid options are between 2024 and 2030.")
+
+            return chosen_year, chosen_month
+
+        else:
+            current_month = datetime.datetime.now().month
+            current_year = datetime.datetime.now().year
+            return current_year, current_month
+
+    def _show_current_month_budget_summary(self):
+        current_year, current_month = TransactionSummary._get_validate_time_(current_year=True,
+                                                                             current_month=True)
+        print("You chose: Current month budget summary")
+        total_month_budget_summary = self._get_month_transactions_value(year=current_year,
+                                                                        month=current_month)
+        TransactionSummary._count_money_spent_on_each_category()
+        print(f"Total {current_month}.{current_year} budget summary {total_month_budget_summary:>25}")
+
+    def _show_chosen_month_budget_summary(self):
+
+        chosen_year, chosen_month = TransactionSummary._get_validate_time_()
+
+        print("You chose: Other month budget summary")
+        total_month_budget_summary = self._get_month_transactions_value(year=chosen_year,
+                                                                        month=chosen_month)
+
+        TransactionSummary._count_money_spent_on_each_category(year=chosen_year,
+                                                               month=chosen_month)
+        print(f"Month {chosen_month}.{chosen_year} budget summary:", total_month_budget_summary)
+
     def get_month_budget_summary(self):
 
         while True:
             try:
                 choice = int(input("""
                 Choose an option:
-                1: sum total transactions value for current month)
-                2: sum total transactions value for chosen month)
-                3: sum.. ile wydałem na każdą z kategori w miesiącu i ile ogólnie.
+                1: sum total transactions value for current month
+                2: sum total transactions value for chosen month
+                3: sum how much do you spent on each category overall in app history
                 0: Exit
 
                 Enter your choice: """))
 
                 if choice == 1:
-                    print("You chose: Current month budget summary")
-
-                    total_month_budget_summary = self._get_month_transactions_value(year=self.current_year,
-                                                                                    month=self.current_month)
-                    print(f"Month {self.current_month}.{self.current_year} budget summary:", total_month_budget_summary)
+                    self._show_current_month_budget_summary()
 
                 elif choice == 2:
-                    # date validator !
-                    print("You chose: Other month budget summary")
-                    months = list(calendar.month_name)[1:]
-                    for i, month in enumerate(months, start=1):
-                        print(f"{i}: {month}")
+                    self._show_chosen_month_budget_summary()
 
-                    chosen_month = int(input("Please choose month number (1-12): "))
-                    if not 1 <= chosen_month <= 12:
-                        raise ValueError("Invalid month number. Valid options are between 1 and 12.")
-
-                    years = list(range(2024, 2031))
-                    formatted_years = ", ".join(str(year) for year in years)
-                    print(f"Available years: {formatted_years}")
-
-                    chosen_year = int(input("Please enter year (2024 - 2030): "))
-                    if not 2024 <= chosen_year <= 2030:
-                        raise ValueError("Invalid year. Valid options are between 2024 and 2030.")
-
-                    total_month_budget_summary = self._get_month_transactions_value(year=chosen_year,
-                                                                                    month=chosen_month)
-                    print(f"Month {chosen_month}.{chosen_year} budget summary:", total_month_budget_summary)
+                elif choice == 3:
+                    TransactionSummary._count_money_spent_on_each_category(overall=True)
 
                 elif choice == 0:
                     print("Exiting...")
                     break
 
                 else:
-                    logger.info("Invalid option, please choose 1, 2, or 0.")
+                    logger.info("Invalid option, please choose 1, 2, 3 or 0.")
             except ValueError as e:
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
-
-    @staticmethod
-    def count_money_spent_on_each_category(year=None, month=None):
-
-        try:
-            choice = int(input("wybor  1 albo 2"))
-            if choice == 1:  # liczenie ile ogólnie wydałem na daną kategorię w historii aplikacji
-                with SessionManager(Session) as session:
-                    results = session.query(
-                        Transactions.category_id, Categories.category_name, Transactions.transaction_date,
-                        func.sum(Transactions.amount).label('total_category_amount')).join(
-                        Categories, Transactions.category_id == Categories.id).group_by(
-                        Transactions.category_id, Categories.category_name).all()
-
-                    for result in results:
-                        print(
-                            f"ID category: {result.category_id:>5} : {result.category_name:<20} total amount: {result.total_category_amount:,.2f}")
-            elif choice == 2:  # liczenie ile wydałem na daną kategorię w  obecnym miesiącu
-                pass
-            elif choice == 3:  # liczenie ile wydałem na daną kategorię w ciągu wybranego miesiąca/roku
-                pass
-        except Exception as e:
-            logger.error(f"An error was occurred during count money depends on category:\n {e}")
-
-
-# transaction_summary = TransactionSummary(10)
-# transaction_summary.get_month_budget_summary()
-#
-# transaction_categories_summary = transaction_summary.count_money_spent_on_each_category()
