@@ -23,7 +23,7 @@ class NewCategory:
             elif categories_type == "custom":
                 query_obj = session.query(Categories).filter(Categories.user_id == self._user_id).all()
             else:
-                raise ValueError("Invalid categories_type")
+                raise ValueError("Invalid categories_type. Expected 'standard or 'custom")
 
             categories_dict = {}
 
@@ -45,8 +45,11 @@ class NewCategory:
         custom_categories_dict = self._get_categories_dict(categories_type="custom")
 
         print("Custom categories: ")
-        for category_id, category_name in custom_categories_dict.items():
-            print(f"{category_id:>10} - {category_name}")
+        if custom_categories_dict:
+            for category_id, category_name in custom_categories_dict.items():
+                print(f"{category_id:>10} - {category_name}")
+        else:
+            print("No custom categories added")
 
         return custom_categories_dict
 
@@ -66,11 +69,11 @@ class NewCategory:
 
         if decision.upper() == 'Y':
             description = input(f"Enter description for {entity_name or 'this entity'}: ")
-            print(f"Description for {entity_name or 'entity'}: {description}")
+            print(f"Description for {entity_name}: {description}")
             return description
         else:
             print("No description was added.")
-            logger.info(f"{entity_name or 'Entity'} description is set to Null")
+            logger.info(f"{entity_name} description is set to Null")
             return None
 
     def _category_description_handler(self):
@@ -218,7 +221,12 @@ class NewCategory:
         custom_categories_dict = self._get_custom_categories_dict()
 
         while True:
-            category_name = input("\nEnter the name of the new custom category you would like to add: ")
+            category_name = input("\nEnter the name of the new custom category you would like to add:"
+                                  "or press 0 to Exit. ")
+
+            if category_name == '0':
+                print("Exit")
+                break
 
             if category_name.isdigit():
                 logger.error("Category name can't be a number!")
@@ -306,7 +314,7 @@ class NewCategory:
 
                     return new_category_obj
                 else:
-                    print("User chose to exit")
+                    print("User chosen to exit")
                     return None
 
             except Exception as e:
@@ -698,3 +706,9 @@ class TransactionSummary(DeleteTransaction):
             except ValueError as e:
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
+
+
+
+n_c = NewCategory(10)
+
+wywołanie_funckji = n_c.add_new_category_to_database()

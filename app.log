@@ -379,3 +379,5 @@ WHERE EXTRACT(YEAR FROM transactions.transaction_date) = %(param_1)s AND EXTRACT
 2024-09-16 19:09:25,968 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-16 19:10:54,841 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-16 19:32:42,508 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-18 19:51:16,815 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-18 19:53:48,718 - logger - ERROR - Failed to create category object.
