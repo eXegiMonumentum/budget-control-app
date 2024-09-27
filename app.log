@@ -381,3 +381,218 @@ WHERE EXTRACT(YEAR FROM transactions.transaction_date) = %(param_1)s AND EXTRACT
 2024-09-16 19:32:42,508 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-18 19:51:16,815 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-18 19:53:48,718 - logger - ERROR - Failed to create category object.
+2024-09-27 12:15:06,411 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 12:15:06,412 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 12:15:20,141 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 12:15:20,141 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:01:43,882 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 15:03:16,579 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:03:16,580 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:09,826 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:09,827 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:42,979 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:42,980 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:55,252 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:55,253 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:23:19,751 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:23:19,751 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:10,352 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:10,352 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:28,576 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:28,577 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:02:38,995 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:02:38,996 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:03:16,760 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:03:16,760 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:03:32,870 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:03:32,870 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:34,619 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:34,619 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:46,507 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:46,507 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:05:16,615 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:05:16,615 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:05:23,831 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:05:23,833 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:08:07,463 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:08:07,464 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:09:03,475 - logger - ERROR - Exception type: <class 'AttributeError'>, value: type object 'Transactions' has no attribute 'category_name'
+2024-09-27 16:09:03,475 - logger - ERROR - An error was occurred during count money spent on each category:
+ type object 'Transactions' has no attribute 'category_name'
+2024-09-27 16:23:16,517 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 16:23:53,676 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 16:31:35,436 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 16:31:40,629 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.

@@ -1,5 +1,3 @@
-import pprint
-import sys
 import datetime
 from models import Session, Categories, Transactions
 from session_manager import SessionManager
@@ -331,6 +329,14 @@ class NewTransaction(NewCategory):
         super().__init__(user_id)
 
     def _get_categories_tuples_list(self):
+        """ allows to get users categories information in list of tuples.
+            and print category_id and category_name from each record.
+
+             tuples looks like:
+              id_pk, user_id, category_name, description
+              [(34, None, 'Food and Drinks','Expenses on food and drinks'),
+               (35, None, 'Transport', 'Expenses on transport)]'"""
+
         with SessionManager(Session) as session:
             query = session.query(
                 Categories.id,
@@ -399,31 +405,38 @@ class NewTransaction(NewCategory):
         It combines to get categories and transactions from different related tables.
 
         :param get_records_as_tuples_func: To get categories tuples list or transactions tuples list.
-        :param entity_name: It's for configuring print statements, e.g. if entity_name = category, this function informs you about categories,
-                             elif transaction informs about transactions.
-        :return: The category or transaction identifier selected by the user, e.g. to delete a transaction or add a new category by identifier.
+        :param entity_name: It's for configuring print statements, e.g. if entity_name = category,
+               this function informs you about categories, elif transaction informs about transactions.
+
+        :return: The category or transaction identifier selected by the user
+                 To delete a transaction or add a new category by identifier.
         """
 
         if not isinstance(entity_name, str):
             logger.error(f"TypeError: entity_name must be a string, not {type(entity_name)}")
             raise TypeError(f"entity_name must be a string, not {type(entity_name)}")
 
+        if entity_name != "category" and entity_name != "transaction":
+            raise ValueError(f"Unknown entity name: {entity_name}")
+
         tuples_records_list, _ = get_records_as_tuples_func(**kwargs)
 
         while True:
             try:
                 given_id = int(input(f"Choose {entity_name} id: "))
-
                 found = False
+
                 for value in tuples_records_list:
                     if value[0] == given_id:
+                        found = True
                         if entity_name == "category":
                             print(
                                 f"{'-' * 20}\n"
                                 f"You chose:\n"
                                 f"category id:     {value[0]}\n"
-                                f"category name:   {value[1]}\n"
+                                f"category name:   {value[2]}\n"
                             )
+
                         elif entity_name == "transaction":
                             print(
                                 f"{'-' * 20}\n"
@@ -435,17 +448,13 @@ class NewTransaction(NewCategory):
                                 f"amount:             {value[4]}\n"
                                 f"transaction date:   {value[5]}\n"
                             )
-                        else:
-                            raise ValueError(f"Unknown entity name: {entity_name}")
 
                         logger.info(f"Correct {entity_name}_id: {given_id}")
                         return given_id
 
-                    found = True
-
                 if not found:
-                    logger.error(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
-                    print(f"{entity_name} id: {given_id} does not exist. Please enter a valid id number.")
+                    logger.info(f"{entity_name} id {given_id} does not exist.")
+                    print(f"{given_id} does not exist. Please enter a correct {entity_name} id.")
 
             except ValueError as e:
                 print("Invalid number. Please enter a valid number.")
@@ -558,16 +567,17 @@ class TransactionSummary(DeleteTransaction):
     def __init__(self, user_id):
         super().__init__(user_id)
 
-    @staticmethod
-    def _total_transactions_value():
-        with SessionManager(Session) as session:
-            try:
-                total_amount = session.query(func.sum(Transactions.amount)).scalar()
-                return total_amount
-
-            except Exception as e:
-                logger.error(f"An error occurred while calculating total transactions value: {e}")
-                print(f"An error occurred while calculating total transactions value: {e}")
+    # @staticmethod
+    # def _total_transactions_value():
+    #     """ """
+    #     with SessionManager(Session) as session:
+    #         try:
+    #             total_amount = session.query(func.sum(Transactions.amount)).scalar()
+    #             return total_amount
+    #
+    #         except Exception as e:
+    #             logger.error(f"An error occurred while calculating total transactions value: {e}")
+    #             print(f"An error occurred while calculating total transactions value: {e}")
 
     def _get_month_transactions_value(self, year=None, month=None):
         try:
@@ -592,7 +602,7 @@ class TransactionSummary(DeleteTransaction):
 
             with SessionManager(Session) as session:
 
-                results = session.query(Transactions.category_id, Categories.category_name,
+                results = session.query(Transactions.category_id, Categories.category_name, Categories.category_name,
                                         func.sum(Transactions.amount).label('total_category_amount')).join(
                     Categories, Transactions.category_id == Categories.id)
 
@@ -612,12 +622,12 @@ class TransactionSummary(DeleteTransaction):
                             f"ID category: {result.category_id:>5} : {result.category_name:<20}"
                             f" total amount: {result.total_category_amount:,.2f}")
                 else:
-                    results = results.group_by(Transactions.category_id, Categories.category_name).order_by(
-                        desc(Transactions.category_id)).all()
 
                     print("summary (each category transaction) from the entire transaction history")
+                    results = results.group_by(Transactions.category_id, Categories.category_name).all()
 
                     for result in results:
+
                         print(f"ID category: {result.category_id:>5} : {result.category_name:<20}"
                               f"total amount: {result.total_category_amount:,.2f}")
 
@@ -657,7 +667,7 @@ class TransactionSummary(DeleteTransaction):
     def _show_current_month_budget_summary(self):
         current_year, current_month = TransactionSummary._get_validate_time_(current_year=True,
                                                                              current_month=True)
-        print("You chose: Current month budget summary")
+        print("Current month budget summary")
         total_month_budget_summary = self._get_month_transactions_value(year=current_year,
                                                                         month=current_month)
         TransactionSummary._count_money_spent_on_each_category()
@@ -667,7 +677,7 @@ class TransactionSummary(DeleteTransaction):
 
         chosen_year, chosen_month = TransactionSummary._get_validate_time_()
 
-        print("You chose: Other month budget summary")
+        print("Custom month budget summary")
         total_month_budget_summary = self._get_month_transactions_value(year=chosen_year,
                                                                         month=chosen_month)
 
@@ -708,7 +718,9 @@ class TransactionSummary(DeleteTransaction):
                 print(f"Error: {e} Please enter a valid number.")
 
 
+n_t = TransactionSummary(10)
+# n_t._count_money_spent_on_each_category(overall=True)
+# n_t._count_money_spent_on_each_category()
+# dodaję nową transakcję w  aby nie było pustego category id .
 
-n_c = NewCategory(10)
-
-wywołanie_funckji = n_c.add_new_category_to_database()
+n_t.add_transaction_to_database()

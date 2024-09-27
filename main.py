@@ -22,7 +22,7 @@ def main():
                 if user_id:
                     while True:
                         print("""Choose an action:
-                        - 1 - Add category
+                        - 1 - Add transaction category
                         - 2 - Add transaction
                         - 3 - Remove transaction
                         - 4 - Sum transactions
