@@ -219,8 +219,8 @@ class NewCategory:
         custom_categories_dict = self._get_custom_categories_dict()
 
         while True:
-            category_name = input("\nEnter the name of the new custom category you would like to add:"
-                                  "or press 0 to Exit. ")
+            category_name = input("\nEnter the name of the new custom category you would like to add,\n"
+                                  "or press 0 to Exit: ")
 
             if category_name == '0':
                 print("Exit")
@@ -323,82 +323,6 @@ class NewCategory:
     def add_new_category_to_database(self):
         self._add_to_database(self._get_category_object, "category")
 
-
-class NewTransaction(NewCategory):
-    def __init__(self, user_id):
-        super().__init__(user_id)
-
-    def _get_categories_tuples_list(self):
-        """ allows to get users categories information in list of tuples.
-            and print category_id and category_name from each record.
-
-             tuples looks like:
-              id_pk, user_id, category_name, description
-              [(34, None, 'Food and Drinks','Expenses on food and drinks'),
-               (35, None, 'Transport', 'Expenses on transport)]'"""
-
-        with SessionManager(Session) as session:
-            query = session.query(
-                Categories.id,
-                Categories.user_id,
-                Categories.category_name,
-                Categories.description
-
-            ).filter(
-                (Categories.user_id == self._user_id) | (Categories.user_id.is_(None))
-            ).all()
-
-            tuples_records_list = [
-                (id_primary_key, user_id, category_name, description,
-                 "Standard category" if user_id is None else "custom category")
-                for id_primary_key, user_id, category_name, description in query]
-
-            for record in tuples_records_list:
-                print(f"category id: {record[0]} - category_name:  {record[2]}")
-
-            return tuples_records_list, None
-
-    def _get_amount(self):
-
-        while True:
-            chose_option = int(input(
-                "Choose an option:\n"
-                "1: Spent money\n"
-                "2: Earned money\n"
-                "0: Exit\n"
-            ))
-            try:
-                if chose_option == 1:
-                    amount = int(input("Enter how much money you have spent: "))
-                    if amount > 0:
-                        amount = -amount
-                        self.amount = amount
-                    return amount
-
-                elif chose_option == 2:
-                    amount = int(input("Enter how much money you have earned: "))
-                    if amount < 0:
-                        amount *= -1
-                        self.amount = amount
-                    return amount
-
-                elif chose_option == 0:
-                    logger.info("Exiting the program")
-                    print("Exiting the program.")
-                    break
-
-                else:
-                    logger.info("Invalid option. please enter choice 1 or 2 or 0 if you want exit.")
-                    print("Invalid option. please enter choice 1 or 2.")
-
-            except ValueError as e:
-                logger.error(f"Invalid number {e}. Please enter the number.")
-                print(f"Invalid number {e}. Please enter the number")
-
-    def _get_category_id(self):
-        selected_category_id = self._get_id(self._get_categories_tuples_list, entity_name="category")
-        return selected_category_id
-
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """
         Function allows to get records from the database as tuples.
@@ -460,6 +384,91 @@ class NewTransaction(NewCategory):
                 print("Invalid number. Please enter a valid number.")
                 logger.error(f"Invalid number. {e} Please enter a valid number.")
 
+    def _get_categories_tuples_list(self, only_custom_categories=False):
+        """ allows to get users categories information in list of tuples.
+            and print category_id and category_name from each record.
+            It's for create new transaction and delete custom categories
+
+            :parameter: only_custom_categories=False means that function is used for get all categories
+                    User can delete only custom categories. To delete custom category parameter is set True.
+
+             tuples looks like:
+              id_pk, user_id, category_name, description, category_type_as_str
+              [(34, None, 'Food and Drinks','Expenses on food and drinks', custom category),
+               (35, None, 'Transport', 'Expenses on transport, standard_category)]'"""
+
+        with SessionManager(Session) as session:
+
+            query = session.query(Categories.id, Categories.user_id, Categories.category_name,
+                                  Categories.description)
+
+            if not only_custom_categories:
+                query = query.filter((Categories.user_id == self._user_id) | (Categories.user_id.is_(None))).all()
+            else:
+                query = query.filter(Categories.user_id == self._user_id).all()
+
+            print("Custom categories")
+            tuples_records_list = [
+                (id_primary_key, user_id, category_name, description,
+                 "standard category" if user_id is None else "custom category")
+                for id_primary_key, user_id, category_name, description in query]
+
+            for record in tuples_records_list:
+                print(f"category id: {record[0]} - category_name:  {record[2]}")
+            if only_custom_categories:
+                print("Delete custom category.")
+
+            return tuples_records_list, None
+
+    def _get_category_id(self, only_custom_categories=False):
+        """Allows to get category id, for further create new transaction or delete custom category. to delete custom
+        category  set only_custom_categories on True, because user can manage only his own categories."""
+        selected_category_id = self._get_id(self._get_categories_tuples_list,
+                                            entity_name="category", only_custom_categories=only_custom_categories)
+        return selected_category_id
+
+
+class NewTransaction(NewCategory):
+    def __init__(self, user_id):
+        super().__init__(user_id)
+
+    def _get_amount(self):
+
+        while True:
+            chose_option = int(input(
+                "Choose an option:\n"
+                "1: Spent money\n"
+                "2: Earned money\n"
+                "0: Exit\n"
+            ))
+            try:
+                if chose_option == 1:
+                    amount = int(input("Enter how much money you have spent: "))
+                    if amount > 0:
+                        amount = -amount
+                        self.amount = amount
+                    return amount
+
+                elif chose_option == 2:
+                    amount = int(input("Enter how much money you have earned: "))
+                    if amount < 0:
+                        amount *= -1
+                        self.amount = amount
+                    return amount
+
+                elif chose_option == 0:
+                    logger.info("Exiting the program")
+                    print("Exiting the program.")
+                    break
+
+                else:
+                    logger.info("Invalid option. please enter choice 1 or 2 or 0 if you want exit.")
+                    print("Invalid option. please enter choice 1 or 2.")
+
+            except ValueError as e:
+                logger.error(f"Invalid number {e}. Please enter the number.")
+                print(f"Invalid number {e}. Please enter the number")
+
     def _transaction_description_handler(self):
         return self._description_handler("Do you want to add a transaction description?", "transaction")
 
@@ -482,13 +491,16 @@ class NewTransaction(NewCategory):
         self._add_to_database(self._get_transaction_object, "transaction")
 
 
-class DeleteTransaction(NewTransaction):
+class Delete(NewTransaction):
     def __init__(self, user_id):
         super().__init__(user_id)
 
     @staticmethod
     def _get_transactions_query(year=None, month=None):
-        """Return the query object for further use"""
+        """Return the query object containing information about transactions (for further use)
+        params : if year and month are provided, then query is filter.
+        If the year and month are not specified, you can get all the information
+         About transactions (the entire history of the application) """
 
         with SessionManager(Session) as session:
 
@@ -534,57 +546,64 @@ class DeleteTransaction(NewTransaction):
                                                entity_name='transaction')
         return selected_transaction_id
 
-    def delete_transaction(self):
+    def delete_record_by_id(self, entity_name='category'):
+        """ Allows to delete transaction or category by chosen id.
+            param: entity_name change how to function works:
+                'category' means that it's operate on categories
+                'transaction' means that it's operate on transactions
+            """
+        transaction_to_delete = None
+        category_to_delete = None
 
         with SessionManager(Session) as session:
 
-            transaction_id = self._get_transaction_id()
-            transaction_to_delete = session.query(Transactions).filter(Transactions.id == transaction_id).first()
+            if entity_name.capitalize() == 'Transaction':
+                transaction_id = self._get_transaction_id()
+                transaction_to_delete = session.query(Transactions).filter(Transactions.id == transaction_id).first()
 
-            if not transaction_to_delete:
-                logger.error("Transaction doesnt exist!")
-                print("Transaction doesn't exist!")
+            elif entity_name.capitalize() == 'Category':
+                category_id = self._get_category_id(only_custom_categories=True)
+                category_to_delete = session.query(Categories).filter(Categories.id == category_id).first()
+
+            if not transaction_to_delete and not category_to_delete:
+                logger.error(f"{entity_name} doesnt exist!")
+                print(f"{entity_name} doesn't exist!")
                 return
 
-            choice = input("Do you want delete chosen transaction? (Y/N): ")
+            choice = input(f"Do you want delete chosen {entity_name.lower()}? (Y/N): ")
 
             if choice.upper() == 'Y':
 
                 try:
-                    session.delete(transaction_to_delete)
-                    print("Transaction was deleted successfully.")
-                    logger.info("Transaction was deleted successfully.")
+                    if transaction_to_delete:
+                        session.delete(transaction_to_delete)
+                        print("Transaction was deleted successfully.")
+                        logger.info("Transaction was deleted successfully.")
 
+                    elif category_to_delete:
+                        session.delete(category_to_delete)
+                        print("Category was deleted successfully.")
+                        logger.info("Category was deleted successfully.")
                 except Exception as e:
-                    print(f"An error occurred while deleting the transaction: {e}")
-                    logger.error(f"An error occurred while deleting transaction {transaction_id}: {e}")
+                    print(f"An error occurred while deleting the {entity_name.lower()}: {e}")
+                    logger.error(f"An error occurred while deleting {entity_name.lower()} {transaction_id}: {e}")
             else:
-                logger.info("Transaction was not deleted.")
-                print("Transaction was not deleted.")
+                logger.info(f"{entity_name} was not deleted.")
+                print(f"{entity_name} was not deleted.")
 
 
-class TransactionSummary(DeleteTransaction):
+class TransactionSummary(Delete):
     def __init__(self, user_id):
         super().__init__(user_id)
-
-    # @staticmethod
-    # def _total_transactions_value():
-    #     """ """
-    #     with SessionManager(Session) as session:
-    #         try:
-    #             total_amount = session.query(func.sum(Transactions.amount)).scalar()
-    #             return total_amount
-    #
-    #         except Exception as e:
-    #             logger.error(f"An error occurred while calculating total transactions value: {e}")
-    #             print(f"An error occurred while calculating total transactions value: {e}")
 
     def _get_month_transactions_value(self, year=None, month=None):
         try:
             transaction_results_tuples, query = self._get_transactions_tuples_list(year=year, month=month)
             total_month_budget_summary = query.with_entities(func.sum(Transactions.amount)).scalar()
+
             if not total_month_budget_summary:
                 return "No transactions"
+
             return total_month_budget_summary
         except Exception as e:
             logger.error(f"An error occurred while calculating month transactions value: {e}")
@@ -627,7 +646,6 @@ class TransactionSummary(DeleteTransaction):
                     results = results.group_by(Transactions.category_id, Categories.category_name).all()
 
                     for result in results:
-
                         print(f"ID category: {result.category_id:>5} : {result.category_name:<20}"
                               f"total amount: {result.total_category_amount:,.2f}")
 
@@ -718,9 +736,4 @@ class TransactionSummary(DeleteTransaction):
                 print(f"Error: {e} Please enter a valid number.")
 
 
-n_t = TransactionSummary(10)
-# n_t._count_money_spent_on_each_category(overall=True)
-# n_t._count_money_spent_on_each_category()
-# dodaję nową transakcję w  aby nie było pustego category id .
 
-n_t.add_transaction_to_database()

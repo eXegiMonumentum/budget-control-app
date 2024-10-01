@@ -1,5 +1,5 @@
 from credentials import SignUp, LogIn
-from database_management import NewCategory, NewTransaction, DeleteTransaction, TransactionSummary
+from database_management import NewCategory, NewTransaction, Delete, TransactionSummary
 
 
 def main():
@@ -22,11 +22,12 @@ def main():
                 if user_id:
                     while True:
                         print("""Choose an action:
-                        - 1 - Add transaction category
-                        - 2 - Add transaction
-                        - 3 - Remove transaction
-                        - 4 - Sum transactions
-                        - 5 - Log out""")
+                        - 1 - Add new custom transaction category name
+                        - 2 - remove custom category
+                        - 3 - Add new transaction
+                        - 4 - Remove transaction
+                        - 5 - Sum transactions
+                        - 6 - Log out""")
 
                         try:
                             action = int(input("Enter your choice: "))
@@ -35,15 +36,18 @@ def main():
                                 add_category = NewCategory(user_id)
                                 add_category.add_new_category_to_database()
                             elif action == 2:
+                                delete_category = Delete(user_id)
+                                delete_category.delete_record_by_id()
+                            elif action == 3:
                                 add_transaction = NewTransaction(user_id)
                                 add_transaction.add_transaction_to_database()
-                            elif action == 3:
-                                delete_transaction = DeleteTransaction(user_id)
-                                delete_transaction.delete_transaction()
                             elif action == 4:
+                                delete_transaction = Delete(user_id)
+                                delete_transaction.delete_record_by_id(entity_name="transaction")
+                            elif action == 5:
                                 transaction_summary = TransactionSummary(user_id)
                                 transaction_summary.get_month_budget_summary()
-                            elif action == 5:
+                            elif action == 6:
                                 print("Logging out...")
                                 break
                             else:

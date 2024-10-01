@@ -596,3 +596,21 @@ FROM transactions JOIN categories ON transactions.category_id = categories.id GR
 2024-09-27 16:23:53,676 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-27 16:31:35,436 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-09-27 16:31:40,629 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.
+2024-10-01 08:14:47,821 - logger - ERROR - Category name can't be a number!
+2024-10-01 08:14:58,855 - logger - ERROR - Failed to create category object.
+2024-10-01 08:20:36,494 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 09:38:28,137 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:07:29,937 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:10:20,490 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:29:17,314 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:30:46,379 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:31:07,410 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'transaction_to_delete' where it is not associated with a value
+2024-10-01 16:44:57,350 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:46:01,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:46:43,517 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:46:56,513 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'transaction_to_delete' where it is not associated with a value
+2024-10-01 16:48:07,116 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'transaction_to_delete' where it is not associated with a value
+2024-10-01 17:24:51,957 - logger - ERROR - category doesnt exist!
+2024-10-01 17:25:27,764 - logger - ERROR - category doesnt exist!
+2024-10-01 17:33:31,910 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 17:37:16,758 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
