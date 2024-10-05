@@ -1,0 +1,617 @@
+2024-08-28 16:50:01,147 - logger - ERROR - Log in failed: Incorrect email or username.
+2024-08-31 10:52:28,810 - logger - ERROR - Index out of range list index out of range
+2024-09-01 20:21:14,126 - logger - ERROR - Invalid category type number in: __main__
+2024-09-01 20:21:42,017 - logger - ERROR - Invalid category type number
+2024-09-02 00:10:53,520 - logger - ERROR - Invalid category type number
+2024-09-02 00:12:55,789 - logger - ERROR - Invalid category type number
+2024-09-02 16:55:43,657 - logger - ERROR - Invalid category type number
+2024-09-02 18:18:57,241 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-02 18:19:10,010 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'choice_category_handler'
+2024-09-02 18:19:32,958 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_icon_handler'
+2024-09-02 18:20:34,177 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'get_category_object'
+2024-09-02 18:20:52,558 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute 'choice_category_type_dict'
+2024-09-02 21:05:05,784 - logger - ERROR - Exception type: <class 'AttributeError'>, value: type object 'NewCategory' has no attribute 'get_icon_tuples_list'
+2024-09-03 11:34:22,828 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_get_own_categories_dict'
+2024-09-03 11:37:00,361 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-03 15:40:07,670 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.DatatypeMismatch) B£¥D:  argument WHERE musi byæ typu boolean, nie typu character varying
+LINE 3: WHERE categories.category_name
+              ^
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.colour AS categories_colour, categories.icon AS categories_icon 
+FROM categories 
+WHERE categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-03 15:40:42,853 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:40:54,506 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:43:03,276 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:43:35,705 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:45:57,984 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 15:47:49,951 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.filter_by() takes 1 positional argument but 2 were given
+2024-09-03 16:54:34,474 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewTransaction' object has no attribute '_NewTransaction__user_id'
+2024-09-03 16:57:01,046 - logger - ERROR - Exception type: <class 'ValueError'>, value: too many values to unpack (expected 2)
+2024-09-03 17:11:34,382 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for |: 'int' and 'InstrumentedAttribute'
+2024-09-03 17:11:51,359 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for |: 'int' and 'InstrumentedAttribute'
+2024-09-03 17:12:43,971 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for |: 'int' and 'InstrumentedAttribute'
+2024-09-03 19:06:56,959 - logger - ERROR - Exception type: <class 'ValueError'>, value: not enough values to unpack (expected 6, got 3)
+2024-09-03 19:08:22,189 - logger - ERROR - Exception type: <class 'ValueError'>, value: not enough values to unpack (expected 4, got 3)
+2024-09-03 19:09:13,053 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'description' is not defined
+2024-09-03 19:09:22,536 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'description' is not defined
+2024-09-06 13:54:49,114 - logger - ERROR - Category id: 53 does not exist
+2024-09-06 13:56:36,627 - logger - ERROR - Category id: 54 does not exist
+2024-09-06 13:57:07,713 - logger - ERROR - Category id: 0 does not exist. Please enter a valid id number.
+2024-09-06 13:57:12,192 - logger - ERROR - Category id: -2 does not exist. Please enter a valid id number.
+2024-09-06 14:27:25,471 - logger - ERROR - id doesn't exist.
+Details tuple index out of range
+2024-09-06 14:27:50,807 - logger - ERROR - Category id: 0 does not exist. Please enter a valid id number.
+2024-09-06 14:27:55,968 - logger - ERROR - Category id: -12 does not exist. Please enter a valid id number.
+2024-09-06 14:28:00,794 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:28:10,414 - logger - ERROR - Category id: 80 does not exist. Please enter a valid id number.
+2024-09-06 14:28:16,347 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:28:38,494 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:29:19,557 - logger - ERROR - Category id: 99 does not exist. Please enter a valid id number.
+2024-09-06 14:29:23,263 - logger - ERROR - Category id: 60 does not exist. Please enter a valid id number.
+2024-09-06 14:29:28,077 - logger - ERROR - Category id: 55 does not exist. Please enter a valid id number.
+2024-09-06 14:29:34,160 - logger - ERROR - Category id: 53 does not exist. Please enter a valid id number.
+2024-09-06 14:29:38,944 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:30:05,050 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:31:04,747 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:31:27,046 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:31:49,570 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:33:09,465 - logger - ERROR - Category id: 12 does not exist. Please enter a valid id number.
+2024-09-06 14:33:14,090 - logger - ERROR - Category id: 10 does not exist. Please enter a valid id number.
+2024-09-06 14:33:17,310 - logger - ERROR - Category id: 6 does not exist. Please enter a valid id number.
+2024-09-06 14:33:28,025 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:33:35,250 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:36:50,867 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:37:32,285 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:38:11,476 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:40:10,507 - logger - ERROR - Category id: 10 does not exist. Please enter a valid id number.
+2024-09-06 14:40:17,391 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:40:22,193 - logger - ERROR - id doesn't exist.
+Details: tuple index out of range
+2024-09-06 14:41:09,198 - logger - ERROR - Category id: 53 does not exist. Please enter a valid id number.
+2024-09-06 14:41:25,042 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 14:41:27,681 - logger - ERROR - Category id: 99 does not exist. Please enter a valid id number.
+2024-09-06 14:41:37,639 - logger - ERROR - Category id: 250 does not exist. Please enter a valid id number.
+2024-09-06 14:41:40,038 - logger - ERROR - Category id: 30 does not exist. Please enter a valid id number.
+2024-09-06 14:41:42,778 - logger - ERROR - Category id: 33 does not exist. Please enter a valid id number.
+2024-09-06 15:06:57,962 - logger - ERROR - Category id: 100 does not exist. Please enter a valid id number.
+2024-09-06 15:07:06,140 - logger - ERROR - Category id: 53 does not exist. Please enter a valid id number.
+2024-09-06 15:08:38,029 - logger - ERROR - Category id: 33 does not exist. Please enter a valid id number.
+2024-09-06 15:08:45,258 - logger - ERROR - Category id: 1 does not exist. Please enter a valid id number.
+2024-09-06 15:10:30,345 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-06 15:10:52,935 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-06 15:11:13,877 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-06 17:48:54,970 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:49:14,266 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:49:55,115 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:50:20,840 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:50:48,377 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:52:39,496 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:55:20,620 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 17:55:23,713 - logger - ERROR - Exception type: <class 'SystemExit'>, value: 
+2024-09-06 18:32:03,256 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:32:29,085 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:32:31,000 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:32:54,256 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:33:24,468 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:33:24,496 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:34:11,772 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:34:12,849 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:35:43,503 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:37:02,867 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:37:58,243 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:38:05,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:38:05,465 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:40:24,420 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:40:44,988 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:41:35,418 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:48:19,159 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:48:20,277 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-06 18:48:31,228 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-07 08:04:49,248 - logger - ERROR - Exception type: <class 'ValueError'>, value: not enough values to unpack (expected 6, got 5)
+2024-09-07 08:06:01,425 - logger - ERROR - Exception type: <class 'TypeError'>, value: cannot unpack non-iterable int object
+2024-09-07 08:11:49,013 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'pprint' is not defined
+2024-09-07 08:20:54,422 - logger - ERROR - Exception type: <class 'KeyError'>, value: 0
+2024-09-07 19:13:46,347 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:15:23,944 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:17:02,192 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:17:51,325 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-07 19:17:56,994 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'int' object is not subscriptable
+2024-09-07 19:23:54,139 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-08 09:40:31,219 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-08 09:40:39,301 - logger - ERROR - transaction id: 100 does not exist. Please enter a valid id number.
+2024-09-08 09:40:41,922 - logger - ERROR - transaction id: 1 does not exist. Please enter a valid id number.
+2024-09-08 09:40:48,996 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-08 13:07:45,838 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:45,843 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:45,843 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:45,843 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:07:52,305 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,643 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:08:03,644 - logger - ERROR - category id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,909 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,910 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,910 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:10:05,910 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-08 13:47:33,704 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:47:36,577 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:48:32,977 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:48:53,714 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:52:23,641 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 13:52:41,442 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'record' is not defined
+2024-09-08 13:52:47,720 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported format string passed to NoneType.__format__
+2024-09-08 20:58:43,919 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-08 21:00:12,933 - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'sum' object nor 'Comparator' object has an attribute 'scalar'
+2024-09-09 05:34:17,294 - logger - ERROR - Exception type: <class 'AttributeError'>, value: strftime
+2024-09-09 05:38:14,105 - logger - ERROR - Exception type: <class 'AttributeError'>, value: strftime
+2024-09-09 05:42:06,244 - logger - ERROR - Exception type: <class 'IndexError'>, value: tuple index out of range
+2024-09-09 20:36:14,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:36:24,223 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:37:57,207 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:42:38,669 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:59:28,679 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 20:59:37,045 - logger - ERROR - Invalid month number. IndexError
+2024-09-09 20:59:44,787 - logger - ERROR - Invalid month number. IndexError
+2024-09-09 21:00:32,322 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'selected_month_int' where it is not associated with a value
+2024-09-09 21:00:57,623 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'selected_month_int' where it is not associated with a value
+2024-09-09 21:02:15,583 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-09 21:02:23,536 - logger - ERROR - Invalid month number. IndexError
+2024-09-09 21:02:34,116 - logger - ERROR - Invalid month number. IndexError
+2024-09-10 06:14:25,515 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-10 06:14:47,337 - logger - ERROR - Invalid month number.
+2024-09-10 06:16:09,682 - logger - ERROR - Invalid month number.
+2024-09-10 06:16:46,058 - logger - ERROR - Invalid month number.
+2024-09-10 06:17:54,400 - logger - ERROR - Invalid month number.
+2024-09-10 06:18:10,917 - logger - ERROR - Invalid month number.
+2024-09-10 06:45:16,632 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NoneType' object has no attribute 'strftime'
+2024-09-10 07:25:18,619 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NoneType' object has no attribute 'strftime'
+2024-09-10 12:08:35,096 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-10 12:21:20,748 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-10 18:27:32,025 - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'BinaryExpression' object nor 'Comparator' object has an attribute 'all'
+2024-09-10 18:31:50,811 - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'BinaryExpression' object nor 'Comparator' object has an attribute 'all'
+2024-09-11 05:45:52,509 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-11 05:48:38,943 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-11 05:48:51,046 - logger - ERROR - transaction id: 9 does not exist. Please enter a valid id number.
+2024-09-11 05:49:04,161 - logger - ERROR - transaction id: 8 does not exist. Please enter a valid id number.
+2024-09-11 05:49:11,077 - logger - ERROR - transaction id: 52 does not exist. Please enter a valid id number.
+2024-09-11 05:50:08,096 - logger - ERROR - transaction id: 5 does not exist. Please enter a valid id number.
+2024-09-12 05:24:34,655 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.DatatypeMismatch) B£¥D:  argument AND musi byæ typu boolean, nie typu integer
+LINE 3: WHERE categories.id AND categories.category_name AND transac...
+              ^
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.colour AS categories_colour, categories.icon AS categories_icon, transactions.id AS transactions_id, transactions.user_id AS transactions_user_id, transactions.category_id AS transactions_category_id, transactions.amount AS transactions_amount, transactions.transaction_date AS transactions_transaction_date, transactions.description AS transactions_description, transactions.created_at AS transactions_created_at 
+FROM categories, transactions 
+WHERE categories.id AND categories.category_name AND transactions.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-12 05:26:15,473 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.UndefinedFunction) B£¥D:  operator nie istnieje: integer = boolean
+LINE 3: WHERE categories.id = true AND categories.category_name = tr...
+                            ^
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.colour AS categories_colour, categories.icon AS categories_icon, transactions.id AS transactions_id, transactions.user_id AS transactions_user_id, transactions.category_id AS transactions_category_id, transactions.amount AS transactions_amount, transactions.transaction_date AS transactions_transaction_date, transactions.description AS transactions_description, transactions.created_at AS transactions_created_at 
+FROM categories, transactions 
+WHERE categories.id = true AND categories.category_name = true AND transactions.id = true]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-12 05:30:45,357 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: ON clause, typically a SQL expression or ORM relationship attribute expected, got <class 'models.Transactions'>.
+2024-09-12 05:31:55,848 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: ON clause, typically a SQL expression or ORM relationship attribute expected, got <class 'models.Transactions'>.
+2024-09-12 05:32:09,966 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.InvalidRequestError'>, value: No 'on clause' argument may be passed when joining to a relationship path as a target
+2024-09-12 05:32:35,646 - logger - ERROR - Exception type: <class 'TypeError'>, value: Query.join() missing 1 required positional argument: 'target'
+2024-09-13 05:42:19,448 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'list' object has no attribute 'category_id'
+2024-09-14 18:45:43,445 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions, categories GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-14 19:00:36,934 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-14 19:00:48,691 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-14 21:55:24,369 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-14 22:10:14,755 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 07:56:37,680 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...gories.category_name AS categories_category_name, transactio...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, transactions.transaction_date AS transactions_transaction_date, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id, categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 07:56:37,681 - logger - ERROR - An error was occurred during count money depends on category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...gories.category_name AS categories_category_name, transactio...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, transactions.transaction_date AS transactions_transaction_date, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id, categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 07:57:33,073 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...gories.category_name AS categories_category_name, transactio...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, transactions.transaction_date AS transactions_transaction_date, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id, categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 07:57:33,074 - logger - ERROR - An error was occurred during count money depends on category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...gories.category_name AS categories_category_name, transactio...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, transactions.transaction_date AS transactions_transaction_date, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id, categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 08:07:05,091 - logger - ERROR - Exception type: <class 'AttributeError'>, value: transaction_date
+2024-09-16 08:07:05,092 - logger - ERROR - An error was occurred during count money depends on category:
+ transaction_date
+2024-09-16 08:25:57,332 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.transaction_date AS transactions_transac...
+               ^
+
+[SQL: SELECT transactions.transaction_date AS transactions_transaction_date, transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id, categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 08:25:57,332 - logger - ERROR - An error was occurred during count money depends on category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.transaction_date AS transactions_transac...
+               ^
+
+[SQL: SELECT transactions.transaction_date AS transactions_transaction_date, transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id, categories.category_name]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 08:27:08,498 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'list' object has no attribute 'filter'
+2024-09-16 08:27:08,499 - logger - ERROR - An error was occurred during count money depends on category:
+ 'list' object has no attribute 'filter'
+2024-09-16 08:27:42,459 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'list' object has no attribute 'filter'
+2024-09-16 08:27:42,460 - logger - ERROR - An error was occurred during count money depends on category:
+ 'list' object has no attribute 'filter'
+2024-09-16 08:47:19,753 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.transaction_date AS transactions_transac...
+               ^
+
+[SQL: SELECT transactions.transaction_date AS transactions_transaction_date, transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 08:47:19,754 - logger - ERROR - An error was occurred during count money depends on category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.transaction_date" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.transaction_date AS transactions_transac...
+               ^
+
+[SQL: SELECT transactions.transaction_date AS transactions_transaction_date, transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 08:54:38,013 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id 
+WHERE EXTRACT(YEAR FROM transactions.transaction_date) = %(param_1)s AND EXTRACT(MONTH FROM transactions.transaction_date) = %(param_2)s GROUP BY transactions.category_id]
+[parameters: {'param_1': 2024, 'param_2': 9}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 08:54:38,014 - logger - ERROR - An error was occurred during count money depends on category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id 
+WHERE EXTRACT(YEAR FROM transactions.transaction_date) = %(param_1)s AND EXTRACT(MONTH FROM transactions.transaction_date) = %(param_2)s GROUP BY transactions.category_id]
+[parameters: {'param_1': 2024, 'param_2': 9}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-16 12:47:06,579 - logger - ERROR - Invalid category type number
+2024-09-16 12:52:17,462 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 12:53:59,134 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 12:55:56,357 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 12:55:59,119 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'dict' object has no attribute 'write'
+2024-09-16 13:32:28,599 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 13:33:16,312 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 13:33:43,522 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 13:34:21,336 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 15:43:53,578 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 15:44:25,834 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 15:57:57,801 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 16:04:22,475 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for -: 'list' and 'int'
+2024-09-16 16:47:22,734 - logger - ERROR - Category name can't be a number!
+2024-09-16 17:31:39,304 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 17:32:03,747 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 17:32:17,013 - logger - ERROR - Exception type: <class 'NameError'>, value: name 'custom_categories_dict' is not defined
+2024-09-16 17:34:18,278 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_show_custom_categories_dict'
+2024-09-16 17:34:19,875 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_show_custom_categories_dict'
+2024-09-16 17:34:31,377 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'NewCategory' object has no attribute '_show_custom_categories_dict'
+2024-09-16 17:41:46,727 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 18:21:40,354 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 18:22:57,181 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 18:23:02,911 - logger - ERROR - Failed to create category object.
+2024-09-16 18:25:23,482 - logger - ERROR - Failed to create category object.
+2024-09-16 18:27:11,194 - logger - ERROR - Failed to create category object.
+2024-09-16 18:31:04,946 - logger - ERROR - Failed to create category object.
+2024-09-16 18:33:54,166 - logger - ERROR - Failed to create category object.
+2024-09-16 18:42:32,426 - logger - ERROR - Failed to create category object.
+2024-09-16 18:49:41,798 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 18:53:12,401 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 18:57:00,072 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 18:59:36,746 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 19:04:50,145 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 19:07:03,760 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 19:07:21,896 - logger - ERROR - transaction id: 10 does not exist. Please enter a valid id number.
+2024-09-16 19:07:58,901 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.
+2024-09-16 19:08:04,300 - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'a' Please enter a valid number.
+2024-09-16 19:08:05,839 - logger - ERROR - transaction id: 2 does not exist. Please enter a valid id number.
+2024-09-16 19:09:25,968 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 19:10:54,841 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-16 19:32:42,508 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-18 19:51:16,815 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-18 19:53:48,718 - logger - ERROR - Failed to create category object.
+2024-09-27 12:15:06,411 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 12:15:06,412 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 12:15:20,141 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 12:15:20,141 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:01:43,882 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 15:03:16,579 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:03:16,580 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:09,826 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:09,827 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:42,979 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:42,980 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:55,252 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:07:55,253 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:23:19,751 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 15:23:19,751 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:10,352 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:10,352 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:28,576 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:00:28,577 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:02:38,995 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:02:38,996 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:03:16,760 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:03:16,760 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "transactions.category_id" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: SELECT transactions.category_id AS transactions_category_id,...
+               ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:03:32,870 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:03:32,870 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:34,619 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:34,619 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:46,507 - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'Query' object has no attribute 'category_id'
+2024-09-27 16:04:46,507 - logger - ERROR - An error was occurred during count money spent on each category:
+ 'Query' object has no attribute 'category_id'
+2024-09-27 16:05:16,615 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:05:16,615 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:05:23,831 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:05:23,833 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:08:07,463 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:08:07,464 - logger - ERROR - An error was occurred during count money spent on each category:
+ (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.category_name" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...sactions.category_id AS transactions_category_id, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON transactions.category_id = categories.id GROUP BY transactions.category_id]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-09-27 16:09:03,475 - logger - ERROR - Exception type: <class 'AttributeError'>, value: type object 'Transactions' has no attribute 'category_name'
+2024-09-27 16:09:03,475 - logger - ERROR - An error was occurred during count money spent on each category:
+ type object 'Transactions' has no attribute 'category_name'
+2024-09-27 16:23:16,517 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 16:23:53,676 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 16:31:35,436 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-09-27 16:31:40,629 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.
+2024-10-01 08:14:47,821 - logger - ERROR - Category name can't be a number!
+2024-10-01 08:14:58,855 - logger - ERROR - Failed to create category object.
+2024-10-01 08:20:36,494 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 09:38:28,137 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:07:29,937 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:10:20,490 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:29:17,314 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:30:46,379 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:31:07,410 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'transaction_to_delete' where it is not associated with a value
+2024-10-01 16:44:57,350 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:46:01,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:46:43,517 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 16:46:56,513 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'transaction_to_delete' where it is not associated with a value
+2024-10-01 16:48:07,116 - logger - ERROR - Exception type: <class 'UnboundLocalError'>, value: cannot access local variable 'transaction_to_delete' where it is not associated with a value
+2024-10-01 17:24:51,957 - logger - ERROR - category doesnt exist!
+2024-10-01 17:25:27,764 - logger - ERROR - category doesnt exist!
+2024-10-01 17:33:31,910 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-01 17:37:16,758 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-05 10:36:40,437 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 

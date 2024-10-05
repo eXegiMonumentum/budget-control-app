@@ -35,18 +35,23 @@ def main():
                             if action == 1:
                                 add_category = NewCategory(user_id)
                                 add_category.add_new_category_to_database()
+
                             elif action == 2:
                                 delete_category = Delete(user_id)
                                 delete_category.delete_record_by_id()
+
                             elif action == 3:
                                 add_transaction = NewTransaction(user_id)
                                 add_transaction.add_transaction_to_database()
+
                             elif action == 4:
                                 delete_transaction = Delete(user_id)
                                 delete_transaction.delete_record_by_id(entity_name="transaction")
+
                             elif action == 5:
                                 transaction_summary = TransactionSummary(user_id)
                                 transaction_summary.get_month_budget_summary()
+
                             elif action == 6:
                                 print("Logging out...")
                                 break
