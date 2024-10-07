@@ -33,8 +33,8 @@ def main():
     choice = get_user_choice()
 
     if choice == 1:
-        c_files = FileCreator(create_files=True)
-        c_files.create_txt_files_for_chosen_month()
+        c_files = FileCreator()
+        c_files.create_txt_files()
 
     elif choice == 2:
         w_files = FileWriter()

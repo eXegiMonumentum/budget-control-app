@@ -1,8 +1,13 @@
 from credentials import SignUp, LogIn
 from database_management import NewCategory, NewTransaction, Delete, TransactionSummary
+from python_planner_project_2 import file_creator
+
+f_c = file_creator.FileCreator()
 
 
 def main():
+    f_c.run_file_check_loop()
+
     while True:
         print("""Enter what do you want to do:
         - 1 - Sign-up

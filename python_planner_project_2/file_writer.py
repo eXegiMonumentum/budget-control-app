@@ -1,5 +1,5 @@
 
-from file_opener import FileOpener
+from python_planner_project_2.file_opener import FileOpener
 
 
 class FileWriter(FileOpener):

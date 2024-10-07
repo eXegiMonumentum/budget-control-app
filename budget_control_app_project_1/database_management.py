@@ -322,6 +322,7 @@ class NewCategory:
 
     def add_new_category_to_database(self):
         self._add_to_database(self._get_category_object, "category")
+        # komunikat
 
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """

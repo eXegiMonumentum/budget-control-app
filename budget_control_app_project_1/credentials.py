@@ -70,7 +70,6 @@ class SignUp:
     def __is_password_confirmed(password, repeated_password):
         return password == repeated_password
 
-
     @staticmethod
     def __is_email_correct(email):
         """ Allows you to verify if the user typed the correct email during sign-up.
@@ -258,7 +257,3 @@ class LogIn:
 
                 print(f"Login failed: {e}\nLogin attempts remaining: {login_attempts}")
                 sys.stdout.flush()
-
-
-
-

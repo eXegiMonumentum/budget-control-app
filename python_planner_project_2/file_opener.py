@@ -1,15 +1,15 @@
-from file_creator import FileCreator
+from python_planner_project_2.file_creator import FileCreator
 import os
 
 
 class FileOpener(FileCreator):
     def __init__(self, current_month=False):
         """ current_month == True if you want operating on current month."""
-        super().__init__(current_month=current_month)
+        super().__init__()
 
         self.f_paths = self.create_paths_for_days_txt_files()
         self.today_path = self.f_paths[self.current_day_int - 1]
-
+        self.current_month = current_month
     def read_today_file(self):
         """ return file content list.- it's a list of records from txt files."""
 
@@ -42,7 +42,7 @@ class FileOpener(FileCreator):
         if not self.current_month:
             raise ValueError("Function read_files_from_week_of_current_month can only be used when current_month=True.")
 
-        _, weeks_dirs = self.creating_chosen_month_and_weeks_directories()
+        _, weeks_dirs = self.creating_month_and_weeks_directories()
 
         print(f"Choose a week of {self.chosen_month} you want to check:")
         for i, week in enumerate(weeks_dirs, start=1):
