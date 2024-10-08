@@ -126,4 +126,4 @@ class FileCreator:
             time.sleep(3600)
 
 # Tworzy mi pliki, - ale foldery tygodni są puste, nie ma plików dla danego dnia.
-# do modyfikacji warunek przy:   print(f"All transactions txt files for {self.current_month_name} were created")
+# do modyfikacji warunek przy:   print(f"All transactions :txt files for {self.current_month_name} were created
