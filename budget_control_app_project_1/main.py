@@ -6,8 +6,6 @@ f_c = file_creator.FileCreator()
 
 
 def main():
-    f_c.run_file_check_loop()
-
     while True:
         print("""Enter what do you want to do:
         - 1 - Sign-up
@@ -78,3 +76,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+    f_c.run_file_check_loop(print_message=True)
+
+# pomiędzy wyborem 3 Add new transaction, gdy wyświetlam transakcje, to dobrze byłoby dodać opcję dodania transakcji własnej również w tedy.

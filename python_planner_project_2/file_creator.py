@@ -4,19 +4,20 @@ import os
 import time
 from python_planner_project_2 import path_validator
 from budget_control_app_project_1 import logger
+
 logger = logger.logger
 
 
 class FileCreator:
-
     base_path = r'C:\Users\LENOVO\Desktop\budget_control_application\budget_control_app_project_1'
-    path_validator.PathValidator.get_valid_base_path(base_path)
-    weeks_range = []
+    path_validator.PathValidator.get_valid_base_path(base_path, message=False)
     current_month_name = datetime.datetime.now().strftime("%B")
     current_day_int = datetime.datetime.now().day
     current_month_int = int(datetime.datetime.now().strftime("%m"))
     current_year_int = int(datetime.datetime.now().strftime("%Y"))
     first_month_day, n_month_day = (calendar.monthrange(current_year_int, current_month_int))
+    weeks_range = []
+    exist_paths = []  # existed paths - (file opener)
 
     def _divide_month_to_weeks(self):
         """Creating a list of weeks for the current month,
@@ -43,7 +44,7 @@ class FileCreator:
             weeks_range.append((min(week), max(week)))  # (29, 30) last January week
 
         self.__class__.weeks_range = weeks_range
-
+        self.weeks_range = weeks_range
         return weeks_range
 
     def creating_month_and_weeks_directories(self):
@@ -71,6 +72,7 @@ class FileCreator:
         weeks_dirs = self.creating_month_and_weeks_directories()
         weeks_iterator = 0
         f_paths = []
+
         for week_index, week in enumerate(self.weeks_range, start=1):
             start, end = week  # (1, 7) or (8, 14) etc.
             for day in range(start, end + 1):
@@ -78,7 +80,8 @@ class FileCreator:
                 f_path = os.path.join(self.base_path, weeks_dirs[weeks_iterator], f_name)
 
                 if os.path.exists(f_path):
-                    pass
+                    if f_path not in FileCreator.exist_paths:
+                        FileCreator.exist_paths.append(f_path)
 
                 else:
                     f_paths.append(f_path)
@@ -86,15 +89,18 @@ class FileCreator:
             if weeks_iterator < len(weeks_dirs):
                 weeks_iterator += 1
 
+        FileCreator.f_paths = f_paths
         return f_paths
 
-    def create_txt_files(self, print_message=False):
+    def create_txt_files(self, print_message):
         """for each day of the current month will create a text file"""
+
         f_paths = self.create_paths_for_days_txt_files()
 
-        if os.path.exists(os.path.join(self.base_path, self.current_month_name)) and len(f_paths) == self.n_month_day:
+        if os.path.exists(os.path.join(self.base_path, self.current_month_name)) \
+                and (len(f_paths) == self.n_month_day) and (os.path.exists(f_paths[0])):
             if print_message:
-                print(f"All transactions txt files for {self.current_month_name} were created")
+                print(f"All logs files for  {self.current_month_name} were created")
 
         else:
             for path in f_paths:
@@ -111,8 +117,7 @@ class FileCreator:
                     print(f"File operation failed due to system-related errors.: {e}")
                     return None
 
-
-    def run_file_check_loop(self):
+    def run_file_check_loop(self, print_message=True):
 
         while True:
 
@@ -120,10 +125,11 @@ class FileCreator:
             class_time = datetime.datetime(year=2024, month=10, day=1, hour=5, minute=0, second=0)
 
             if datetime.datetime.now() >= class_time:
-                self.create_txt_files(print_message=True)
+                self.create_txt_files(print_message=print_message)
                 class_time = class_time + delta
 
             time.sleep(3600)
+
 
 # Tworzy mi pliki, - ale foldery tygodni są puste, nie ma plików dla danego dnia.
 # do modyfikacji warunek przy:   print(f"All transactions :txt files for {self.current_month_name} were created

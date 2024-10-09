@@ -1,1 +1,8 @@
 2024-10-06 16:05:13,662 - logger - ERROR - Failed to create category object.
+2024-10-09 15:26:17,289 - logger - ERROR - Failed to create category object.
+2024-10-09 15:31:09,095 - logger - ERROR - Invalid number invalid literal for int() with base 10: 'Bought desk accessories '. Please enter the number.
+2024-10-09 15:31:54,244 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-09 18:29:34,373 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-09 18:42:24,737 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-09 18:48:10,378 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-09 18:48:42,242 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 

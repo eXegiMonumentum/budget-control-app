@@ -5,13 +5,26 @@ from logger import logger
 from sqlalchemy import func, desc
 import calendar
 from sqlalchemy import extract
+from python_planner_project_2 import file_writer
+
+
+def write_log_message(func):
+    def wrapp(self, *args, **kwargs):
+        log_message = func(self, *args, **kwargs)
+        if log_message:
+            self.f_w._write_log_message_to_file(log_message)
+        return log_message
+
+    return wrapp
 
 
 class NewCategory:
 
     def __init__(self, user_id):
+
         self._user_id = user_id
         self._new_category = None
+        self.f_w = file_writer.FileWriter()
 
     def _get_categories_dict(self, categories_type='standard'):
         with SessionManager(Session) as session:
@@ -248,8 +261,8 @@ class NewCategory:
 
                 if decision.upper() == "Y":
                     custom_categories_dict[len(custom_categories_dict) + 1] = category_name
-                    print(f"Category '{category_name}' added successfully.")
-                    logger.info(f"Category '{category_name}' added successfully.")
+                    print(f"Category '{category_name}' will be added ")
+                    logger.info(f"Category '{category_name}' will be added")
 
                     self._new_category = category_name
                     return category_name
@@ -268,6 +281,7 @@ class NewCategory:
                 logger.info("category name is None. Please enter valid category name.")
                 print("category name is None. Please enter valid category name.")
 
+    @write_log_message
     def _add_to_database(self, get_object_function, entity_name):
         """
            Helper method to add an entity (transaction or category) to the database.
@@ -286,8 +300,11 @@ class NewCategory:
 
             try:
                 session.add(new_object)
-                logger.info(f" New {entity_name} added successfully.")
+                logger.info(f"User added new {entity_name} successfully.")
+                time = datetime.datetime.now().replace(microsecond=0)
+                log_message = f" time: {time}: User added new {entity_name} successfully."
                 print(f"New {entity_name} added successfully.")
+                return log_message
 
             except Exception as e:
                 logger.error(f"Failed to add {entity_name} to the database: {e}")
@@ -320,9 +337,9 @@ class NewCategory:
                 print(f"An exception occurred: {e}")
                 return None
 
+
     def add_new_category_to_database(self):
         self._add_to_database(self._get_category_object, "category")
-        # komunikat
 
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """
@@ -489,7 +506,7 @@ class NewTransaction(NewCategory):
         return new_transaction
 
     def add_transaction_to_database(self):
-        self._add_to_database(self._get_transaction_object, "transaction")
+        log_messge = self._add_to_database(self._get_transaction_object, "transaction")
 
 
 class Delete(NewTransaction):
@@ -735,6 +752,3 @@ class TransactionSummary(Delete):
             except ValueError as e:
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
-
-
-
