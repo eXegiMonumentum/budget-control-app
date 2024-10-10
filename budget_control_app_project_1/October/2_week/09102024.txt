@@ -1,3 +1,2 @@
-
 time: 2024-10-09 18:38:42.720978: User added new transaction successfully.
 time: 2024-10-09 18:42:37: User added new transaction successfully.

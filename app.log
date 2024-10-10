@@ -6,3 +6,13 @@
 2024-10-09 18:42:24,737 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-10-09 18:48:10,378 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
 2024-10-09 18:48:42,242 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-09 18:54:40,334 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-10 04:42:08,037 - logger - ERROR - Exception type: <class 'TypeError'>, value: 'Transactions' object is not iterable
+2024-10-10 05:09:45,392 - logger - ERROR - An error occurred while deleting transaction 19: Class 'sqlalchemy.engine.row.Row' is not mapped
+2024-10-10 05:23:23,568 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.ProgrammingError) can't adapt type 'Row'
+[SQL: SELECT transactions.id AS transactions_id, transactions.user_id AS transactions_user_id, transactions.category_id AS transactions_category_id, transactions.amount AS transactions_amount, transactions.transaction_date AS transactions_transaction_date, transactions.description AS transactions_description, transactions.created_at AS transactions_created_at 
+FROM transactions 
+WHERE transactions.id = %(id_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'id_1': (19, 'workshop tools '), 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)

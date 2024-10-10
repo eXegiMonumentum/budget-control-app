@@ -7,6 +7,8 @@ import calendar
 from sqlalchemy import extract
 from python_planner_project_2 import file_writer
 
+time = datetime.datetime.now().replace(microsecond=0)
+
 
 def write_log_message(func):
     def wrapp(self, *args, **kwargs):
@@ -301,7 +303,6 @@ class NewCategory:
             try:
                 session.add(new_object)
                 logger.info(f"User added new {entity_name} successfully.")
-                time = datetime.datetime.now().replace(microsecond=0)
                 log_message = f" time: {time}: User added new {entity_name} successfully."
                 print(f"New {entity_name} added successfully.")
                 return log_message
@@ -336,7 +337,6 @@ class NewCategory:
                 logger.error(f"An exception occurred during creating new category object: {e}")
                 print(f"An exception occurred: {e}")
                 return None
-
 
     def add_new_category_to_database(self):
         self._add_to_database(self._get_category_object, "category")
@@ -506,7 +506,7 @@ class NewTransaction(NewCategory):
         return new_transaction
 
     def add_transaction_to_database(self):
-        log_messge = self._add_to_database(self._get_transaction_object, "transaction")
+        self._add_to_database(self._get_transaction_object, "transaction")
 
 
 class Delete(NewTransaction):
@@ -564,6 +564,7 @@ class Delete(NewTransaction):
                                                entity_name='transaction')
         return selected_transaction_id
 
+    @write_log_message
     def delete_record_by_id(self, entity_name='category'):
         """ Allows to delete transaction or category by chosen id.
             param: entity_name change how to function works:
@@ -577,7 +578,11 @@ class Delete(NewTransaction):
 
             if entity_name.capitalize() == 'Transaction':
                 transaction_id = self._get_transaction_id()
-                transaction_to_delete = session.query(Transactions).filter(Transactions.id == transaction_id).first()
+                transaction_to_delete = session.query(Transactions.id, Categories.category_name).join(
+                                                      Categories, Categories.id == Transactions.category_id).filter(
+                                                      Transactions.id == transaction_id).first()
+                if transaction_to_delete:
+                    transaction = session.query(Transactions).filter(Transactions.id == transaction_to_delete[0]).first()
 
             elif entity_name.capitalize() == 'Category':
                 category_id = self._get_category_id(only_custom_categories=True)
@@ -594,14 +599,21 @@ class Delete(NewTransaction):
 
                 try:
                     if transaction_to_delete:
-                        session.delete(transaction_to_delete)
+                        session.delete(transaction)
+                        log_message = f"{time}: User deleted transaction ID: {transaction_to_delete[0]}:" \
+                                      f" {transaction_to_delete.category_name}"
+
                         print("Transaction was deleted successfully.")
                         logger.info("Transaction was deleted successfully.")
+                        return log_message
 
                     elif category_to_delete:
                         session.delete(category_to_delete)
+                        log_message = f"{time}: User deleted custom category: {category_to_delete.category_name}"
                         print("Category was deleted successfully.")
                         logger.info("Category was deleted successfully.")
+                        return log_message
+
                 except Exception as e:
                     print(f"An error occurred while deleting the {entity_name.lower()}: {e}")
                     logger.error(f"An error occurred while deleting {entity_name.lower()} {transaction_id}: {e}")
@@ -700,6 +712,7 @@ class TransactionSummary(Delete):
             current_year = datetime.datetime.now().year
             return current_year, current_month
 
+    @write_log_message
     def _show_current_month_budget_summary(self):
         current_year, current_month = TransactionSummary._get_validate_time_(current_year=True,
                                                                              current_month=True)
@@ -707,7 +720,10 @@ class TransactionSummary(Delete):
         total_month_budget_summary = self._get_month_transactions_value(year=current_year,
                                                                         month=current_month)
         TransactionSummary._count_money_spent_on_each_category()
+        log_message = f'{time}: Total month budget summary for' \
+                            f' {current_month}.{current_year}: {total_month_budget_summary}'
         print(f"Total {current_month}.{current_year} budget summary {total_month_budget_summary:>25}")
+        return log_message
 
     def _show_chosen_month_budget_summary(self):
 
@@ -719,6 +735,9 @@ class TransactionSummary(Delete):
 
         TransactionSummary._count_money_spent_on_each_category(year=chosen_year,
                                                                month=chosen_month)
+        log_message = f'{time}: Total month budget summary for' \
+                      f' {chosen_month}.{chosen_year}: {total_month_budget_summary}'
+
         print(f"Month {chosen_month}.{chosen_year} budget summary:", total_month_budget_summary)
 
     def get_month_budget_summary(self):
@@ -752,3 +771,5 @@ class TransactionSummary(Delete):
             except ValueError as e:
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
+
+
