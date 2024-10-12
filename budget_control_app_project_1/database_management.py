@@ -6,6 +6,7 @@ from sqlalchemy import func, desc
 import calendar
 from sqlalchemy import extract
 from python_planner_project_2 import file_writer
+from sqlalchemy import update
 
 time = datetime.datetime.now().replace(microsecond=0)
 
@@ -18,6 +19,11 @@ def write_log_message(func):
         return log_message
 
     return wrapp
+
+
+# def set_money_limits(func):
+#     def wrapp(self, *args, **kwargs):
+#         func(*args, **kwargs)
 
 
 class NewCategory:
@@ -92,6 +98,41 @@ class NewCategory:
     def _category_description_handler(self):
         return self._description_handler(f"Do you want to add a category description for {self._new_category}?",
                                          self._new_category)
+
+    def sett_max_value_for_category(self):
+
+        decision = input(f"Do you want to add transaction limit to your category {self._new_category} (Y/N): ")
+
+        if decision.upper() == "Y":
+            while True:
+                with SessionManager(Session) as session:
+
+                    category_record = session.query(Categories).filter(Categories.category_name == self._new_category).first()
+
+                    if not category_record:
+                        raise Exception(f"category_record doesn't exist!")
+
+                    try:
+                        max_value = int(input(f"Enter the transaction limit for your transaction category {self._new_category}\n"
+                                              f"\nor press 0 to exit: "))
+
+                        if max_value == 0:
+                            print("Exiting without setting transaction limit.")
+                            return
+
+                        if max_value > 0:
+                            category_record.money_limit = max_value
+                            print(f"You sett transaction limit for {self._new_category} on {max_value}")
+                            logger.info(f"You sett transaction limit for {self._new_category} on {max_value}")
+                            return max_value
+                        else:
+                            print("Please enter a positive number greater than 0, or press 0 to exit.")
+                            logger.info(f"Invalid input for {self._new_category}. Must be a positive number.")
+
+                    except ValueError as e:
+                        logger.error(f"Please Enter valid max value number for transaction limit.\nDetails: {e}")
+
+
 
     @staticmethod
     def _get_colour_tuples_list():
@@ -340,6 +381,7 @@ class NewCategory:
 
     def add_new_category_to_database(self):
         self._add_to_database(self._get_category_object, "category")
+        self.sett_max_value_for_category()
 
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """
@@ -425,7 +467,6 @@ class NewCategory:
             else:
                 query = query.filter(Categories.user_id == self._user_id).all()
 
-            print("Custom categories")
             tuples_records_list = [
                 (id_primary_key, user_id, category_name, description,
                  "standard category" if user_id is None else "custom category")
@@ -442,7 +483,8 @@ class NewCategory:
         """Allows to get category id, for further create new transaction or delete custom category. to delete custom
         category  set only_custom_categories on True, because user can manage only his own categories."""
         selected_category_id = self._get_id(self._get_categories_tuples_list,
-                                            entity_name="category", only_custom_categories=only_custom_categories)
+                                            entity_name="category",
+                                            only_custom_categories=only_custom_categories)
         return selected_category_id
 
 
@@ -505,7 +547,7 @@ class NewTransaction(NewCategory):
 
         return new_transaction
 
-    def add_transaction_to_database(self):
+    def add_new_transaction_to_database(self):
         self._add_to_database(self._get_transaction_object, "transaction")
 
 
@@ -554,8 +596,8 @@ class Delete(NewTransaction):
                 f"transaction date:   {record[5]}\n"
             )
         if not transaction_results_tuples:
-            logger.info(f"No transactions from {month}.{year}")
-            print(f"No transactions from {month}.{year}")
+            logger.info(f"Transaction list is empty.")
+            print(f"Transaction list is empty.")
 
         return transaction_results_tuples, query
 
@@ -579,12 +621,15 @@ class Delete(NewTransaction):
             if entity_name.capitalize() == 'Transaction':
                 transaction_id = self._get_transaction_id()
                 transaction_to_delete = session.query(Transactions.id, Categories.category_name).join(
-                                                      Categories, Categories.id == Transactions.category_id).filter(
-                                                      Transactions.id == transaction_id).first()
+                    Categories, Categories.id == Transactions.category_id).filter(
+                    Transactions.id == transaction_id).first()
                 if transaction_to_delete:
-                    transaction = session.query(Transactions).filter(Transactions.id == transaction_to_delete[0]).first()
+                    transaction = session.query(Transactions).filter(
+                        Transactions.id == transaction_to_delete[0]).first()
 
             elif entity_name.capitalize() == 'Category':
+
+                print("Delete custom category.")
                 category_id = self._get_category_id(only_custom_categories=True)
                 category_to_delete = session.query(Categories).filter(Categories.id == category_id).first()
 
@@ -639,8 +684,7 @@ class TransactionSummary(Delete):
             logger.error(f"An error occurred while calculating month transactions value: {e}")
             print(f"An error occurred while calculating month transactions value: {e}")
 
-    @staticmethod
-    def _count_money_spent_on_each_category(month=None, year=None, overall=False):
+    def _count_money_spent_on_each_category(self, month=None, year=None, overall=False):
         """
             for internal use.
             Default: count your total value from transactions in current month.
@@ -675,9 +719,17 @@ class TransactionSummary(Delete):
                     print("summary (each category transaction) from the entire transaction history")
                     results = results.group_by(Transactions.category_id, Categories.category_name).all()
 
+                    log_message = {}
                     for result in results:
+                        key = f"{result.category_id}:{result.category_name}"
+                        log_message[key] = result.total_category_amount
+
                         print(f"ID category: {result.category_id:>5} : {result.category_name:<20}"
                               f"total amount: {result.total_category_amount:,.2f}")
+
+                    self.f_w._write_log_message_to_file(log_message)
+
+                    return log_message
 
         except Exception as e:
             logger.error(f"An error was occurred during count money spent on each category:\n {e}")
@@ -719,12 +771,13 @@ class TransactionSummary(Delete):
         print("Current month budget summary")
         total_month_budget_summary = self._get_month_transactions_value(year=current_year,
                                                                         month=current_month)
-        TransactionSummary._count_money_spent_on_each_category()
+        TransactionSummary._count_money_spent_on_each_category(self)
         log_message = f'{time}: Total month budget summary for' \
-                            f' {current_month}.{current_year}: {total_month_budget_summary}'
+                      f' {current_month}.{current_year}: {total_month_budget_summary}'
         print(f"Total {current_month}.{current_year} budget summary {total_month_budget_summary:>25}")
         return log_message
 
+    @write_log_message
     def _show_chosen_month_budget_summary(self):
 
         chosen_year, chosen_month = TransactionSummary._get_validate_time_()
@@ -739,6 +792,7 @@ class TransactionSummary(Delete):
                       f' {chosen_month}.{chosen_year}: {total_month_budget_summary}'
 
         print(f"Month {chosen_month}.{chosen_year} budget summary:", total_month_budget_summary)
+        return log_message
 
     def get_month_budget_summary(self):
 
@@ -760,7 +814,7 @@ class TransactionSummary(Delete):
                     self._show_chosen_month_budget_summary()
 
                 elif choice == 3:
-                    TransactionSummary._count_money_spent_on_each_category(overall=True)
+                    TransactionSummary._count_money_spent_on_each_category(self, overall=True)
 
                 elif choice == 0:
                     print("Exiting...")
@@ -772,4 +826,5 @@ class TransactionSummary(Delete):
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
 
-
+# ustalanei limitó da kategorii,
+# Ostrzerzenia przed przekrtroczeniem danych kwot kategorii.

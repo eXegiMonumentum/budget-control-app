@@ -17,11 +17,11 @@ def main():
 
             if choice == 1:
                 pass
-                # SignUp.handle_sign_up()
+                SignUp.handle_sign_up()
             elif choice == 2:
                 pass
                 # user_id = LogIn.handle_log_in()
-                user_id = 10
+                user_id = 1
                 if user_id:
                     while True:
                         print("""Choose an action:
@@ -45,7 +45,7 @@ def main():
 
                             elif action == 3:
                                 add_transaction = NewTransaction(user_id)
-                                add_transaction.add_transaction_to_database()
+                                add_transaction.add_new_transaction_to_database()
 
                             elif action == 4:
                                 delete_transaction = Delete(user_id)
@@ -79,3 +79,8 @@ if __name__ == "__main__":
     f_c.run_file_check_loop(print_message=True)
 
 # pomiędzy wyborem 3 Add new transaction, gdy wyświetlam transakcje, to dobrze byłoby dodać opcję dodania transakcji własnej również w tedy.
+
+
+# Ostrzerzenia przed przekrtroczeniem danych kwot kategorii.
+
+

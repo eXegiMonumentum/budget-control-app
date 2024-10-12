@@ -16,3 +16,51 @@ WHERE transactions.id = %(id_1)s
  LIMIT %(param_1)s]
 [parameters: {'id_1': (19, 'workshop tools '), 'param_1': 1}]
 (Background on this error at: https://sqlalche.me/e/20/f405)
+2024-10-10 21:49:34,736 - logger - ERROR - Exception type: <class 'TypeError'>, value: list.append() takes exactly one argument (3 given)
+2024-10-10 21:49:34,737 - logger - ERROR - An error was occurred during count money spent on each category:
+ list.append() takes exactly one argument (3 given)
+2024-10-10 22:16:19,275 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for +: 'dict' and 'str'
+2024-10-10 22:16:19,275 - logger - ERROR - An error was occurred during count money spent on each category:
+ unsupported operand type(s) for +: 'dict' and 'str'
+2024-10-11 08:37:04,408 - logger - ERROR - Exception type: <class 'TypeError'>, value: unsupported operand type(s) for +: 'dict' and 'str'
+2024-10-11 08:37:04,409 - logger - ERROR - An error was occurred during count money spent on each category:
+ unsupported operand type(s) for +: 'dict' and 'str'
+2024-10-12 07:48:02,749 - logger - ERROR - Failed to create category object.
+2024-10-12 08:01:35,710 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-12 08:01:41,360 - logger - ERROR - Exception type: <class 'TypeError'>, value: NewCategory._get_category_id() got an unexpected keyword argument 'entity_name'
+2024-10-12 08:04:12,638 - logger - ERROR - Exception type: <class 'TypeError'>, value: NewCategory._get_category_id() got an unexpected keyword argument 'entity_name'
+2024-10-12 08:14:14,409 - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.UndefinedColumn) B£¥D:  kolumna categories.money_limit nie istnieje
+LINE 1: ...iption, categories.user_id AS categories_user_id, categories...
+                                                             ^
+
+[SQL: SELECT categories.id AS categories_id, categories.category_name AS categories_category_name, categories.description AS categories_description, categories.user_id AS categories_user_id, categories.money_limit AS categories_money_limit, categories.colour AS categories_colour, categories.icon AS categories_icon 
+FROM categories 
+WHERE categories.category_name = %(category_name_1)s AND categories.colour = %(colour_1)s AND categories.icon = %(icon_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'category_name_1': 'Food and Drinks', 'colour_1': '#FF5733', 'icon_1': 'food_icon', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-10-12 10:49:17,815 - logger - ERROR - An exception occurred during creating new category object: 'NewCategory' object has no attribute 'category_name'
+2024-10-12 10:49:17,820 - logger - ERROR - Failed to create category object.
+2024-10-12 11:18:24,388 - logger - ERROR - Invalid number. invalid literal for int() with base 10: '' Please enter a valid number.
+2024-10-12 11:25:40,577 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-12 11:26:28,324 - logger - ERROR - An exception occurred during creating new category object: 'NewCategory' object has no attribute 'category_name'
+2024-10-12 11:26:28,325 - logger - ERROR - Failed to create category object.
+2024-10-12 11:31:40,387 - logger - ERROR - An exception occurred during creating new category object: 'max_value' is an invalid keyword argument for Categories
+2024-10-12 11:31:40,387 - logger - ERROR - Failed to create category object.
+2024-10-12 11:32:28,046 - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value: 
+2024-10-12 11:33:13,976 - logger - ERROR - Exception type: <class 'Exception'>, value: category_record doesn't exist!
+2024-10-12 11:33:13,976 - logger - ERROR - An exception occurred during creating new category object: category_record doesn't exist!
+2024-10-12 11:33:13,977 - logger - ERROR - Failed to create category object.
+2024-10-12 11:42:05,345 - logger - ERROR - Exception type: <class 'Exception'>, value: category_record doesn't exist! - Line: 18
+2024-10-12 11:42:05,346 - logger - ERROR - An exception occurred during creating new category object: category_record doesn't exist! - Line: 380
+2024-10-12 11:42:05,346 - logger - ERROR - Failed to create category object. - Line: 340
+2024-10-12 11:55:06,663 - session_manager - logger - ERROR - Exception type: <class 'Exception'>, value: category_record doesn't exist! - Line: 18
+2024-10-12 11:55:06,663 - database_management - logger - ERROR - An exception occurred during creating new category object: category_record doesn't exist! - Line: 380
+2024-10-12 11:55:06,664 - database_management - logger - ERROR - Failed to create category object. - Line: 340
+2024-10-12 11:58:24,202 - session_manager - logger - ERROR - Exception type: <class 'Exception'>, value: category_record doesn't exist! - Line: 18
+2024-10-12 11:58:24,203 - database_management - logger - ERROR - An exception occurred during creating new category object: category_record doesn't exist! - Line: 381
+2024-10-12 11:58:24,203 - database_management - logger - ERROR - Failed to create category object. - Line: 340
+2024-10-12 12:00:21,249 - session_manager - logger - ERROR - Exception type: <class 'Exception'>, value: category_record doesn't exist! - Line: 18
+2024-10-12 12:00:21,250 - database_management - logger - ERROR - An exception occurred during creating new category object: category_record doesn't exist! - Line: 381
+2024-10-12 12:00:21,250 - database_management - logger - ERROR - Failed to create category object. - Line: 340
+2024-10-12 12:24:35,700 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18

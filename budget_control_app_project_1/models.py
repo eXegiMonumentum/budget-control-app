@@ -27,6 +27,7 @@ class Categories(Base):
     category_name = Column(String(100), nullable=False)
     description = Column(Text)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='SET NULL'))
+    money_limit = Column(Integer)
     colour = Column(String(7))
     icon = Column(String(50))
 
@@ -56,3 +57,4 @@ if not database_exists(engine.url):
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)  # zwraca klasę - tworzącą sesję.
+

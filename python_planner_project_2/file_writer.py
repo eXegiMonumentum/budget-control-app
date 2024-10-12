@@ -11,6 +11,11 @@ class FileWriter(FileOpener):
 
         try:
             with open(self.today_path, "a+", encoding="UTF-8") as f:
+                if type(log_message) == dict:
+                    for (key, value) in log_message.items():
+                        log_message = f"{key:<22} value: {value:>10}\n"
+                        f.write(log_message)
+
                 if log_message:
                     f.write(log_message + '\n')
 
