@@ -75,6 +75,7 @@ class FileOpener(FileCreator):
                             print("empty. ")
 
     def read_files_from_chosen_month(self):
+
         f_content_dict = {}
         for i, day in enumerate(self.exist_paths, start=1):
             key1 = f'{day[-12:-10]} {self.current_month_name}'

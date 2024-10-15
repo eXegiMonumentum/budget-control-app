@@ -6,7 +6,6 @@ from sqlalchemy import func, desc
 import calendar
 from sqlalchemy import extract
 from python_planner_project_2 import file_writer
-from sqlalchemy import update
 
 time = datetime.datetime.now().replace(microsecond=0)
 
@@ -19,11 +18,6 @@ def write_log_message(func):
         return log_message
 
     return wrapp
-
-
-# def set_money_limits(func):
-#     def wrapp(self, *args, **kwargs):
-#         func(*args, **kwargs)
 
 
 class NewCategory:
@@ -99,7 +93,7 @@ class NewCategory:
         return self._description_handler(f"Do you want to add a category description for {self._new_category}?",
                                          self._new_category)
 
-    def sett_max_value_for_category(self):
+    def set_max_value_for_category(self):
 
         decision = input(f"Do you want to add transaction limit to your category {self._new_category} (Y/N): ")
 
@@ -122,8 +116,8 @@ class NewCategory:
 
                         if max_value > 0:
                             category_record.money_limit = max_value
-                            print(f"You sett transaction limit for {self._new_category} on {max_value}")
-                            logger.info(f"You sett transaction limit for {self._new_category} on {max_value}")
+                            print(f"You set transaction limit for {self._new_category} on {max_value}")
+                            logger.info(f"You set transaction limit for {self._new_category} on {max_value}")
                             return max_value
                         else:
                             print("Please enter a positive number greater than 0, or press 0 to exit.")
@@ -380,8 +374,9 @@ class NewCategory:
                 return None
 
     def add_new_category_to_database(self):
-        self._add_to_database(self._get_category_object, "category")
-        self.sett_max_value_for_category()
+        is_object = self._add_to_database(self._get_category_object, "category")
+        if is_object:
+            self.set_max_value_for_category()
 
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """
@@ -786,7 +781,7 @@ class TransactionSummary(Delete):
         total_month_budget_summary = self._get_month_transactions_value(year=chosen_year,
                                                                         month=chosen_month)
 
-        TransactionSummary._count_money_spent_on_each_category(year=chosen_year,
+        TransactionSummary._count_money_spent_on_each_category(self, year=chosen_year,
                                                                month=chosen_month)
         log_message = f'{time}: Total month budget summary for' \
                       f' {chosen_month}.{chosen_year}: {total_month_budget_summary}'

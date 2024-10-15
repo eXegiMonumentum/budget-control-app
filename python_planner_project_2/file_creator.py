@@ -92,7 +92,7 @@ class FileCreator:
         FileCreator.f_paths = f_paths
         return f_paths
 
-    def create_txt_files(self, print_message):
+    def create_txt_files(self, print_message=False):
         """for each day of the current month will create a text file"""
 
         f_paths = self.create_paths_for_days_txt_files()
@@ -130,6 +130,3 @@ class FileCreator:
 
             time.sleep(3600)
 
-
-# Tworzy mi pliki, - ale foldery tygodni są puste, nie ma plików dla danego dnia.
-# do modyfikacji warunek przy:   print(f"All transactions :txt files for {self.current_month_name} were created

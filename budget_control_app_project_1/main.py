@@ -1,7 +1,7 @@
 from credentials import SignUp, LogIn
 from database_management import NewCategory, NewTransaction, Delete, TransactionSummary
 from python_planner_project_2 import file_creator
-
+from python_planner_project_2 import check_txt_logs
 f_c = file_creator.FileCreator()
 
 
@@ -17,7 +17,7 @@ def main():
 
             if choice == 1:
                 pass
-                SignUp.handle_sign_up()
+                # SignUp.handle_sign_up()
             elif choice == 2:
                 pass
                 # user_id = LogIn.handle_log_in()
@@ -30,7 +30,8 @@ def main():
                         - 3 - Add new transaction
                         - 4 - Remove transaction
                         - 5 - Sum transactions
-                        - 6 - Log out""")
+                        - 6 - Check txt logs
+                        - 7 - Log out""")
 
                         try:
                             action = int(input("Enter your choice: "))
@@ -56,6 +57,10 @@ def main():
                                 transaction_summary.get_month_budget_summary()
 
                             elif action == 6:
+                                print("Checking txt app logs.")
+                                check_txt_logs.check_txt_logs_chandler()
+
+                            elif action == 7:
                                 print("Logging out...")
                                 break
                             else:

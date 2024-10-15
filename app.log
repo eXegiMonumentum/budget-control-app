@@ -64,3 +64,25 @@ WHERE categories.category_name = %(category_name_1)s AND categories.colour = %(c
 2024-10-12 12:00:21,250 - database_management - logger - ERROR - An exception occurred during creating new category object: category_record doesn't exist! - Line: 381
 2024-10-12 12:00:21,250 - database_management - logger - ERROR - Failed to create category object. - Line: 340
 2024-10-12 12:24:35,700 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-14 16:18:30,789 - database_management - logger - ERROR - Failed to create category object. - Line: 340
+2024-10-14 16:22:18,188 - database_management - logger - ERROR - Failed to create category object. - Line: 340
+2024-10-14 17:03:00,207 - session_manager - logger - ERROR - Exception type: <class 'AttributeError'>, value: 'list' object has no attribute 'Transactions' - Line: 18
+2024-10-14 18:10:53,517 - session_manager - logger - ERROR - Exception type: <class 'AttributeError'>, value: Neither 'InstrumentedAttribute' object nor 'Comparator' object associated with Transactions.category has an attribute 'category_id' - Line: 18
+2024-10-14 22:12:36,175 - session_manager - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: GROUP BY expression expected, got (<sqlalchemy.orm.attributes.InstrumentedAttribute object at 0x0000021A0A9C2200>, <sqlalchemy.orm.attributes.InstrumentedAttribute object at 0x0000021A0A9C2480>). - Line: 18
+2024-10-14 22:12:46,324 - session_manager - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: GROUP BY expression expected, got (<sqlalchemy.orm.attributes.InstrumentedAttribute object at 0x0000026D57EA2200>, <sqlalchemy.orm.attributes.InstrumentedAttribute object at 0x0000026D57EA2480>). - Line: 18
+2024-10-14 22:17:35,776 - session_manager - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ArgumentError'>, value: SQL expression element or literal value expected, got <class 'models.Categories'>. - Line: 18
+2024-10-14 22:37:17,708 - session_manager - logger - ERROR - Exception type: <class 'sqlalchemy.exc.ProgrammingError'>, value: (psycopg2.errors.GroupingError) B£¥D:  kolumna "categories.colour" musi wystêpowaæ w klauzuli GROUP BY lub byæ u¿yta w funkcji agreguj¹cej
+LINE 1: ...gories.category_name AS categories_category_name, categories...
+                                                             ^
+
+[SQL: SELECT transactions.category_id AS transactions_category_id, categories.category_name AS categories_category_name, categories.colour AS categories_colour, transactions.id AS transactions_id, sum(transactions.amount) AS total_category_amount 
+FROM transactions JOIN categories ON categories.id = transactions.category_id GROUP BY transactions.category_id, transactions.amount, categories.category_name, transactions.id]
+(Background on this error at: https://sqlalche.me/e/20/f405) - Line: 18
+2024-10-14 23:11:22,685 - session_manager - logger - ERROR - Exception type: <class 'NameError'>, value: name 'self' is not defined - Line: 18
+2024-10-14 23:11:29,556 - session_manager - logger - ERROR - Exception type: <class 'IndexError'>, value: list index out of range - Line: 18
+2024-10-14 23:12:08,282 - session_manager - logger - ERROR - Exception type: <class 'IndexError'>, value: list index out of range - Line: 18
+2024-10-14 23:12:17,819 - session_manager - logger - ERROR - Exception type: <class 'IndexError'>, value: list index out of range - Line: 18
+2024-10-15 15:45:35,973 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-15 16:19:36,331 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-15 16:35:06,912 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-15 16:35:49,423 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
