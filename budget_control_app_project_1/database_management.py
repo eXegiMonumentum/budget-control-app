@@ -129,7 +129,7 @@ class NewCategory:
 
 
     @staticmethod
-    def _get_colour_tuples_list():
+    def get_colour_tuples_list():
         """Allows to add colour for user custom category
         :returns chosen hexadecimal colour code"""
 
@@ -168,7 +168,7 @@ class NewCategory:
         decision = input(f"Do you want to add a colour to {self._new_category}?\n Press (Y/N): ")
 
         if decision.upper() == 'Y':
-            colour_tuples_list = NewCategory._get_colour_tuples_list()
+            colour_tuples_list = NewCategory.get_colour_tuples_list()
 
             try:
                 colour_index = int(input(f"Chose colour index: "))
