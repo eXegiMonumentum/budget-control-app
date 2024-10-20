@@ -1,4 +1,6 @@
 import datetime
+import random
+
 from models import Session, Categories, Transactions
 from session_manager import SessionManager
 from logger import logger
@@ -6,6 +8,7 @@ from sqlalchemy import func, desc
 import calendar
 from sqlalchemy import extract
 from python_planner_project_2 import file_writer
+import matplotlib.pyplot as plt
 
 time = datetime.datetime.now().replace(microsecond=0)
 
@@ -101,14 +104,16 @@ class NewCategory:
             while True:
                 with SessionManager(Session) as session:
 
-                    category_record = session.query(Categories).filter(Categories.category_name == self._new_category).first()
+                    category_record = session.query(Categories).filter(
+                        Categories.category_name == self._new_category).first()
 
                     if not category_record:
                         raise Exception(f"category_record doesn't exist!")
 
                     try:
-                        max_value = int(input(f"Enter the transaction limit for your transaction category {self._new_category}\n"
-                                              f"\nor press 0 to exit: "))
+                        max_value = int(
+                            input(f"Enter the transaction limit for your transaction category {self._new_category}\n"
+                                  f"\nor press 0 to exit: "))
 
                         if max_value == 0:
                             print("Exiting without setting transaction limit.")
@@ -126,10 +131,8 @@ class NewCategory:
                     except ValueError as e:
                         logger.error(f"Please Enter valid max value number for transaction limit.\nDetails: {e}")
 
-
-
     @staticmethod
-    def get_colour_tuples_list():
+    def get_colour_tuples_list(chose_colour=True):
         """Allows to add colour for user custom category
         :returns chosen hexadecimal colour code"""
 
@@ -158,10 +161,28 @@ class NewCategory:
         }
         colour_tuples_list = list(color_dict.items())
 
-        for i, value in enumerate(colour_tuples_list, start=1):
-            print(f"{i:<3}: {value[0]:<5} --> {value[1]:<5}")
+        if chose_colour:
+            for i, value in enumerate(colour_tuples_list, start=1):
+                print(f"{i:<3}: {value[0]:<5} --> {value[1]:<5}")
 
         return colour_tuples_list
+
+    def _get_colour_as_sample(self, chose_colour=False):
+
+        available_colours_tuples_list = NewCategory.get_colour_tuples_list(chose_colour=chose_colour)
+
+        with SessionManager(Session) as session:
+            colours_column = session.query(Categories.colour)
+
+            colours_already_used = [colour[0] for colour in colours_column if colour[0]]
+            available_colours_list = [c[0] for c in available_colours_tuples_list
+                                      if c[0] not in colours_already_used]
+
+        if available_colours_list:
+            return random.choice(available_colours_list)
+
+        else:
+            return random.choice([c[0] for c in available_colours_list])
 
     def _colour_handler(self):
 
@@ -190,8 +211,9 @@ class NewCategory:
                 raise
 
         else:
-            logger.info(f"Category {self._new_category} colour is set to Null")
-            return None
+            colour_sample = self._get_colour_as_sample()
+            logger.info(f"Category {self._new_category} colour was set at {colour_sample} ")
+            return colour_sample
 
     @staticmethod
     def _get_icon_tuples_list():
@@ -401,7 +423,9 @@ class NewCategory:
         tuples_records_list, _ = get_records_as_tuples_func(**kwargs)
 
         while True:
+
             try:
+
                 given_id = int(input(f"Choose {entity_name} id: "))
                 found = False
 
@@ -493,7 +517,7 @@ class NewTransaction(NewCategory):
             chose_option = int(input(
                 "Choose an option:\n"
                 "1: Spent money\n"
-                "2: Earned money\n"
+                # "2: Earned money\n"
                 "0: Exit\n"
             ))
             try:
@@ -504,12 +528,12 @@ class NewTransaction(NewCategory):
                         self.amount = amount
                     return amount
 
-                elif chose_option == 2:
-                    amount = int(input("Enter how much money you have earned: "))
-                    if amount < 0:
-                        amount *= -1
-                        self.amount = amount
-                    return amount
+                # elif chose_option == 2:
+                #     amount = int(input("Enter how much money you have earned: "))
+                #     if amount < 0:
+                #         amount *= -1
+                #         self.amount = amount
+                #     return amount
 
                 elif chose_option == 0:
                     logger.info("Exiting the program")
@@ -528,6 +552,7 @@ class NewTransaction(NewCategory):
         return self._description_handler("Do you want to add a transaction description?", "transaction")
 
     def _get_transaction_object(self):
+        """Allows to get transaction object for further add to database."""
 
         amount = self._get_amount()
         category_id = self._get_category_id()
@@ -662,7 +687,42 @@ class Delete(NewTransaction):
                 print(f"{entity_name} was not deleted.")
 
 
-class TransactionSummary(Delete):
+class DataCharts(Delete):
+
+    def _get_chart_data(self):
+        current_year = datetime.datetime.now().year
+        current_month = datetime.datetime.now().month
+
+        query = self._get_transactions_query(year=current_year, month=current_month)
+
+        month_expanse_data = query.with_entities(Categories.category_name, func.sum(Transactions.amount),
+                                                 Categories.colour).where(
+            Transactions.amount < 0).group_by(Categories.category_name, Categories.colour).all()
+
+        if not month_expanse_data:
+            raise Exception("No transactions to show on chart. Add transactions firstly")
+
+        return month_expanse_data
+
+    def create_pie_chart(self):
+        chart_data = self._get_chart_data()
+
+        labels = [value[0] for value in chart_data]
+        sizes = [abs(value[1]) for value in chart_data]
+        sizes = [float(size) for size in sizes]
+        colors = [value[2] for value in chart_data]
+
+        plt.figure(figsize=(10, 7))
+        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=220)
+
+        plt.title('expenses (references for the monthly expense')
+        plt.axis('equal')
+        plt.show()
+
+        return labels, colors
+
+
+class TransactionSummary(DataCharts):
     def __init__(self, user_id):
         super().__init__(user_id)
 
@@ -798,6 +858,7 @@ class TransactionSummary(Delete):
                 1: sum total transactions value for current month
                 2: sum total transactions value for chosen month
                 3: sum how much do you spent on each category overall in app history
+                4: Show expenses chart from current month.
                 0: Exit
 
                 Enter your choice: """))
@@ -811,6 +872,9 @@ class TransactionSummary(Delete):
                 elif choice == 3:
                     TransactionSummary._count_money_spent_on_each_category(self, overall=True)
 
+                elif choice == 4:
+                    self.create_pie_chart()
+
                 elif choice == 0:
                     print("Exiting...")
                     break
@@ -820,6 +884,3 @@ class TransactionSummary(Delete):
             except ValueError as e:
                 logger.info(f"invalid literal for int(), Please enter a valid number")
                 print(f"Error: {e} Please enter a valid number.")
-
-# ustalanei limitó da kategorii,
-# Ostrzerzenia przed przekrtroczeniem danych kwot kategorii.

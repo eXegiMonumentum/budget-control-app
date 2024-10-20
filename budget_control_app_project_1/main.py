@@ -17,11 +17,9 @@ def main():
 
             if choice == 1:
                 pass
-                # SignUp.handle_sign_up()
+                SignUp.handle_sign_up()
             elif choice == 2:
-                pass
-                # user_id = LogIn.handle_log_in()
-                user_id = 1
+                user_id = LogIn.handle_log_in()
                 if user_id:
                     while True:
                         print("""Choose an action:
@@ -83,9 +81,6 @@ if __name__ == "__main__":
     main()
     f_c.run_file_check_loop(print_message=True)
 
-# pomiędzy wyborem 3 Add new transaction, gdy wyświetlam transakcje, to dobrze byłoby dodać opcję dodania transakcji własnej również w tedy.
 
 
-# Ostrzerzenia przed przekrtroczeniem danych kwot kategorii.
-
-
+# pozostało - dodanie ostrzeżeń przed przekroczeniem limitów dla kategorii.

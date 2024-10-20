@@ -1,8 +1,0 @@
-2024-10-10 04:31:41: User deleted <models.Transactions object at 0x000001AD94969550>
-2024-10-10 05:25:22: User deleted 19: workshop tools 
-2024-10-10 05:27:26: User deleted 16: Food and Drinks
-2024-10-10 05:30:45: User deleted custom category: Food and Drinks
- time: 2024-10-10 05:33:31: User added new category successfully.
- time: 2024-10-10 05:35:43: User added new transaction successfully.
-2024-10-10 06:11:13: Total month budget summary for 10.2024: -400.00
-2024-10-10 21:32:06: Total month budget summary for 10.2024: -400.00

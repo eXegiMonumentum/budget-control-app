@@ -87,3 +87,13 @@ FROM transactions JOIN categories ON categories.id = transactions.category_id GR
 2024-10-15 16:35:06,912 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
 2024-10-15 16:35:49,423 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
 2024-10-16 20:23:09,944 - session_manager - logger - ERROR - Exception type: <class 'sqlalchemy.exc.InvalidRequestError'>, value: Don't know how to join to <Mapper at 0x256f7399710; Categories>. Please use the .select_from() method to establish an explicit left side, as well as providing an explicit ON clause if not present already to help resolve the ambiguity. - Line: 18
+2024-10-20 18:57:08,681 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-20 20:09:32,773 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-20 20:36:48,420 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-20 20:37:25,490 - database_management - logger - ERROR - Invalid number. invalid literal for int() with base 10: 'x' Please enter a valid number. - Line: 467
+2024-10-20 20:43:27,617 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-20 20:56:21,120 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-20 21:02:03,990 - session_manager - logger - ERROR - Exception type: <class 'KeyboardInterrupt'>, value:  - Line: 18
+2024-10-20 21:26:17,243 - database_management - logger - ERROR - Failed to create category object. - Line: 356
+2024-10-20 21:26:47,723 - database_management - logger - ERROR - Failed to create category object. - Line: 356
+2024-10-20 21:26:56,668 - database_management - logger - ERROR - Failed to create category object. - Line: 356
