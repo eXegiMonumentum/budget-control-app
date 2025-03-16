@@ -32,8 +32,8 @@ class SignUp:
                 raise ValueError("The username or email address is already used by someone")
             self.__username = username
 
-        except ValueError:
-            logger.error("Sign up failed: {e}")
+        except ValueError as e:
+            logger.error(f"Sign up failed: {e}")
             raise
 
     @staticmethod
@@ -96,7 +96,7 @@ class SignUp:
         Hashes the password during user sign-up.
 
         :param password: The plain text password to be hashed.
-        :return: The hashed password as a string, ready to be stored in a database or file.
+        :return: The hashed password as a string, ready to be stored in a database.
         """
         bytes_password = password.encode('utf-8')
         hashed_password = bcrypt.hashpw(bytes_password, bcrypt.gensalt())
@@ -170,11 +170,16 @@ class SignUp:
                 print(f"Sign up failed: {e}")
 
     @staticmethod
-    def delete_account(user_id=None, username=None):
+    def delete_account(username=None):
         """ Allows deleting a user from the database."""
 
+        if not username:
+            logger.warning("Username not provided. Cannot delete account")
+            print("Please provide a valid username.")
+            return
+
         with SessionManager(Session) as session:
-            user = session.query(Users).filter(Users.id == user_id, Users.username == username).first()
+            user = session.query(Users).filter(Users.username == username).first()
             if user:
                 conf_message = input(f"Are you sure you want to delete the account?\n"
                                      f"ID: {user.id}\nUsername: {user.username}\nType 'yes' to confirm: ")
@@ -203,7 +208,7 @@ class SignUp:
                     logger.info("Wrong confirmation message - account has not been deleted")
 
             else:
-                logger.info(f"user ID:{user_id}, username: {username} doesn't exist.")
+                logger.info(f"Username: {username} doesn't exist.")
 
 
 class LogIn:

@@ -53,8 +53,8 @@ engine = create_engine('postgresql+psycopg2://postgres:password@localhost/budget
 if not database_exists(engine.url):
     create_database(engine.url)
 
-# Tworzenie tabeli w bazie danych (jeśli nie istnieje)
+
 Base.metadata.create_all(engine)
 
-Session = sessionmaker(bind=engine)  # zwraca klasę - tworzącą sesję.
+Session = sessionmaker(bind=engine)
 

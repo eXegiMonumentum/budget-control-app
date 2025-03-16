@@ -7,7 +7,7 @@ from logger import logger
 from sqlalchemy import func, desc
 import calendar
 from sqlalchemy import extract
-from python_planner_project_2 import file_writer
+from txt_logs import file_writer
 import matplotlib.pyplot as plt
 
 time = datetime.datetime.now().replace(microsecond=0)

@@ -1,7 +1,7 @@
 from credentials import SignUp, LogIn
 from database_management import NewCategory, NewTransaction, Delete, TransactionSummary
-from python_planner_project_2 import file_creator
-from python_planner_project_2 import check_txt_logs
+from txt_logs import file_creator
+from txt_logs import check_txt_logs
 f_c = file_creator.FileCreator()
 
 
@@ -17,9 +17,11 @@ def main():
 
             if choice == 1:
                 pass
-                SignUp.handle_sign_up()
+                # SignUp.handle_sign_up()
             elif choice == 2:
-                user_id = LogIn.handle_log_in()
+                pass
+                # user_id = LogIn.handle_log_in()
+                user_id = 1
                 if user_id:
                     while True:
                         print("""Choose an action:
@@ -56,7 +58,7 @@ def main():
 
                             elif action == 6:
                                 print("Checking txt app logs.")
-                                check_txt_logs.check_txt_logs_chandler()
+                                check_txt_logs.check_txt_logs_handler()
 
                             elif action == 7:
                                 print("Logging out...")
@@ -84,3 +86,5 @@ if __name__ == "__main__":
 
 
 # pozostało - dodanie ostrzeżeń przed przekroczeniem limitów dla kategorii.
+# aby set database odpalało się po włączneiu skryptu - pierwszy raz. - np przy rejestracji
+#
