@@ -1,5 +1,5 @@
-from file_creator import FileCreator
-from file_opener import FileOpener
+from txt_logs.file_creator import FileCreator
+from txt_logs.file_opener import FileOpener
 from pprint import pprint
 
 def get_user_choice():
@@ -18,16 +18,16 @@ def get_user_choice():
             print("Invalid input. Please enter a number.")
 
 
-def main():
+def check_txt_logs_handler():
     """
     Main function to handle user input and execute appropriate actions.
     """
     while True:
         print(20*"-")
         print("1: Read today's logs")
-        print("2: Check logs for chosen month")
-        print("3: Check logs for current month")
-        print("4: Check logs for chosen week in current month")
+        print("2: Check logs for current month")
+        print("3: Check logs for chosen month")
+        print("4: read logs for week (current_month)")
         print("5: create logs directory !")
         print("6: Exit")
 
@@ -39,11 +39,13 @@ def main():
             r_files.read_today_file()
 
         elif choice == 2:
-            r_files = FileOpener(current_month=False)
-            pprint(r_files.read_files_from_chosen_month())
-        elif choice == 3:
             r_files = FileOpener(current_month=True)
             pprint(r_files.read_files_from_chosen_month())
+
+        elif choice == 3:
+            r_files = FileOpener(current_month=False)
+            pprint(r_files.read_files_from_chosen_month())
+
         elif choice == 4:
             r_files = FileOpener(current_month=True)
             r_files.read_files_from_week_of_current_month()
@@ -55,7 +57,7 @@ def main():
             break
 
 if __name__ == "__main__":
-    main()
+    check_txt_logs_handler()
 
 
 

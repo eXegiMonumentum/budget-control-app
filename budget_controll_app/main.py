@@ -1,6 +1,6 @@
 from credentials import SignUp, LogIn
 from database_management import NewCategory, NewTransaction, Delete, TransactionSummary
-from txt_logs import check_txt_logs
+from txt_logs.main import check_txt_logs_handler
 
 
 
@@ -43,7 +43,6 @@ def main():
                                 delete_category = Delete(user_id)
                                 delete_category.delete_record_by_id()
 
-
                             elif action == 3:
                                 add_transaction = NewTransaction(user_id)
                                 add_transaction.add_new_transaction_to_database()
@@ -58,7 +57,7 @@ def main():
 
                             elif action == 6:
                                 print("Checking txt app logs.")
-                                check_txt_logs.check_txt_logs_handler()
+                                check_txt_logs_handler()
 
                             elif action == 7:
                                 print("Logging out...")
@@ -81,10 +80,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # f_c.run_file_check_loop(print_message=True)
 
-
-
-# pozostało - dodanie ostrzeżeń przed przekroczeniem limitów dla kategorii.
-# aby set database odpalało się po włączneiu skryptu - pierwszy raz. - np przy rejestracji
-#

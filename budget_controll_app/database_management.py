@@ -399,75 +399,56 @@ class NewCategory:
         if is_object:
             self.set_max_value_for_category()
 
+
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
+        """Fetches an ID from the database, ensuring it exists.
+
+        :param get_records_as_tuples_func: Function returning a list of tuples (records).
+        :param entity_name: 'category' or 'transaction', used for printing/logging.
+        :return: Selected ID or 0 if user exits.
         """
-        Function allows to get records from the database as tuples.
-        It combines to get categories and transactions from different related tables.
-
-        :param get_records_as_tuples_func: To get categories tuples list or transactions tuples list.
-        :param entity_name: It's for configuring print statements, e.g. if entity_name = category,
-               this function informs you about categories, elif transaction informs about transactions.
-
-        :return: The category or transaction identifier selected by the user
-                 To delete a transaction or add a new category by identifier.
-        """
-
         if not isinstance(entity_name, str):
             logger.error(f"TypeError: entity_name must be a string, not {type(entity_name)}")
             raise TypeError(f"entity_name must be a string, not {type(entity_name)}")
 
-        if entity_name != "category" and entity_name != "transaction":
+        if entity_name not in {"category", "transaction"}:
             raise ValueError(f"Unknown entity name: {entity_name}")
 
         tuples_records_list, _ = get_records_as_tuples_func(**kwargs)
 
         while True:
-
             try:
+                given_id = int(input(f"Choose {entity_name} ID or press 0 to exit: "))
 
-                given_id = int(input(f"Choose {entity_name} id or press 0 to Exit: "))
+                if given_id == 0:
+                    print("-- Exit --")
+                    return 0
 
-                found = False
+                for record in tuples_records_list:
+                    if record[0] == given_id:
+                        print(f"{'-' * 20}\nYou chose:\n")
 
-                for value in tuples_records_list:
-                    if value[0] == given_id:
-                        found = True
                         if entity_name == "category":
+                            print(f"Category ID:   {record[0]}\nCategory Name: {record[2]}")
+                        else:
                             print(
-                                f"{'-' * 20}\n"
-                                f"You chose:\n"
-                                f"category id:     {value[0]}\n"
-                                f"category name:   {value[2]}\n"
-                            )
-
-                        elif entity_name == "transaction":
-                            print(
-                                f"{'-' * 20}\n"
-                                f"You chose:\n"
-                                f"transaction id:     {value[0]}\n"
-                                f"user id:            {value[1]}\n"
-                                f"category id:        {value[2]}\n"
-                                f"description:        {value[3]}\n"
-                                f"amount:             {value[4]}\n"
-                                f"transaction date:   {value[5]}\n"
+                                f"Transaction ID:   {record[0]}\n"
+                                f"User ID:          {record[1]}\n"
+                                f"Category ID:      {record[2]}\n"
+                                f"Description:      {record[3]}\n"
+                                f"Amount:           {record[4]}\n"
+                                f"Transaction Date: {record[5]}"
                             )
 
                         logger.info(f"Correct {entity_name}_id: {given_id}")
-
                         return given_id
 
+                logger.info(f"{entity_name} ID {given_id} does not exist.")
+                print(f"{given_id} does not exist. Please enter a correct {entity_name} ID.")
 
-                if not found and int(given_id) != 0:
-                    logger.info(f"{entity_name} id {given_id} does not exist.")
-                    print(f"{given_id} does not exist. Please enter a correct {entity_name} id.")
-
-                elif int(given_id) == 0:
-                    print("-- Exit --")
-                    return given_id
-
-            except ValueError as e:
+            except ValueError:
                 print("Invalid number. Please enter a valid number.")
-                logger.error(f"Invalid number. {e} Please enter a valid number.")
+                logger.error("Invalid number. Please enter a valid number.")
 
     def _get_categories_tuples_list(self, only_custom_categories=False):
         """ allows to get users categories information in list of tuples.
@@ -637,9 +618,9 @@ class Delete(NewTransaction):
             if entity_name.capitalize() == 'Transaction':
                 transaction_id = self._get_transaction_id()
                 if transaction_id == 0:
-                    return  # Anulowanie operacji przez użytkownika
+                    return
 
-                # Pobranie pełnego obiektu transakcji + nazwy kategorii w jednym zapytaniu
+                # Transaction object + category_name
                 transaction_to_delete = session.query(Transactions, Categories.category_name).join(
                     Categories, Categories.id == Transactions.category_id
                 ).filter(Transactions.id == transaction_id).first()
@@ -654,7 +635,7 @@ class Delete(NewTransaction):
             elif entity_name.capitalize() == 'Category':
                 category_id = self._get_category_id(only_custom_categories=True)
                 if category_id == 0:
-                    return  # Anulowanie operacji przez użytkownika
+                    return  # Cancel
 
                 category_to_delete = session.query(Categories).filter(Categories.id == category_id).first()
 
@@ -663,14 +644,14 @@ class Delete(NewTransaction):
                     print(f"Category ID {category_id} doesn't exist!")
                     return
 
-            # Potwierdzenie usunięcia
+
             choice = input(f"Do you want to delete the selected {entity_name.lower()}? (Y/N): ").strip().upper()
             if choice != 'Y':
                 logger.info(f"{entity_name.capitalize()} was not deleted.")
                 print(f"{entity_name.capitalize()} was not deleted.")
                 return
 
-            # Usunięcie obiektu
+            # DEL
             try:
                 if entity_name.capitalize() == 'Transaction':
                     session.delete(transaction)
