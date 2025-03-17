@@ -4,9 +4,8 @@ import random
 from models import Session, Categories, Transactions
 from session_manager import SessionManager
 from logger import logger
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, extract
 import calendar
-from sqlalchemy import extract
 from txt_logs import file_writer
 import matplotlib.pyplot as plt
 
@@ -29,7 +28,7 @@ class NewCategory:
 
         self._user_id = user_id
         self._new_category = None
-        self.f_w = file_writer.FileWriter()
+        self.f_w = file_writer.FileWriter(current_month=True)
 
     def _get_categories_dict(self, categories_type='standard'):
         with SessionManager(Session) as session:
@@ -426,7 +425,8 @@ class NewCategory:
 
             try:
 
-                given_id = int(input(f"Choose {entity_name} id: "))
+                given_id = int(input(f"Choose {entity_name} id or press 0 to Exit: "))
+
                 found = False
 
                 for value in tuples_records_list:
@@ -453,11 +453,17 @@ class NewCategory:
                             )
 
                         logger.info(f"Correct {entity_name}_id: {given_id}")
+
                         return given_id
 
-                if not found:
+
+                if not found and int(given_id) != 0:
                     logger.info(f"{entity_name} id {given_id} does not exist.")
                     print(f"{given_id} does not exist. Please enter a correct {entity_name} id.")
+
+                elif int(given_id) == 0:
+                    print("-- Exit --")
+                    return given_id
 
             except ValueError as e:
                 print("Invalid number. Please enter a valid number.")
@@ -498,7 +504,7 @@ class NewCategory:
 
             return tuples_records_list, None
 
-    def _get_category_id(self, only_custom_categories=False):
+    def _get_category_id(self, only_custom_categories=False, on_delete=False):
         """Allows to get category id, for further create new transaction or delete custom category. to delete custom
         category  set only_custom_categories on True, because user can manage only his own categories."""
         selected_category_id = self._get_id(self._get_categories_tuples_list,
@@ -512,41 +518,32 @@ class NewTransaction(NewCategory):
         super().__init__(user_id)
 
     def _get_amount(self):
-
         while True:
-            chose_option = int(input(
-                "Choose an option:\n"
-                "1: Spent money\n"
-                # "2: Earned money\n"
-                "0: Exit\n"
-            ))
             try:
+                chose_option = int(input(
+                    "Choose an option:\n"
+                    "1: Spent money\n"
+                    "0: Exit\n"
+                ))
+
                 if chose_option == 1:
                     amount = int(input("Enter how much money you have spent: "))
                     if amount > 0:
                         amount = -amount
-                        self.amount = amount
+                    self.amount = amount
                     return amount
-
-                # elif chose_option == 2:
-                #     amount = int(input("Enter how much money you have earned: "))
-                #     if amount < 0:
-                #         amount *= -1
-                #         self.amount = amount
-                #     return amount
 
                 elif chose_option == 0:
                     logger.info("Exiting the program")
-                    print("Exiting the program.")
-                    break
+                    return "Exiting the program."
 
                 else:
-                    logger.info("Invalid option. please enter choice 1 or 2 or 0 if you want exit.")
-                    print("Invalid option. please enter choice 1 or 2.")
+                    logger.info("Invalid option. Please enter 1 or 0.")
+                    print("Invalid option. Please enter 1 or 0.")
 
-            except ValueError as e:
-                logger.error(f"Invalid number {e}. Please enter the number.")
-                print(f"Invalid number {e}. Please enter the number")
+            except ValueError:
+                logger.error("Invalid input. Please enter a number.")
+                print("Invalid input. Please enter a number.")
 
     def _transaction_description_handler(self):
         return self._description_handler("Do you want to add a transaction description?", "transaction")
@@ -555,6 +552,10 @@ class NewTransaction(NewCategory):
         """Allows to get transaction object for further add to database."""
 
         amount = self._get_amount()
+
+        if isinstance(amount, str) and amount == "Exiting the program.":
+            return None
+
         category_id = self._get_category_id()
         description = self._transaction_description_handler()
 
@@ -628,63 +629,66 @@ class Delete(NewTransaction):
 
     @write_log_message
     def delete_record_by_id(self, entity_name='category'):
-        """ Allows to delete transaction or category by chosen id.
-            param: entity_name change how to function works:
-                'category' means that it's operate on categories
-                'transaction' means that it's operate on transactions
-            """
-        transaction_to_delete = None
-        category_to_delete = None
+        """Allows deletion of a transaction or category by chosen ID.
 
+        :param entity_name: Defines operation mode ('category' or 'transaction')
+        """
         with SessionManager(Session) as session:
-
             if entity_name.capitalize() == 'Transaction':
                 transaction_id = self._get_transaction_id()
-                transaction_to_delete = session.query(Transactions.id, Categories.category_name).join(
-                    Categories, Categories.id == Transactions.category_id).filter(
-                    Transactions.id == transaction_id).first()
-                if transaction_to_delete:
-                    transaction = session.query(Transactions).filter(
-                        Transactions.id == transaction_to_delete[0]).first()
+                if transaction_id == 0:
+                    return  # Anulowanie operacji przez użytkownika
+
+                # Pobranie pełnego obiektu transakcji + nazwy kategorii w jednym zapytaniu
+                transaction_to_delete = session.query(Transactions, Categories.category_name).join(
+                    Categories, Categories.id == Transactions.category_id
+                ).filter(Transactions.id == transaction_id).first()
+
+                if not transaction_to_delete:
+                    logger.error(f"Transaction ID {transaction_id} doesn't exist!")
+                    print(f"Transaction ID {transaction_id} doesn't exist!")
+                    return
+
+                transaction, category_name = transaction_to_delete  # Rozpakowanie
 
             elif entity_name.capitalize() == 'Category':
-
-                print("Delete custom category.")
                 category_id = self._get_category_id(only_custom_categories=True)
+                if category_id == 0:
+                    return  # Anulowanie operacji przez użytkownika
+
                 category_to_delete = session.query(Categories).filter(Categories.id == category_id).first()
 
-            if not transaction_to_delete and not category_to_delete:
-                logger.error(f"{entity_name} doesnt exist!")
-                print(f"{entity_name} doesn't exist!")
+                if not category_to_delete:
+                    logger.error(f"Category ID {category_id} doesn't exist!")
+                    print(f"Category ID {category_id} doesn't exist!")
+                    return
+
+            # Potwierdzenie usunięcia
+            choice = input(f"Do you want to delete the selected {entity_name.lower()}? (Y/N): ").strip().upper()
+            if choice != 'Y':
+                logger.info(f"{entity_name.capitalize()} was not deleted.")
+                print(f"{entity_name.capitalize()} was not deleted.")
                 return
 
-            choice = input(f"Do you want delete chosen {entity_name.lower()}? (Y/N): ")
+            # Usunięcie obiektu
+            try:
+                if entity_name.capitalize() == 'Transaction':
+                    session.delete(transaction)
+                    log_message = f"{time}: User deleted transaction ID {transaction.id} (Category: {category_name})"
+                    print("Transaction was deleted successfully.")
+                    logger.info("Transaction was deleted successfully.")
 
-            if choice.upper() == 'Y':
+                elif entity_name.capitalize() == 'Category':
+                    session.delete(category_to_delete)
+                    log_message = f"{time}: User deleted custom category: {category_to_delete.category_name}"
+                    print("Category was deleted successfully.")
+                    logger.info("Category was deleted successfully.")
 
-                try:
-                    if transaction_to_delete:
-                        session.delete(transaction)
-                        log_message = f"{time}: User deleted transaction ID: {transaction_to_delete[0]}:" \
-                                      f" {transaction_to_delete.category_name}"
+                return log_message
 
-                        print("Transaction was deleted successfully.")
-                        logger.info("Transaction was deleted successfully.")
-                        return log_message
-
-                    elif category_to_delete:
-                        session.delete(category_to_delete)
-                        log_message = f"{time}: User deleted custom category: {category_to_delete.category_name}"
-                        print("Category was deleted successfully.")
-                        logger.info("Category was deleted successfully.")
-                        return log_message
-
-                except Exception as e:
-                    print(f"An error occurred while deleting the {entity_name.lower()}: {e}")
-                    logger.error(f"An error occurred while deleting {entity_name.lower()} {transaction_id}: {e}")
-            else:
-                logger.info(f"{entity_name} was not deleted.")
-                print(f"{entity_name} was not deleted.")
+            except Exception as e:
+                print(f"An error occurred while deleting the {entity_name.lower()}: {e}")
+                logger.error(f"An error occurred while deleting {entity_name.lower()} {e}")
 
 
 class DataCharts(Delete):

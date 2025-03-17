@@ -3,9 +3,9 @@ from pathlib import Path
 
 
 class FileWriter(FileOpener):
-    def __init__(self):
-        super().__init__()
-        self.today_path = Path(self.today_path)
+    def __init__(self, current_month=False):
+        super().__init__(current_month=current_month)
+
 
     def _write_log_message_to_file(self, log_message):
         """Writes a log message to the today's log file."""

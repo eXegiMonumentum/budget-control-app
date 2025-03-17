@@ -1,4 +1,4 @@
-from path_validator import PathValidator
+from txt_logs.path_validator import PathValidator
 import datetime
 import calendar
 import os

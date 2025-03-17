@@ -9,8 +9,8 @@ def get_user_choice():
     """
     while True:
         try:
-            choice = int(input("Enter your choice (1/2/3/4/5): "))
-            if choice in [1, 2, 3, 4, 5]:
+            choice = int(input("Enter your choice (1/2/3/4/5/6): "))
+            if choice in [1, 2, 3, 4, 5, 6]:
                 return choice
             else:
                 print("Invalid choice. Please select a valid option (1/2/3/4/5/6).")
@@ -29,6 +29,7 @@ def main():
         print("3: Check logs for current month")
         print("4: Check logs for chosen week in current month")
         print("5: create logs directory !")
+        print("6: Exit")
 
 
         choice = get_user_choice()
@@ -49,6 +50,9 @@ def main():
         elif choice == 5:
             c_files = FileCreator(create_files=True)
             c_files.create_txt_files_for_chosen_month()
+        elif choice == 6:
+            print("-- Exit --")
+            break
 
 if __name__ == "__main__":
     main()

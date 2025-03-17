@@ -1,8 +1,8 @@
-from txt_logs import file_opener
+from txt_logs.file_opener import FileOpener
 from pathlib import Path
 from pprint import pprint
 
-f_o = file_opener.FileOpener()
+# f_o = FileOpener()
 
 
 def get_user_choice():
@@ -19,6 +19,7 @@ def get_user_choice():
 
 def check_txt_logs_handler():
     """Displays menu for checking log files."""
+
     base_path = Path(f_o.base_path)
     print(f"Using base path: {base_path}")
 

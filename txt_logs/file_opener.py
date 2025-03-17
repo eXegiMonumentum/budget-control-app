@@ -1,17 +1,20 @@
-from file_creator import FileCreator
+from txt_logs.file_creator import FileCreator
 import os
 import calendar
+
 
 class FileOpener(FileCreator):
     """
     Class responsible for reading log files.
     """
+
     def __init__(self, current_month=False):
         """
         Initializes FileOpener.
         :param current_month: Determines if the operation is on the current month.
         """
         super().__init__(current_month=current_month)
+
         self.f_paths = self.create_paths_for_days_txt_files()
         self.today_path = self.f_paths[self.current_day_int - 1] if self.current_month else None
 
@@ -91,12 +94,10 @@ class FileOpener(FileCreator):
 
         file_contents = {}
 
-
         if not self.f_paths or not all(os.path.exists(path) for path in self.f_paths):
             print(f" Files for {self.chosen_month} do not exist. Creating schedule now...")
             self.create_txt_files_for_chosen_month()
             self.f_paths = self.create_paths_for_days_txt_files()
-
 
         for day_path in self.f_paths:
             day_key = f'{day_path[-12:-10]} {self.chosen_month}'

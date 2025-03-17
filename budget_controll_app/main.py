@@ -1,8 +1,7 @@
 from credentials import SignUp, LogIn
 from database_management import NewCategory, NewTransaction, Delete, TransactionSummary
-from txt_logs import file_creator
 from txt_logs import check_txt_logs
-f_c = file_creator.FileCreator()
+
 
 
 def main():
@@ -44,6 +43,7 @@ def main():
                                 delete_category = Delete(user_id)
                                 delete_category.delete_record_by_id()
 
+
                             elif action == 3:
                                 add_transaction = NewTransaction(user_id)
                                 add_transaction.add_new_transaction_to_database()
@@ -81,7 +81,7 @@ def main():
 
 if __name__ == "__main__":
     main()
-    f_c.run_file_check_loop(print_message=True)
+    # f_c.run_file_check_loop(print_message=True)
 
 
 
