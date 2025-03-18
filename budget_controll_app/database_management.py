@@ -399,7 +399,6 @@ class NewCategory:
         if is_object:
             self.set_max_value_for_category()
 
-
     def _get_id(self, get_records_as_tuples_func, entity_name="category", **kwargs):
         """Fetches an ID from the database, ensuring it exists.
 
@@ -644,7 +643,6 @@ class Delete(NewTransaction):
                     print(f"Category ID {category_id} doesn't exist!")
                     return
 
-
             choice = input(f"Do you want to delete the selected {entity_name.lower()}? (Y/N): ").strip().upper()
             if choice != 'Y':
                 logger.info(f"{entity_name.capitalize()} was not deleted.")
@@ -691,7 +689,6 @@ class DataCharts(Delete):
 
     def create_pie_chart(self):
         chart_data = self._get_chart_data()
-
         labels = [value[0] for value in chart_data]
         sizes = [abs(value[1]) for value in chart_data]
         sizes = [float(size) for size in sizes]
@@ -809,9 +806,13 @@ class TransactionSummary(DataCharts):
         current_year, current_month = TransactionSummary._get_validate_time_(current_year=True,
                                                                              current_month=True)
         print("Current month budget summary")
+
         total_month_budget_summary = self._get_month_transactions_value(year=current_year,
                                                                         month=current_month)
-        TransactionSummary._count_money_spent_on_each_category(self)
+
+        TransactionSummary._count_money_spent_on_each_category(self, year=current_year, month=current_month)
+
+
         log_message = f'{time}: Total month budget summary for' \
                       f' {current_month}.{current_year}: {total_month_budget_summary}'
         print(f"Total {current_month}.{current_year} budget summary {total_month_budget_summary:>25}")
