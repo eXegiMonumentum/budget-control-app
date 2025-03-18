@@ -13,6 +13,8 @@ time = datetime.datetime.now().replace(microsecond=0)
 
 
 def write_log_message(func):
+    """Decorator to log the message after a function call."""
+
     def wrapp(self, *args, **kwargs):
         log_message = func(self, *args, **kwargs)
         if log_message:
@@ -32,7 +34,6 @@ class NewCategory:
 
     def _get_categories_dict(self, categories_type='standard'):
         with SessionManager(Session) as session:
-
             if categories_type == "standard":
                 query_obj = session.query(Categories).filter(Categories.user_id.is_(None)).all()
             elif categories_type == "custom":
@@ -40,25 +41,24 @@ class NewCategory:
             else:
                 raise ValueError("Invalid categories_type. Expected 'standard or 'custom")
 
-            categories_dict = {}
-
-            for category_record in query_obj:
-                categories_dict[category_record.id] = category_record.category_name
-
-            return categories_dict
+            return {category_record.id: category_record.category_name for category_record in query_obj}
 
     def _get_standard_categories_dict(self):
-        standard_categories_dict = self._get_categories_dict(categories_type="standard")
+        return self._get_categories_dict(categories_type="standard")
+
+    def print_standard_categories(self):
+        standard_categories_dict = self._get_standard_categories_dict()
 
         print("Standard categories:")
         for category_id, category_name in standard_categories_dict.items():
             print(f"{category_id:>10} - {category_name}")
         print()
-        return standard_categories_dict
 
     def _get_custom_categories_dict(self):
-        custom_categories_dict = self._get_categories_dict(categories_type="custom")
+        return self._get_categories_dict(categories_type="custom")
 
+    def print_custom_categories(self):
+        custom_categories_dict = self._get_custom_categories_dict()
         print("Custom categories: ")
         if custom_categories_dict:
             for category_id, category_name in custom_categories_dict.items():
@@ -99,36 +99,36 @@ class NewCategory:
 
         decision = input(f"Do you want to add transaction limit to your category {self._new_category} (Y/N): ")
 
-        if decision.upper() == "Y":
-            while True:
-                with SessionManager(Session) as session:
+        if decision.upper() != "Y":
+            print("No transaction limit set.")
+            return
 
-                    category_record = session.query(Categories).filter(
-                        Categories.category_name == self._new_category).first()
+        while True:
+            with SessionManager(Session) as session:
+                category_record = session.query(Categories).filter(
+                    Categories.category_name == self._new_category).first()
+                if not category_record:
+                    raise Exception(f"category {self._new_category}  doesn't exist!")
 
-                    if not category_record:
-                        raise Exception(f"category_record doesn't exist!")
+                try:
+                    max_value = int(
+                        input(f"Enter the transaction limit for your transaction category {self._new_category}\n"
+                              f"\nor press 0 to exit: "))
 
-                    try:
-                        max_value = int(
-                            input(f"Enter the transaction limit for your transaction category {self._new_category}\n"
-                                  f"\nor press 0 to exit: "))
+                    if max_value == 0:
+                        print("Exiting without setting transaction limit.")
+                        return
 
-                        if max_value == 0:
-                            print("Exiting without setting transaction limit.")
-                            return
-
-                        if max_value > 0:
-                            category_record.money_limit = max_value
-                            print(f"You set transaction limit for {self._new_category} on {max_value}")
-                            logger.info(f"You set transaction limit for {self._new_category} on {max_value}")
-                            return max_value
-                        else:
-                            print("Please enter a positive number greater than 0, or press 0 to exit.")
-                            logger.info(f"Invalid input for {self._new_category}. Must be a positive number.")
-
-                    except ValueError as e:
-                        logger.error(f"Please Enter valid max value number for transaction limit.\nDetails: {e}")
+                    if max_value > 0:
+                        category_record.money_limit = max_value
+                        print(f"You set transaction limit for {self._new_category} on {max_value}")
+                        logger.info(f"You set transaction limit for {self._new_category} on {max_value}")
+                        return max_value
+                    else:
+                        print("Please enter a positive number greater than 0, or press 0 to exit.")
+                except ValueError as e:
+                    logger.error(f"Invalid input for max value. Details: {e}")
+                    print("Please enter a valid number.")
 
     @staticmethod
     def get_colour_tuples_list(chose_colour=True):
@@ -184,35 +184,26 @@ class NewCategory:
             return random.choice([c[0] for c in available_colours_list])
 
     def _colour_handler(self):
+        decision = input(f"Do you want to add a colour to {self._new_category}? Press (Y/N): ")
 
-        decision = input(f"Do you want to add a colour to {self._new_category}?\n Press (Y/N): ")
+        if decision.upper() != 'Y':
+            colour_sample = self._get_colour_as_sample()
+            logger.info(f"Category {self._new_category} colour was set to {colour_sample}")
+            return colour_sample
 
-        if decision.upper() == 'Y':
-            colour_tuples_list = NewCategory.get_colour_tuples_list()
+        colour_tuples_list = NewCategory.get_colour_tuples_list()
 
+        while True:
             try:
-                colour_index = int(input(f"Chose colour index: "))
-
-                print(f"You chosen {colour_index} : {colour_tuples_list[colour_index - 1][0]}:"
-                      f" {colour_tuples_list[colour_index - 1][1]}")
-
-                self._colour = colour_tuples_list[colour_index - 1][0]
-
-                return colour_tuples_list[colour_index - 1][0]
-
-            except IndexError as e:
-                logger.error(f"Index out of range {e}")
-                print(f"Index out of range {e}")
-                raise
+                colour_index = int(input(f"Choose colour index: "))
+                if 1 <= colour_index <= len(colour_tuples_list):
+                    self._colour = colour_tuples_list[colour_index - 1][0]
+                    return self._colour
+                else:
+                    print("Invalid choice. Please select a valid index.")
             except ValueError as e:
                 logger.error(f"Invalid input {e}")
-                print(f"Invalid choice, please enter a int number.")
-                raise
-
-        else:
-            colour_sample = self._get_colour_as_sample()
-            logger.info(f"Category {self._new_category} colour was set at {colour_sample} ")
-            return colour_sample
+                print(f"Invalid choice, please enter a valid number.")
 
     @staticmethod
     def _get_icon_tuples_list():
@@ -287,7 +278,10 @@ class NewCategory:
         :return custom_category as str."""
 
         standard_categories_dict = self._get_standard_categories_dict()
+        self.print_standard_categories()
+
         custom_categories_dict = self._get_custom_categories_dict()
+        self.print_custom_categories()
 
         while True:
             category_name = input("\nEnter the name of the new custom category you would like to add,\n"
@@ -362,7 +356,6 @@ class NewCategory:
                 log_message = f" time: {time}: User added new {entity_name} successfully."
                 print(f"New {entity_name} added successfully.")
                 return log_message
-
             except Exception as e:
                 logger.error(f"Failed to add {entity_name} to the database: {e}")
                 print(f"Failed to add {entity_name} to the database: {e}")
@@ -811,7 +804,6 @@ class TransactionSummary(DataCharts):
                                                                         month=current_month)
 
         TransactionSummary._count_money_spent_on_each_category(self, year=current_year, month=current_month)
-
 
         log_message = f'{time}: Total month budget summary for' \
                       f' {current_month}.{current_year}: {total_month_budget_summary}'
