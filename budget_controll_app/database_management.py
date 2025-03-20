@@ -1,15 +1,17 @@
 import datetime
 import random
 
-from models import Session, Categories, Transactions
+from models import Categories, Transactions
 from session_manager import SessionManager
 from logger import logger
 from sqlalchemy import func, desc, extract
 import calendar
 from txt_logs import file_writer
 import matplotlib.pyplot as plt
-
+# from database_creation import DatabaseCreation, get_session_factory
 time = datetime.datetime.now().replace(microsecond=0)
+
+# session_factory = get_session_factory()
 
 
 def write_log_message(func):
@@ -26,14 +28,15 @@ def write_log_message(func):
 
 class NewCategory:
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, session_factory):
 
         self._user_id = user_id
+        self.session_factory = session_factory
         self._new_category = None
         self.f_w = file_writer.FileWriter(current_month=True)
 
     def _get_categories_dict(self, categories_type='standard'):
-        with SessionManager(Session) as session:
+        with SessionManager(self.session_factory) as session:
             if categories_type == "standard":
                 query_obj = session.query(Categories).filter(Categories.user_id.is_(None)).all()
             elif categories_type == "custom":
@@ -104,7 +107,7 @@ class NewCategory:
             return
 
         while True:
-            with SessionManager(Session) as session:
+            with SessionManager(self.session_factory) as session:
                 category_record = session.query(Categories).filter(
                     Categories.category_name == self._new_category).first()
                 if not category_record:
@@ -170,7 +173,7 @@ class NewCategory:
 
         available_colours_tuples_list = NewCategory.get_colour_tuples_list(chose_colour=chose_colour)
 
-        with SessionManager(Session) as session:
+        with SessionManager(self.session_factory) as session:
             colours_column = session.query(Categories.colour)
 
             colours_already_used = [colour[0] for colour in colours_column if colour[0]]
@@ -343,7 +346,7 @@ class NewCategory:
                entity_name (str): The name of the entity (for logging purposes).
                :param get_object_function, entity_name:
            """
-        with SessionManager(Session) as session:
+        with SessionManager(self.session_factory) as session:
             new_object = get_object_function()
             if new_object is None:
                 logger.error(f"Failed to create {entity_name} object.")
@@ -455,7 +458,7 @@ class NewCategory:
               [(34, None, 'Food and Drinks','Expenses on food and drinks', custom category),
                (35, None, 'Transport', 'Expenses on transport, standard_category)]'"""
 
-        with SessionManager(Session) as session:
+        with SessionManager(self.session_factory) as session:
 
             query = session.query(Categories.id, Categories.user_id, Categories.category_name,
                                   Categories.description)
@@ -487,8 +490,8 @@ class NewCategory:
 
 
 class NewTransaction(NewCategory):
-    def __init__(self, user_id):
-        super().__init__(user_id)
+    def __init__(self, user_id, session_factory):
+        super().__init__(user_id, session_factory)
 
     def _get_amount(self):
         while True:
@@ -546,17 +549,17 @@ class NewTransaction(NewCategory):
 
 
 class Delete(NewTransaction):
-    def __init__(self, user_id):
-        super().__init__(user_id)
+    def __init__(self, user_id, session_factory):
+        super().__init__(user_id, session_factory)
 
-    @staticmethod
-    def _get_transactions_query(year=None, month=None):
+
+    def _get_transactions_query(self, year=None, month=None):
         """Return the query object containing information about transactions (for further use)
         params : if year and month are provided, then query is filter.
         If the year and month are not specified, you can get all the information
          About transactions (the entire history of the application) """
 
-        with SessionManager(Session) as session:
+        with SessionManager(self.session_factory) as session:
 
             query = session.query(Transactions.id, Transactions.user_id, Transactions.category_id,
                                   Transactions.description, Transactions.amount,
@@ -602,95 +605,165 @@ class Delete(NewTransaction):
 
     @write_log_message
     def delete_record_by_id(self, entity_name='category'):
-        """Allows deletion of a transaction or category by chosen ID.
+        """
+        Allows deletion of a transaction or category by chosen ID.
+
+        Ensures that only the logged-in user can delete their own records.
 
         :param entity_name: Defines operation mode ('category' or 'transaction')
         """
-        with SessionManager(Session) as session:
-            if entity_name.capitalize() == 'Transaction':
-                transaction_id = self._get_transaction_id()
-                if transaction_id == 0:
+        with SessionManager(self.session_factory) as session:
+            if entity_name.lower() == 'transaction':
+                print("\nYour transactions: ")
+                transactions = (
+                    session.query(Transactions.id, Transactions.amount, Transactions.description)
+                    .filter(Transactions.user_id == self._user_id)
+                    .all()
+                )
+
+                if not transactions:
+                    print("You have no transactions to delete.")
                     return
 
-                # Transaction object + category_name
-                transaction_to_delete = session.query(Transactions, Categories.category_name).join(
-                    Categories, Categories.id == Transactions.category_id
-                ).filter(Transactions.id == transaction_id).first()
+                for transaction in transactions:
+                    print(
+                        f"ID: {transaction.id} | Amount: {transaction.amount} | Description: {transaction.description}")
+
+                transaction_id = int(input("\nEnter the ID of the transaction you want to delete (0 to cancel): "))
+                if transaction_id == 0:
+                    return  # User chose to exit
+
+                transaction_to_delete = (
+                    session.query(Transactions)
+                    .filter(Transactions.id == transaction_id, Transactions.user_id == self._user_id)
+                    .first()
+                )
 
                 if not transaction_to_delete:
-                    logger.error(f"Transaction ID {transaction_id} doesn't exist!")
-                    print(f"Transaction ID {transaction_id} doesn't exist!")
+                    print(f"\nTransaction ID {transaction_id} does not exist or does not belong to you.")
+                    logger.error(f"User {self._user_id} attempted to delete a transaction they do not own.")
                     return
 
-                transaction, category_name = transaction_to_delete  # Rozpakowanie
+            elif entity_name.lower() == 'category':
+                print("\nYour custom categories: ")
+                categories = (
+                    session.query(Categories.id, Categories.category_name)
+                    .filter(Categories.user_id == self._user_id)
+                    .all()
+                )
 
-            elif entity_name.capitalize() == 'Category':
-                category_id = self._get_category_id(only_custom_categories=True)
+                if not categories:
+                    print("You have no custom categories to delete.")
+                    return
+
+                for category in categories:
+                    print(f"ID: {category.id} | Name: {category.category_name}")
+
+                category_id = int(input("\nEnter the ID of the category you want to delete (0 to cancel): "))
                 if category_id == 0:
-                    return  # Cancel
+                    return  # User chose to exit
 
-                category_to_delete = session.query(Categories).filter(Categories.id == category_id).first()
+                category_to_delete = (
+                    session.query(Categories)
+                    .filter(Categories.id == category_id, Categories.user_id == self._user_id)
+                    .first()
+                )
 
                 if not category_to_delete:
-                    logger.error(f"Category ID {category_id} doesn't exist!")
-                    print(f"Category ID {category_id} doesn't exist!")
+                    print(f"\nCategory ID {category_id} does not exist or does not belong to you.")
+                    logger.error(f"User {self._user_id} attempted to delete a category they do not own.")
                     return
 
-            choice = input(f"Do you want to delete the selected {entity_name.lower()}? (Y/N): ").strip().upper()
+            # Confirm deletion
+            choice = input(f"Are you sure you want to delete this {entity_name.lower()}? (Y/N): ").strip().upper()
             if choice != 'Y':
-                logger.info(f"{entity_name.capitalize()} was not deleted.")
-                print(f"{entity_name.capitalize()} was not deleted.")
+                print(f"{entity_name.capitalize()} deletion canceled.")
+                logger.info(f"User {self._user_id} canceled deletion.")
                 return
 
-            # DEL
+            # Execute deletion
             try:
-                if entity_name.capitalize() == 'Transaction':
-                    session.delete(transaction)
-                    log_message = f"{time}: User deleted transaction ID {transaction.id} (Category: {category_name})"
-                    print("Transaction was deleted successfully.")
-                    logger.info("Transaction was deleted successfully.")
+                if entity_name.lower() == 'transaction':
+                    session.delete(transaction_to_delete)
+                    session.commit()
+                    log_message = f"{time}: User {self._user_id} deleted transaction ID {transaction_to_delete.id}"
+                    print("\nTransaction was deleted successfully.")
+                    logger.info(log_message)
 
-                elif entity_name.capitalize() == 'Category':
+                elif entity_name.lower() == 'category':
                     session.delete(category_to_delete)
-                    log_message = f"{time}: User deleted custom category: {category_to_delete.category_name}"
-                    print("Category was deleted successfully.")
-                    logger.info("Category was deleted successfully.")
+                    session.commit()
+                    log_message = f"{time}: User {self._user_id} deleted category '{category_to_delete.category_name}'"
+                    print("\nCategory was deleted successfully.")
+                    logger.info(log_message)
 
                 return log_message
 
             except Exception as e:
-                print(f"An error occurred while deleting the {entity_name.lower()}: {e}")
-                logger.error(f"An error occurred while deleting {entity_name.lower()} {e}")
+                session.rollback()
+                print(f"\nAn error occurred while deleting the {entity_name.lower()}: {e}")
+                logger.error(f"Error while deleting {entity_name.lower()}: {e}")
 
 
 class DataCharts(Delete):
 
     def _get_chart_data(self):
+
         current_year = datetime.datetime.now().year
         current_month = datetime.datetime.now().month
 
-        query = self._get_transactions_query(year=current_year, month=current_month)
+        with SessionManager(self.session_factory) as session:
+            query = (
+                session.query(
+                    Categories.category_name,
+                    func.sum(Transactions.amount).label("total_spent"),
+                    Categories.colour
+                )
+                .join(Transactions, Transactions.category_id == Categories.id)
+                .filter(
+                    Transactions.user_id == self._user_id,  # Ensure only this user's transactions
+                    Transactions.amount < 0,  # Only expenses (negative amounts)
+                    extract('YEAR', Transactions.transaction_date) == current_year,
+                    extract('MONTH', Transactions.transaction_date) == current_month
+                )
+                .group_by(Categories.category_name, Categories.colour)
+                .all()
+            )
 
-        month_expanse_data = query.with_entities(Categories.category_name, func.sum(Transactions.amount),
-                                                 Categories.colour).where(
-            Transactions.amount < 0).group_by(Categories.category_name, Categories.colour).all()
+        if not query:
+            raise Exception("No transactions found for this month. Add transactions first.")
 
-        if not month_expanse_data:
-            raise Exception("No transactions to show on chart. Add transactions firstly")
-
-        return month_expanse_data
+        return query
 
     def create_pie_chart(self):
-        chart_data = self._get_chart_data()
-        labels = [value[0] for value in chart_data]
+        """
+        Creates a pie chart displaying the user's expenses for the current month.
+        """
+        try:
+            chart_data = self._get_chart_data()
+        except Exception as e:
+            print(f"\n No data available: {e}")
+            return
+
+        labels = [value[0] for value in chart_data]  # Category names
         sizes = [abs(value[1]) for value in chart_data]
-        sizes = [float(size) for size in sizes]
-        colors = [value[2] for value in chart_data]
+        colors = [value[2] if value[2] else "#CCCCCC" for value in chart_data]  # Default color (gray) if missing
 
-        plt.figure(figsize=(10, 7))
-        plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=220)
+        if not any(sizes) or sum(sizes) == 0:
+            print("\n No expenses recorded this month. Pie chart not generated.")
+            return
 
-        plt.title('expenses (references for the monthly expense')
+        plt.figure(figsize=(8, 8))
+        plt.pie(
+            sizes,
+            labels=labels,
+            colors=colors,
+            autopct='%1.1f%%',
+            startangle=140,
+            wedgeprops={'edgecolor': 'black', 'linewidth': 1}
+        )
+
+        plt.title(f"Monthly Expense Distribution ({datetime.datetime.now().strftime('%B %Y')})", fontsize=14)
         plt.axis('equal')
         plt.show()
 
@@ -698,71 +771,89 @@ class DataCharts(Delete):
 
 
 class TransactionSummary(DataCharts):
-    def __init__(self, user_id):
-        super().__init__(user_id)
+    def __init__(self, user_id, session_factory):
+        super().__init__(user_id, session_factory)
 
     def _get_month_transactions_value(self, year=None, month=None):
+        """
+        Retrieves and displays the total transaction value for the specified month and year.
+        If no transactions are found, it notifies the user.
+        """
         try:
-            transaction_results_tuples, query = self._get_transactions_tuples_list(year=year, month=month)
-            total_month_budget_summary = query.with_entities(func.sum(Transactions.amount)).scalar()
+            with SessionManager(self.session_factory) as session:
+                total_month_budget_summary = (
+                    session.query(func.sum(Transactions.amount))
+                    .filter(Transactions.user_id == self._user_id)  # Filter transactions by user
+                    .filter(extract("YEAR", Transactions.transaction_date) == (
+                        year if year else datetime.datetime.now().year))
+                    .filter(extract("MONTH", Transactions.transaction_date) == (
+                        month if month else datetime.datetime.now().month))
+                    .scalar()
+                )
 
-            if not total_month_budget_summary:
-                return "No transactions"
+                if total_month_budget_summary is None:
+                    print(
+                        f"\nNo transactions found for user (ID: {self._user_id}) in {month}.{year if year else 'current year'}.")
+                    return 0.0
 
-            return total_month_budget_summary
+                print(
+                    f"\nTotal transaction value for User (ID: {self._user_id}) in {month}.{year if year else 'current year'}: {total_month_budget_summary:,.2f} PLN")
+                return total_month_budget_summary
+
         except Exception as e:
-            logger.error(f"An error occurred while calculating month transactions value: {e}")
-            print(f"An error occurred while calculating month transactions value: {e}")
+            logger.error(f"Error while retrieving month transactions: {e}")
+            print(f"\nError: {e}")
+            return 0.0
 
     def _count_money_spent_on_each_category(self, month=None, year=None, overall=False):
         """
-            for internal use.
-            Default: count your total value from transactions in current month.
-            if you want calculating overall budget in app history, then set: overall = True
-            month and year params if you set True it'll add filter to query"""
-
+        Counts and displays the user's expenses for each category.
+        By default, it shows the total for the current month.
+        If overall=True, it summarizes the entire transaction history of the user.
+        """
         try:
+            with SessionManager(self.session_factory) as session:
 
-            with SessionManager(Session) as session:
-
-                results = session.query(Transactions.category_id, Categories.category_name, Categories.category_name,
-                                        func.sum(Transactions.amount).label('total_category_amount')).join(
-                    Categories, Transactions.category_id == Categories.id)
+                results = session.query(
+                    Transactions.category_id,
+                    Categories.category_name,
+                    func.sum(Transactions.amount).label('total_category_amount')
+                ).join(Categories, Transactions.category_id == Categories.id).filter(
+                    Transactions.user_id == self._user_id  # Filter by logged-in user ID
+                )
 
                 if not overall:
-
                     if year is not None:
                         results = results.filter(extract("YEAR", Transactions.transaction_date) == year)
                     if month is not None:
                         results = results.filter(extract("MONTH", Transactions.transaction_date) == month)
 
-                    results = results.group_by(Transactions.category_id, Categories.category_name).order_by(
-                        desc(Transactions.category_id)).all()
+                results = results.group_by(Transactions.category_id, Categories.category_name).order_by(
+                    desc(Transactions.category_id)
+                ).all()
 
-                    print(f"Total budget for each category in {month}.{year}\n{30 * '_'} ")
-                    for result in results:
-                        print(
-                            f"ID category: {result.category_id:>5} : {result.category_name:<20}"
-                            f" total amount: {result.total_category_amount:,.2f}")
-                else:
+                # If the user has no transactions, notify them
+                if not results:
+                    print(f"\nNo transactions found for user (ID: {self._user_id}).")
+                    return {}
 
-                    print("summary (each category transaction) from the entire transaction history")
-                    results = results.group_by(Transactions.category_id, Categories.category_name).all()
+                print(
+                    f"\nExpense Summary for User (ID: {self._user_id}) in {month}.{year if year else 'current year'}:")
+                print("-" * 50)
 
-                    log_message = {}
-                    for result in results:
-                        key = f"{result.category_id}:{result.category_name}"
-                        log_message[key] = result.total_category_amount
+                summary_dict = {}
+                for result in results:
+                    print(
+                        f"{result.category_name:<20} | Spent: {result.total_category_amount:,.2f} PLN"
+                    )
+                    summary_dict[result.category_id] = result.total_category_amount
 
-                        print(f"ID category: {result.category_id:>5} : {result.category_name:<20}"
-                              f"total amount: {result.total_category_amount:,.2f}")
-
-                    self.f_w._write_log_message_to_file(log_message)
-
-                    return log_message
+                print("-" * 50)
+                return summary_dict
 
         except Exception as e:
-            logger.error(f"An error was occurred during count money spent on each category:\n {e}")
+            logger.error(f"Error while calculating user transactions: {e}")
+            print(f"\nError: {e}")
 
     @staticmethod
     def _get_validate_time_(current_month=False, current_year=False):

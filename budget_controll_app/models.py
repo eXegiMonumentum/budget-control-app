@@ -1,7 +1,7 @@
-from sqlalchemy import Column, String, Integer, DateTime, Numeric, Text, ForeignKey, create_engine, LargeBinary
-from sqlalchemy.orm import relationship, sessionmaker, declarative_base
-from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy import Column, String, Integer, DateTime, Numeric, Text, ForeignKey, LargeBinary
+from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
+
 
 Base = declarative_base()
 
@@ -47,15 +47,3 @@ class Transactions(Base):
 
     user = relationship('Users', back_populates='transactions')
     category = relationship('Categories', back_populates='transactions')
-
-
-engine = create_engine('postgresql+psycopg2://postgres:password@localhost/budget')
-
-if not database_exists(engine.url):
-    create_database(engine.url)
-
-# Tworzenie tabel w bazie
-Base.metadata.create_all(engine)
-
-# Konfiguracja sesji
-Session = sessionmaker(bind=engine)
